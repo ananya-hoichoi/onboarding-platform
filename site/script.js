@@ -92,13 +92,34 @@ const countObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 document.querySelectorAll('.num[data-count]').forEach(el => countObserver.observe(el));
 
-/* ---------- Accordions (leave policy) ---------- */
-document.querySelectorAll('.acc-head').forEach(head => {
-  head.addEventListener('click', () => {
-    const item = head.parentElement;
-    const body = head.nextElementSibling;
-    const open = item.classList.toggle('open');
+/* ---------- Accordions (leave policy) — expand on hover ---------- */
+document.querySelectorAll('.acc-item').forEach(item => {
+  const head = item.querySelector('.acc-head');
+  const body = head.nextElementSibling;
+  const setOpen = (open) => {
+    item.classList.toggle('open', open);
     body.style.maxHeight = open ? body.scrollHeight + 'px' : '0';
+  };
+  item.addEventListener('mouseenter', () => setOpen(true));
+  item.addEventListener('mouseleave', () => setOpen(false));
+  head.addEventListener('click', () => setOpen(!item.classList.contains('open'))); // touch/keyboard fallback
+});
+
+/* ---------- Leadership bios — click anywhere on the bio to expand ---------- */
+document.querySelectorAll('.leader-card').forEach(card => {
+  const btn = card.querySelector('.bio-toggle');
+  const bioFull = card.querySelector('.bio-full');
+  const clickable = [card.querySelector('.bio-preview'), bioFull, btn].filter(Boolean);
+  const toggle = () => {
+    const expanded = card.classList.toggle('expanded');
+    btn.setAttribute('aria-expanded', String(expanded));
+    btn.firstChild.textContent = expanded ? 'Show less ' : 'Read more ';
+    bioFull.style.maxHeight = expanded ? bioFull.scrollHeight + 'px' : '0';
+  };
+  clickable.forEach(el => { el.style.cursor = 'pointer'; el.addEventListener('click', toggle); });
+  // keep the measured height correct if the viewport is resized while expanded
+  window.addEventListener('resize', () => {
+    if (card.classList.contains('expanded')) bioFull.style.maxHeight = bioFull.scrollHeight + 'px';
   });
 });
 
@@ -298,8 +319,8 @@ if (finePointer && !reduceMotion) {
     { el: document.querySelector('.g1'), f: 26 },
     { el: document.querySelector('.g2'), f: -22 },
     { el: document.querySelector('.g3'), f: 16 },
-    { el: document.querySelector('.reel'), f: -34 },
-    { el: document.querySelector('.reel-2'), f: 28 },
+    { el: document.querySelector('.reel-wrap-1'), f: -34 },
+    { el: document.querySelector('.reel-wrap-2'), f: 28 },
     { el: document.querySelector('.hero-inner'), f: 10 }
   ].filter(l => l.el);
   heroEl.addEventListener('mousemove', e => {
@@ -401,29 +422,29 @@ if (finePointer && !reduceMotion) {
   update();
 })();
 
-/* ---------- Partner wall ---------- */
-(function partnerWall() {
-  const wall = document.getElementById('partnerRows');
-  if (!wall) return;
-  // Edit / extend these — one array per scrolling row.
-  const rows = [
-    ['Amazon', 'Flipkart', 'KFC', 'Sprite', 'St. Ives', 'Bingo', 'Durex', 'Nestlé', 'Godrej', 'Diageo', 'Ambuja Cement', "Doctor's Choice"],
-    ['Nihar', 'Lakmé', "L'Oréal", 'Berger Paints', 'Engage', 'Emami', 'Mother Dairy', 'OPPO', 'Max', 'Streax', 'Bacardí', 'Bombay Shaving Company'],
-    ['ENO', 'Bumble', 'Breezer', 'Vaseline', 'Wild Stone', 'ICICI Bank', 'JioMart', "POND'S", 'TRESemmé', 'Tinder', 'BoroPlus', 'Century Ply'],
-    ['Livon', 'Mi', 'Pears', 'Colgate', 'Dabur', 'Vivo', 'Hero', 'Perk', 'Sunlight', 'Sunsilk', 'Johnnie Walker', 'Samsung', 'Shoppers Stop', 'Tissot', 'TATA', 'Style Baazar', 'Sunrise']
+/* ---------- Brand partner logo marquee ---------- */
+(function partnerLogoMarquee() {
+  const track = document.getElementById('partnerTrack');
+  if (!track) return;
+  // Edit / extend — { name, file } one entry per logo in assets/partner-logos/
+  const logos = [
+    { name: 'Amazon', file: 'amazon.svg' },
+    { name: 'KFC', file: 'kfc.svg' },
+    { name: 'Sprite', file: 'sprite.svg' },
+    { name: "L'Oréal", file: 'loreal.svg' },
+    { name: 'Bacardí', file: 'bacardi.svg' },
+    { name: 'Bumble', file: 'bumble.svg' },
+    { name: 'ICICI Bank', file: 'icici.svg' },
+    { name: 'Tinder', file: 'tinder.svg' },
+    { name: 'Colgate', file: 'colgate.svg' },
+    { name: 'Dabur', file: 'dabur.svg' },
+    { name: 'Vivo', file: 'vivo.svg' },
+    { name: 'Samsung', file: 'samsung.svg' },
+    { name: 'TATA', file: 'tata.svg' }
   ];
-  const durations = [44, 54, 48, 60];
-  rows.forEach((names, i) => {
-    const row = document.createElement('div');
-    row.className = 'logo-row' + (i % 2 ? ' rev' : '');
-    const track = document.createElement('div');
-    track.className = 'logo-track';
-    track.style.animationDuration = durations[i % durations.length] + 's';
-    const chips = names.map(n => `<span class="brand-chip">${n}</span>`).join('');
-    track.innerHTML = chips + chips; // duplicate for a seamless loop
-    row.appendChild(track);
-    wall.appendChild(row);
-  });
+  const item = (l) => `<span class="m-logo"><img src="assets/partner-logos/${l.file}" alt="${l.name}"><span class="sep">◆</span></span>`;
+  const html = logos.map(item).join('');
+  track.innerHTML = html + html; // duplicate for a seamless loop
 })();
 
 /* ============================================================
@@ -575,7 +596,7 @@ if (finePointer && !reduceMotion) {
     { cap: 'The hoichoi journey', action: timelineWalk('#hoichoi-story') },
     { cap: 'What we stand for', el: '#hoichoi-story .pillars' },
     { cap: 'New initiatives from the family', el: '.init-grid' },
-    { cap: 'Our brand partners', el: '#partners', dur: 4400 },
+    { cap: 'Our brand partners', el: '#partnerMarquee', dur: 4400 },
     { cap: 'Meet our leadership', el: '.leader-grid', dur: 3800 },
     { cap: 'Our core values', action: cultureWalk },
     { cap: 'HR brief & benefits', action: hrWalk },

@@ -80,7 +80,6 @@
       <div class="nav-links" id="navLinks">
         <a href="#about">About</a>
         <a href="#story">Story</a>
-        <a href="#partners">Partners</a>
         <a href="#leadership">Leadership</a>
         <a href="#culture">Culture</a>
         <a href="#hr">HR &amp; Benefits</a>
@@ -101,15 +100,19 @@
     <div class="hero-grid"></div>
     <canvas id="heroCanvas"></canvas>
     <div class="hero-decor">
-      <svg class="reel" viewBox="0 0 100 100" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="3">
-        <circle cx="50" cy="50" r="46"/><circle cx="50" cy="50" r="9" fill="var(--red)" stroke="none"/>
-        <circle cx="50" cy="22" r="8"/><circle cx="50" cy="78" r="8"/><circle cx="22" cy="50" r="8"/><circle cx="78" cy="50" r="8"/>
-        <circle cx="30" cy="30" r="6"/><circle cx="70" cy="30" r="6"/><circle cx="30" cy="70" r="6"/><circle cx="70" cy="70" r="6"/>
-      </svg>
-      <svg class="reel reel-2" viewBox="0 0 100 100" fill="none" stroke="rgba(238,28,46,.6)" stroke-width="3">
-        <circle cx="50" cy="50" r="46"/><circle cx="50" cy="50" r="9" fill="var(--red)" stroke="none"/>
-        <circle cx="50" cy="22" r="8"/><circle cx="50" cy="78" r="8"/><circle cx="22" cy="50" r="8"/><circle cx="78" cy="50" r="8"/>
-      </svg>
+      <div class="reel-wrap reel-wrap-1">
+        <svg class="reel" viewBox="0 0 100 100" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="3">
+          <circle cx="50" cy="50" r="46"/><circle cx="50" cy="50" r="9" fill="var(--red)" stroke="none"/>
+          <circle cx="50" cy="22" r="8"/><circle cx="50" cy="78" r="8"/><circle cx="22" cy="50" r="8"/><circle cx="78" cy="50" r="8"/>
+          <circle cx="30" cy="30" r="6"/><circle cx="70" cy="30" r="6"/><circle cx="30" cy="70" r="6"/><circle cx="70" cy="70" r="6"/>
+        </svg>
+      </div>
+      <div class="reel-wrap reel-wrap-2">
+        <svg class="reel reel-2" viewBox="0 0 100 100" fill="none" stroke="rgba(238,28,46,.6)" stroke-width="3">
+          <circle cx="50" cy="50" r="46"/><circle cx="50" cy="50" r="9" fill="var(--red)" stroke="none"/>
+          <circle cx="50" cy="22" r="8"/><circle cx="50" cy="78" r="8"/><circle cx="22" cy="50" r="8"/><circle cx="78" cy="50" r="8"/>
+        </svg>
+      </div>
       <div class="float-play p1">▶</div>
       <div class="float-play p2">▶</div>
       <div class="float-play p3">▶</div>
@@ -217,7 +220,7 @@
 
       <div class="pillars" style="margin-top:60px">
         <div class="pillar reveal d1" data-n="01"><div class="ico">👑</div><h3>Content is King</h3><p>The largest library of Bengali movies &amp; original web series — content first, always.</p></div>
-        <div class="pillar reveal d2" data-n="02"><div class="ico">💛</div><h3>Customer Comes First</h3><p>Great product, great experience — 360° entertainment built around the viewer.</p></div>
+        <div class="pillar reveal d2" data-n="02"><div class="ico">💛</div><h3>Customer First</h3><p>Great product, great experience — 360° entertainment built around the viewer.</p></div>
         <div class="pillar reveal d3" data-n="03"><div class="ico">🤝</div><h3>Stronger Together</h3><p>Strong partners, stronger outcomes. Together, we deliver.</p></div>
         <div class="pillar reveal d4" data-n="04"><div class="ico">🌏</div><h3>Globally Bengali</h3><p>100+ countries. A 20M+ strong community. One language, one heartbeat.</p></div>
       </div>
@@ -239,15 +242,10 @@
     </div>
   </section>
 
-  <!-- ===================== PARTNERS ===================== -->
-  <section id="partners">
-    <div class="wrap">
-      <span class="eyebrow reveal">Brand Partnerships</span>
-      <h2 class="sec-title reveal">Strong partners, <span class="hl">stronger outcomes</span>.</h2>
-      <p class="sec-sub reveal">From FMCG giants to global lifestyle icons — hoichoi teams up with the best to craft branded content &amp; co-branded experiences that reach 250 million Bengalis worldwide. A glimpse of the brands we've partnered with:</p>
-    </div>
-    <div class="logo-wall" id="partnerRows" aria-label="Brand partners"></div>
-  </section>
+  <!-- MARQUEE — BRAND PARTNERS -->
+  <div class="marquee marquee-logos" id="partnerMarquee" aria-label="Brand partners">
+    <div class="marquee-track" id="partnerTrack"></div>
+  </div>
 
   <!-- ===================== LEADERSHIP ===================== -->
   <section id="leadership" style="background:linear-gradient(180deg,var(--bg),var(--bg-2))">
@@ -261,15 +259,29 @@
             <svg class="avatar-ph" viewBox="0 0 120 132" aria-hidden="true"><circle cx="60" cy="44" r="25"/><path d="M12 132c0-31 96-31 96 0Z"/></svg>
           </div>
           <div class="leader-body"><h4>Shrikant Mohta</h4><div class="subrole">Co-founder, SVF &amp; hoichoi</div>
-            <p>The creative muscle of SVF &amp; hoichoi — 110+ film productions including 7 National Awards. Celebrated pioneer of Bengali film production, known for superior technical craft, launching new talent and rich, unique content.</p></div>
+            <p class="bio-preview">The creative muscle of SVF Entertainment &amp; hoichoi, with over 110 SVF film productions to his credit including 7 National Awards &amp; various blockbusters of the last two decades.</p>
+            <div class="bio-full">
+              <p>Shrikant Mohta, the creative muscle of SVF Entertainment &amp; hoichoi, has over 110 SVF film productions to his credit including 7 National Award &amp; various blockbusters of the last two decades.</p>
+              <p>He is celebrated as the pioneer of the Bengali Film Production world for bringing in superior technical workmanship, launching new talent and availing the best labs in the country for post-production. Known for his stellar creative skills for rich and unique content creation, which resonates with the new age requirements as well as Indian ethos.</p>
+            </div>
+            <button class="bio-toggle" aria-expanded="false">Read more <span class="arr">↓</span></button>
+          </div>
         </div>
         <div class="leader-card reveal d2">
           <div class="leader-photo">
             <img class="leader-img" src="assets/leaders/mahendra-soni.png" alt="Mahendra Soni" onerror="this.classList.add('hide')">
             <svg class="avatar-ph" viewBox="0 0 120 132" aria-hidden="true"><circle cx="60" cy="44" r="25"/><path d="M12 132c0-31 96-31 96 0Z"/></svg>
           </div>
-          <div class="leader-body"><h4>Mahendra Soni</h4><div class="subrole">Co-founder, SVF</div>
-            <p>Heads SVF's Films, Television, Distribution, Cinemas &amp; Music. Distributed nearly 900 films, built leading TV channels delivering 5,000+ hours of content. Active in EIMPA, KIFF &amp; WBIDC.</p></div>
+          <div class="leader-body"><h4>Mahendra Soni</h4><div class="subrole">Co-founder, SVF &amp; hoichoi</div>
+            <p class="bio-preview">Heads the Films, Television, Distribution, Cinemas and Music businesses of SVF. His contributions to Cinemas has made SVF nationally recognizable, and under his leadership, SVF has distributed almost 900 films.</p>
+            <div class="bio-full">
+              <p>Mahendra Soni heads the Films, Television, Distribution, Cinemas and Music businesses of SVF. His contributions to Cinemas has made SVF nationally recognizable. Under his leadership, SVF has distributed almost 900 films.</p>
+              <p>On the Television front, he has turned Music India, Sangeet Bangla and Sangeet Bhojpuri into leading Channels within their respective segments and has led the reach out of over 5000 hours of TV content – 10000 Episodes to many households.</p>
+              <p>An active member of Eastern India Motion Pictures Association (EIMPA), Kolkata International Film Festival (KIFF) and West Bengal Industrial Development Corporation (WBIDC). Mahendra also drives satellite and music syndication deals, along with film acquisitions thus playing a significant business role.</p>
+              <p>He is also the Co-Founder of Music Network India (MNI) and Director at Collective Artists Network.</p>
+            </div>
+            <button class="bio-toggle" aria-expanded="false">Read more <span class="arr">↓</span></button>
+          </div>
         </div>
         <div class="leader-card reveal d3">
           <div class="leader-photo">
@@ -277,7 +289,14 @@
             <svg class="avatar-ph" viewBox="0 0 120 132" aria-hidden="true"><circle cx="60" cy="44" r="25"/><path d="M12 132c0-31 96-31 96 0Z"/></svg>
           </div>
           <div class="leader-body"><h4>Vishnu Mohta</h4><div class="subrole">Co-Founder, hoichoi · Founder, LoglineAI</div>
-            <p>Grew SVF's Digital Cinema into WB's largest &amp; India's 4th-largest network within a year, then launched hoichoi. Member of EO, TiE &amp; Beta Gamma Sigma.</p></div>
+            <p class="bio-preview">Started with SVF as head of the Digital Cinema business and soon made it the largest player in West Bengal and fourth-largest network in India within a year of operations.</p>
+            <div class="bio-full">
+              <p>Vishnu Mohta started with SVF as the head of the Digital Cinema business and soon went ahead to make it the largest player in West Bengal and fourth-largest network in India within a year of operations.</p>
+              <p>Currently, he heads the New Media division &amp; launched its first venture, hoichoi, the one-stop destination for Bengali entertainment targeting worldwide.</p>
+              <p>Vishnu is a member of various prestigious organizations including Entrepreneurs Organization (EO), The Indus Entrepreneurs (TiE) Beta Gamma Sigma (BGS), a society of top 10% students from the best B schools of the world.</p>
+            </div>
+            <button class="bio-toggle" aria-expanded="false">Read more <span class="arr">↓</span></button>
+          </div>
         </div>
       </div>
     </div>
@@ -308,8 +327,7 @@
       </div>
 
       <div class="hoyejak-banner reveal">
-        <div class="tag">#hoyejak</div>
-        <p>Our rallying cry — let's make it happen</p>
+        <div class="boldly-tag"><span class="bl-en">#Boldly</span><span class="bl-bn">বাঙালি</span></div>
       </div>
 
       <div class="vm-grid">
@@ -405,11 +423,11 @@
     <div class="wrap">
       <span class="eyebrow reveal">Employee Onboarding</span>
       <h2 class="sec-title reveal">Your first <span class="hl">90 days</span>.</h2>
-      <p class="sec-sub reveal">A guided journey from Day 0 to Month 3 — click through each stage.</p>
+      <p class="sec-sub reveal">A guided journey from Day 1 to Month 3 — click through each stage.</p>
 
       <div class="journey-tabs reveal">
-        <button class="jtab active" data-j="j0">Day 0</button>
-        <button class="jtab" data-j="j1">Day 1</button>
+        <button class="jtab active" data-j="j0">Day 1</button>
+        <button class="jtab" data-j="j1">Day 2</button>
         <button class="jtab" data-j="jw">Week 1</button>
         <button class="jtab" data-j="jm1">Month 1</button>
         <button class="jtab" data-j="jm23">Month 2 &amp; 3</button>
@@ -425,7 +443,7 @@
 
       <div class="jpanel" id="j1">
         <div class="jcards">
-          <div class="jcard"><div class="step">Formalities</div><h4>Documentation</h4><p>Submit signed offer letter &amp; other required documents on Day 1 of joining.</p></div>
+          <div class="jcard"><div class="step">Formalities</div><h4>Documentation</h4><p>Submit signed offer letter &amp; other required documents on Day 2 of joining.</p></div>
           <div class="jcard"><div class="step">Setup</div><h4>Asset Allocation</h4><p>Working laptop provided · accessories &amp; tools as per role.</p></div>
           <div class="jcard"><div class="step">Access</div><h4>Email &amp; Software</h4><p>Microsoft Outlook ID activated · inclusion in distribution groups/teams.</p></div>
           <div class="jcard"><div class="step">People</div><h4>Meet Your Team</h4><p>Connect with your reporting manager &amp; team members.</p></div>
@@ -517,11 +535,11 @@
         <div class="org-top"><div class="org-node">hoichoi</div></div>
         <div class="org-connector"></div>
         <div class="org-row">
-          <span class="org-chip">Strategy &amp; Revenue</span><span class="org-chip">Tech &amp; Product</span><span class="org-chip">Content</span>
-          <span class="org-chip">Content Marketing &amp; Discovery</span><span class="org-chip">Audio Visual</span><span class="org-chip">Creative – Graphics</span>
-          <span class="org-chip">Growth</span><span class="org-chip">Brand Strategy</span><span class="org-chip">Customer Support</span>
-          <span class="org-chip">Post Production</span><span class="org-chip">Accounts &amp; Finance</span><span class="org-chip">Audio Stories</span>
-          <span class="org-chip">Legal</span><span class="org-chip">Human Resources</span><span class="org-chip">Bangladesh</span><span class="org-chip">Sooper</span>
+          <span class="org-chip">Strategy &amp; Revenue</span><span class="org-chip">Product</span><span class="org-chip">Customer Support</span><span class="org-chip">Tech &amp; Engineering</span>
+          <span class="org-chip">Content Marketing &amp; Discovery</span><span class="org-chip">Brand &amp; Social</span><span class="org-chip">Partnerships</span>
+          <span class="org-chip">Growth, Retention &amp; Performance</span><span class="org-chip">Post Production</span><span class="org-chip">Content</span>
+          <span class="org-chip">Finance</span><span class="org-chip">HR</span><span class="org-chip">Sooper</span>
+          <span class="org-chip">Audio / FM</span><span class="org-chip">LoglineAI</span><span class="org-chip">Bangladesh</span><span class="org-chip">Legal</span>
         </div>
       </div>
 
@@ -530,21 +548,23 @@
         <div class="row-nav"><button data-car="teamCar" data-dir="-1">‹</button><button data-car="teamCar" data-dir="1">›</button></div>
       </div>
       <div class="carousel" id="teamCar">
-        <div class="team-card"><div class="dept">Strategy &amp; Revenue</div><ul><li>Plans business strategy &amp; monitors revenue and monetization streams</li><li>Aligns business decisions with growth objectives alongside leadership</li></ul><div class="head"><div class="hn">Soumya Mukherjee</div><div class="hr">Chief Operating Officer</div><div class="he">soumya.mukherjee@svf.in</div></div></div>
-        <div class="team-card"><div class="dept">Tech &amp; Product</div><ul><li>Builds &amp; improves the hoichoi app &amp; website across platforms</li><li>Ensures platform stability, UX &amp; feature implementation</li></ul><div class="head"><div class="hn">Aloke Majumder</div><div class="hr">VP – Tech</div><div class="he">aloke@hoichoi.tv</div></div></div>
-        <div class="team-card"><div class="dept">Content</div><ul><li>Curation, development &amp; commissioning of originals</li><li>Works with creators to deliver web series, films &amp; specials</li></ul><div class="head"><div class="hn">Sera Banerjee</div><div class="hr">GM – Content (Web)</div><div class="he">sera.banerjee@svf.in</div></div></div>
-        <div class="team-card"><div class="dept">Content Marketing &amp; Discovery</div><ul><li>Promotes releases &amp; ensures discoverability</li><li>Drives viewership via targeted digital strategies</li></ul><div class="head"><div class="hn">Salankara Biswas</div><div class="hr">GM – Content Marketing</div><div class="he">salankara.biswas@hoichoi.tv</div></div></div>
-        <div class="team-card"><div class="dept">Audio Visual</div><ul><li>Produces trailers, teasers &amp; promo videos</li><li>Supports video-based marketing assets</li></ul><div class="head"><div class="hn">Mandar Banerjee</div><div class="hr">Audio Visual Head</div><div class="he">mandar.banerjee@hoichoi.tv</div></div></div>
-        <div class="team-card"><div class="dept">Creative – Graphics</div><ul><li>Designs static creatives for shows &amp; social</li><li>Ensures visual consistency across posters, banners &amp; ads</li></ul><div class="head"><div class="hn">Debojyoti Sarkar</div><div class="hr">Creative Head</div><div class="he">debojyoti.sarkar@hoichoi.tv</div></div></div>
-        <div class="team-card"><div class="dept">Growth</div><ul><li>Manages acquisition, subscriptions &amp; retention</li><li>Grows the user base via digital campaigns &amp; insights</li></ul><div class="head"><div class="hn">Swarnendu Mondal</div><div class="hr">Head of Growth</div><div class="he">swarnendu.mondal@hoichoi.tv</div></div></div>
-        <div class="team-card"><div class="dept">Brand Strategy</div><ul><li>Defines brand positioning &amp; consistency</li><li>Executes branded content partnerships &amp; co-branded initiatives</li></ul><div class="head"><div class="hn">Sayantan Guha</div><div class="hr">GM – Brand Strategy</div><div class="he">sayantan.guha@hoichoi.tv</div></div></div>
-        <div class="team-card"><div class="dept">Customer Support</div><ul><li>Handles queries, complaints &amp; feedback</li><li>Supports account, payment &amp; content access issues</li></ul><div class="head"><div class="hn">Sayantan Raha</div><div class="hr">Manager – Customer Experience</div><div class="he">sayantan.raha@hoichoi.tv</div></div></div>
-        <div class="team-card"><div class="dept">Post Production</div><ul><li>Oversees editing, finishing &amp; delivery pipelines</li><li>Ensures technical quality across releases</li></ul><div class="head"><div class="hn">Rajib Biswas</div><div class="hr">VP – Post Production</div><div class="he">rajib@svf.in</div></div></div>
-        <div class="team-card"><div class="dept">Accounts &amp; Finance</div><ul><li>Budgets, payments, accounting, settlements &amp; audits</li><li>Financial planning &amp; reporting support</li></ul><div class="head"><div class="hn">Madhulata Agarwal</div><div class="hr">Senior Manager – Accounts</div><div class="he">madhulata.agarwal@svf.in</div></div></div>
-        <div class="team-card"><div class="dept">Audio Stories</div><ul><li>Produces audio-first fiction episodic storytelling</li><li>Scripting, voice recording, sound design &amp; publishing</li></ul><div class="head"><div class="hn">Adhidev Mukherjee</div><div class="hr">Content Head – New Formats</div><div class="he">adhidev.mukherjee@hoichoi.tv</div></div></div>
-        <div class="team-card"><div class="dept">Legal</div><ul><li>Manages contracts, IP rights &amp; content agreements</li><li>Ensures regulatory &amp; legal compliance</li></ul><div class="head"><div class="hn">Preeti Gandhi</div><div class="hr">Head of Legal Affairs</div><div class="he">preeti@svf.in</div></div></div>
-        <div class="team-card"><div class="dept">Human Resources</div><ul><li>Recruitment, onboarding &amp; employee engagement</li><li>Admin: facilities, workplace services &amp; travel</li></ul><div class="head"><div class="hn">Sushim Dutta</div><div class="hr">Human Resources</div><div class="he">sushim.dutta@hoichoi.tv</div></div></div>
-        <div class="team-card"><div class="dept">Bangladesh Team</div><ul><li>Supports operations, production &amp; engagement in Bangladesh</li><li>Localizes strategies &amp; manages regional partnerships</li></ul><div class="head"><div class="hn">Sakib R Khan</div><div class="hr">Country Director – Bangladesh</div><div class="he">sakib@hoichoi.tv</div></div></div>
+        <div class="team-card"><div class="dept">Strategy &amp; Revenue</div><ul><li>Plans business strategy &amp; monitors revenue and monetization streams</li><li>Aligns business decisions with growth objectives alongside leadership</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/soumya-mukherjee.png" alt="Soumya Mukherjee" onerror="this.classList.add('hide')"><span class="initials">SM</span></div><div class="head-info"><div class="hn">Soumya Mukherjee</div><div class="hr">Chief Operating Officer</div></div></div></div>
+        <div class="team-card"><div class="dept">Product</div><ul><li>Owns the hoichoi product roadmap &amp; user experience across platforms</li><li>Prioritises features &amp; improvements around user and business needs</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/moloy-karmakar.jpg" alt="Moloy Karmkar" onerror="this.classList.add('hide')"><span class="initials">MK</span></div><div class="head-info"><div class="hn">Moloy Karmkar</div><div class="hr">GM – Product Operations</div></div></div></div>
+        <div class="team-card"><div class="dept">Customer Support</div><ul><li>Handles user queries, complaints &amp; feedback across channels</li><li>Supports account, payment &amp; content-access issues in a timely manner</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sayantan-raha.png" alt="Sayantan Raha" onerror="this.classList.add('hide')"><span class="initials">SR</span></div><div class="head-info"><div class="hn">Sayantan Raha</div><div class="hr">Manager – Customer Experience &amp; Quality Control</div></div></div></div>
+        <div class="team-card"><div class="dept">Tech &amp; Engineering</div><ul><li>Builds &amp; maintains the hoichoi app, website &amp; streaming infrastructure</li><li>Ensures platform stability, performance &amp; secure delivery</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/shabinder-singh.jpeg" alt="Shabinder Singh" onerror="this.classList.add('hide')"><span class="initials">SS</span></div><div class="head-info"><div class="hn">Shabinder Singh</div><div class="hr">Principal Engineer</div></div></div></div>
+        <div class="team-card"><div class="dept">Content Marketing &amp; Discovery</div><ul><li>Promotes new releases &amp; ensures discoverability on-platform &amp; externally</li><li>Drives viewership through targeted digital marketing</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/salankara-biswas.png" alt="Salankara Biswas" onerror="this.classList.add('hide')"><span class="initials">SB</span></div><div class="head-info"><div class="hn">Salankara Biswas</div><div class="hr">GM – Content Marketing &amp; Discovery</div></div></div></div>
+        <div class="team-card"><div class="dept">Brand &amp; Social</div><ul><li>Defines brand positioning &amp; consistency across communication</li><li>Runs social media, campaigns &amp; community engagement</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sayantan-guha.png" alt="Sayantan Guha" onerror="this.classList.add('hide')"><span class="initials">SG</span></div><div class="head-info"><div class="hn">Sayantan Guha</div><div class="hr">GM – Brand Strategy</div></div></div></div>
+        <div class="team-card"><div class="dept">Partnerships</div><ul><li>Builds branded-content deals &amp; co-branded initiatives</li><li>Manages relationships with brand &amp; distribution partners</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/shreya-kaushik.jpg" alt="Shreya Kaushik" onerror="this.classList.add('hide')"><span class="initials">SK</span></div><div class="head-info"><div class="hn">Shreya Kaushik</div><div class="hr">Sr. Manager – Brand Alliances &amp; Partnerships</div></div></div></div>
+        <div class="team-card"><div class="dept">Growth, Retention &amp; Performance</div><ul><li>Drives acquisition, subscriptions &amp; retention</li><li>Runs performance marketing &amp; growth experiments</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/gunturu-sai-avinash.png" alt="Gunturu Sai Avinash" onerror="this.classList.add('hide')"><span class="initials">GA</span></div><div class="head-info"><div class="hn">Gunturu Sai Avinash</div><div class="hr">Sr. Manager – Growth</div></div></div></div>
+        <div class="team-card"><div class="dept">Post Production</div><ul><li>Oversees editing, finishing &amp; delivery pipelines</li><li>Ensures technical quality across every release</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/rajib-biswas.png" alt="Rajib Biswas" onerror="this.classList.add('hide')"><span class="initials">RB</span></div><div class="head-info"><div class="hn">Rajib Biswas</div><div class="hr">VP – Post Production</div></div></div></div>
+        <div class="team-card"><div class="dept">Content</div><ul><li>Curation, development &amp; commissioning of originals</li><li>Works with creators to deliver web series, films &amp; specials</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sera-banerjee.png" alt="Sera Banerjee" onerror="this.classList.add('hide')"><span class="initials">SB</span></div><div class="head-info"><div class="hn">Sera Banerjee</div><div class="hr">Content Head, hoichoi · AVP – Content</div></div></div></div>
+        <div class="team-card"><div class="dept">Finance</div><ul><li>Oversees budgets, payments, accounting &amp; settlements</li><li>Supports the business with financial planning &amp; reporting</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/abhishek-jhunjhunwala.jpg" alt="Abhishek Jhunjhunwala" onerror="this.classList.add('hide')"><span class="initials">AJ</span></div><div class="head-info"><div class="hn">Abhishek Jhunjhunwala</div><div class="hr">AVP – Finance</div></div></div></div>
+        <div class="team-card"><div class="dept">HR</div><ul><li>Recruitment, onboarding, engagement &amp; HR operations</li><li>Workplace services, facilities &amp; people support</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sushim-dutta.png" alt="Sushim Dutta" onerror="this.classList.add('hide')"><span class="initials">SD</span></div><div class="head-info"><div class="hn">Sushim Dutta</div><div class="hr">Manager – Talent Acquisition &amp; People Operations</div><div class="hn">Shirin Gupta</div><div class="hr">Head – Talent Acquisition</div></div></div></div>
+        <div class="team-card"><div class="dept">Sooper</div><ul><li>Leads the Sooper micro-drama &amp; short-form platform</li><li>Drives content strategy for the scroll-first audience</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sambbhav-khettrapal.jpg" alt="Sambbhav Khettrapal" onerror="this.classList.add('hide')"><span class="initials">SK</span></div><div class="head-info"><div class="hn">Sambbhav Khettrapal</div><div class="hr">Head – Content (Fiction) · Head of Content, Sooper (Micro-Dramas)</div></div></div></div>
+        <div class="team-card"><div class="dept">Audio / FM</div><ul><li>Produces audio-first storytelling &amp; episodic fiction</li><li>Programmes hoichoi FM — scripting, voice &amp; sound design</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/adhidev-mukherjee.png" alt="Adhidev Mukherjee" onerror="this.classList.add('hide')"><span class="initials">AM</span></div><div class="head-info"><div class="hn">Adhidev Mukherjee</div><div class="hr">Content Head – New Formats</div></div></div></div>
+        <div class="team-card"><div class="dept">LoglineAI</div><ul><li>Leads the AI-native creative studio</li><li>Delivers AI-assisted visuals, animation &amp; production-ready content</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/mandar-banerjee.png" alt="Mandar Banerjee" onerror="this.classList.add('hide')"><span class="initials">MB</span></div><div class="head-info"><div class="hn">Mandar Banerjee</div><div class="hr">Head – Creative AI Productions</div></div></div></div>
+        <div class="team-card"><div class="dept">Bangladesh</div><ul><li>Supports operations, production &amp; engagement in Bangladesh</li><li>Localizes strategies &amp; manages regional partnerships</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sakib-r-khan.jpg" alt="Sakib R Khan" onerror="this.classList.add('hide')"><span class="initials">SK</span></div><div class="head-info"><div class="hn">Sakib R Khan</div><div class="hr">Business Lead – Bangladesh</div></div></div></div>
+        <div class="team-card"><div class="dept">Legal</div><ul><li>Manages contracts, IP rights &amp; content agreements</li><li>Ensures regulatory &amp; legal compliance across operations</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/preeti-gandhi.png" alt="Preeti Gandhi" onerror="this.classList.add('hide')"><span class="initials">PG</span></div><div class="head-info"><div class="hn">Preeti Gandhi</div><div class="hr">Legal Consultant</div></div></div></div>
       </div>
     </div>
   </section>

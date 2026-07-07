@@ -3,3 +3,22 @@ Onboarding Website.zip
 node_modules/
 .DS_Store
 site/assets/card-bgs/Screenshot 2026-07-07 133148.png
+
+# unused originals — site references the slugified copies instead
+site/assets/team/Abhisekh Jhunjhunwala.jpg
+site/assets/team/Adhidev Mukherjee.png
+site/assets/team/Gunturu Sai Avinash.png
+site/assets/team/Mandar Banerjee.png
+site/assets/team/Moloy Karmakar.jpg
+site/assets/team/Preeti Gandhi.png
+site/assets/team/Rajib Biswas.png
+site/assets/team/Sakib R Khan.jpg
+site/assets/team/Salankara Biswas.png
+site/assets/team/Sambhav.jpg
+site/assets/team/Sayantan Guha.png
+site/assets/team/Sayantan Raha.png
+site/assets/team/Sera Banerjee.png
+site/assets/team/Shabinder Singh.jpeg
+site/assets/team/Shreya Kaushik.jpg
+site/assets/team/Soumya Mukherjee.png
+site/assets/team/Sushim Dutta.png

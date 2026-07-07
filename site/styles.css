@@ -2,7 +2,7 @@
    hoichoi · Employee Onboarding — cinematic OTT experience
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700;800&family=Bebas+Neue&family=Baloo+2:wght@700;800&family=Baloo+Da+2:wght@700;800&display=swap');
 
 :root {
   /* structural (theme-independent) */
@@ -416,6 +416,18 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
 .leader-body h4 { font-size:1.3rem; }
 .leader-body .subrole { color:var(--gold); font-size:.82rem; margin-bottom:12px; }
 .leader-body p { color:var(--muted); font-size:.82rem; }
+.bio-preview { margin-bottom:0; }
+.leader-card.expanded .bio-preview { display:none; }
+.bio-full { max-height:0; overflow:hidden; transition:max-height .6s var(--ease), opacity .5s var(--ease); opacity:.4; }
+.bio-full p { margin-bottom:12px; }
+.bio-full p:last-child { margin-bottom:0; }
+.leader-card.expanded .bio-full { opacity:1; }
+.bio-toggle {
+  display:inline-flex; align-items:center; gap:6px; margin-top:12px; padding:0; border:0; background:none;
+  color:var(--red); font-weight:600; font-size:.78rem; cursor:pointer; letter-spacing:.02em;
+}
+.bio-toggle .arr { transition:transform .3s var(--ease); font-size:.8em; }
+.leader-card.expanded .bio-toggle .arr { transform:rotate(180deg); }
 
 /* team cards */
 .team-card {
@@ -428,10 +440,25 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
 .team-card ul { list-style:none; display:flex; flex-direction:column; gap:8px; margin-bottom:auto; }
 .team-card ul li { font-size:.82rem; color:var(--muted); padding-left:16px; position:relative; }
 .team-card ul li::before { content:'▹'; position:absolute; left:0; color:var(--red); }
-.team-card .head { margin-top:18px; padding-top:16px; border-top:1px solid var(--panel-brd); }
+.team-card .head { display:flex; align-items:center; gap:12px; margin-top:18px; padding-top:16px; border-top:1px solid var(--panel-brd); }
+.head-avatar {
+  width:52px; height:52px; border-radius:50%; overflow:hidden; flex-shrink:0;
+  background:var(--panel); border:1px solid var(--panel-brd);
+}
+.head-avatar img { width:100%; height:100%; object-fit:cover; object-position:center 18%; display:block; }
+.head-avatar .initials {
+  width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+  font-family:'Anton'; font-size:1.1rem; color:rgba(var(--surface-rgb),.4);
+}
+.head-avatar img.hide { display:none; }
+.head-avatar:has(img.hide) .initials { display:flex; }
+.head-avatar:has(img:not(.hide)) .initials { display:none; }
+.head-info { flex:1; min-width:0; }
 .team-card .head .hn { font-weight:700; font-size:.95rem; }
 .team-card .head .hr { color:var(--gold); font-size:.76rem; }
 .team-card .head .he { color:var(--muted-2); font-size:.72rem; }
+.team-card .head .hn + .hn { margin-top:8px; }
+.team-card .head .hr + .hn { margin-top:8px; }
 
 /* ============================================================
    VALUES flip cards + vision/mission
@@ -442,20 +469,27 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
 .flip:hover .flip-in { transform:rotateY(180deg); }
 .flip-face {
   position:absolute; inset:0; backface-visibility:hidden; border-radius:20px; padding:28px;
-  display:flex; flex-direction:column; justify-content:center; border:1px solid var(--panel-brd);
+  display:flex; flex-direction:column; justify-content:flex-start; border:1px solid var(--panel-brd);
 }
 .flip-front { background:linear-gradient(160deg,var(--bg-2),var(--bg-3)); }
-.flip-front .ico { font-size:2.4rem; margin-bottom:14px; }
-.flip-front h4 { font-size:1.35rem; }
+.flip-front .ico { font-size:2.4rem; height:2.4rem; margin-bottom:14px; line-height:1; }
+.flip-front h4 { font-size:1.35rem; line-height:1.3; min-height:2.6em; display:flex; align-items:flex-start; }
 .flip-back { background:var(--grad); transform:rotateY(180deg); color:var(--on-accent); }
 .flip-back p { font-size:.9rem; }
 
 .hoyejak-banner {
-  margin-top:40px; text-align:center; padding:44px 20px; border-radius:24px;
-  background:radial-gradient(circle at 50% 50%,rgba(var(--accent-rgb),.16),transparent 70%); border:1px dashed rgba(var(--accent-rgb),.4);
+  margin-top:40px; text-align:center; padding:56px 20px; border-radius:24px;
+  background:linear-gradient(135deg,var(--red-deep),var(--red) 55%,var(--red-2)); overflow:hidden; position:relative;
 }
-.hoyejak-banner .tag { font-family:'Anton'; font-size:clamp(2.5rem,8vw,5rem); color:var(--red); }
-.hoyejak-banner p { color:var(--muted); letter-spacing:.2em; text-transform:uppercase; font-size:.8rem; }
+.boldly-tag { display:inline-flex; flex-direction:column; align-items:center; line-height:.92; }
+.boldly-tag .bl-en {
+  font-family:'Baloo 2',sans-serif; font-weight:800; font-size:clamp(2.2rem,7vw,4.4rem);
+  color:var(--on-accent); letter-spacing:.01em; position:relative; z-index:1;
+}
+.boldly-tag .bl-bn {
+  font-family:'Baloo Da 2',sans-serif; font-weight:800; font-size:clamp(2.6rem,8.4vw,5.2rem);
+  color:var(--on-accent); margin-top:-.08em;
+}
 
 .vm-grid { display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:40px; }
 .vm-card { padding:40px; border-radius:22px; border:1px solid var(--panel-brd); background:linear-gradient(160deg,var(--bg-2),var(--bg)); position:relative; overflow:hidden; }
@@ -659,11 +693,14 @@ body.cursor-on a, body.cursor-on button, body.cursor-on .jtab, body.cursor-on .a
 
 /* floating hero decor */
 .hero-decor { position:absolute; inset:0; z-index:1; pointer-events:none; }
+.reel-wrap { position:absolute; will-change:transform; }
+.reel-wrap-1 { top:16%; right:6%; width:120px; height:120px; }
+.reel-wrap-2 { top:auto; bottom:14%; left:5%; width:80px; height:80px; }
 .reel {
-  position:absolute; top:16%; right:6%; width:120px; height:120px; opacity:.5;
+  display:block; width:100%; height:100%; opacity:.5;
   animation:spin 18s linear infinite;
 }
-.reel-2 { top:auto; bottom:14%; left:5%; width:80px; height:80px; opacity:.35; animation-duration:26s; animation-direction:reverse; }
+.reel-2 { opacity:.35; animation-duration:26s; animation-direction:reverse; }
 @keyframes spin { to{ transform:rotate(360deg); } }
 .float-play {
   position:absolute; width:44px; height:44px; border-radius:50%; border:1px solid rgba(var(--surface-rgb),.18);
@@ -691,6 +728,20 @@ body.cursor-on a, body.cursor-on button, body.cursor-on .jtab, body.cursor-on .a
 .marquee-track .m .sep { color:var(--red); margin-left:52px; font-size:1.1rem; }
 .marquee-track .m.ghost { color:transparent; -webkit-text-stroke:1px rgba(var(--surface-rgb),.22); }
 @keyframes scrollX { to{ transform:translateX(-50%); } }
+
+/* brand-partner logo marquee — same ticker shell, logos instead of text */
+.marquee-logos .marquee-track { animation-duration:52s; align-items:center; }
+.marquee-track .m-logo { display:inline-flex; align-items:center; padding:0 34px; flex-shrink:0; }
+.marquee-track .m-logo img {
+  height:30px; width:auto; max-width:120px; object-fit:contain; display:block;
+  filter:brightness(0) invert(1); opacity:.5; transition:opacity .35s var(--ease), filter .35s var(--ease);
+}
+.marquee-logos:hover .m-logo img { opacity:.5; }
+.marquee-track .m-logo:hover img { opacity:1; filter:none; }
+.marquee-track .m-logo .sep { color:var(--red); margin-left:34px; font-size:1.1rem; flex-shrink:0; }
+/* light theme (sooper): invert direction so logos read dark instead of white */
+[data-theme="sooper"] .marquee-track .m-logo img { filter:brightness(0); opacity:.42; }
+[data-theme="sooper"] .marquee-track .m-logo:hover img { opacity:1; filter:none; }
 
 /* animated gradient text accent */
 .grad {
@@ -867,33 +918,9 @@ body.touring #tourBar { opacity:1; visibility:visible; transform:translateX(-50%
 /* ---------- highlight helper (solid accent by default) ---------- */
 .hl { color:var(--red); }
 
-/* ---------- partner wall (Strong Partners, Stronger Outcomes) ---------- */
-.logo-wall {
-  position:relative; left:50%; transform:translateX(-50%); width:100vw; margin-top:54px;
-  display:flex; flex-direction:column; gap:18px;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
-          mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
-}
-.logo-row { overflow:hidden; }
-.logo-track { display:flex; gap:16px; width:max-content; animation:scrollX 46s linear infinite; will-change:transform; }
-.logo-row.rev .logo-track { animation-direction:reverse; }
-.logo-wall:hover .logo-track { animation-play-state:paused; }
-.brand-chip {
-  flex:0 0 auto; display:flex; align-items:center; justify-content:center;
-  min-width:158px; height:76px; padding:0 28px; border:1px solid var(--panel-brd);
-  border-radius:16px; background:var(--panel); color:var(--muted);
-  font-weight:600; font-size:1.02rem; letter-spacing:.01em; white-space:nowrap;
-  transition:.3s var(--ease); cursor:default;
-}
-.brand-chip:hover {
-  color:var(--hi); border-color:var(--red); background:rgba(var(--accent-rgb),.07);
-  transform:translateY(-5px); box-shadow:0 14px 32px -14px rgba(var(--accent-rgb),.7);
-}
-@media (max-width:600px){ .brand-chip { min-width:128px; height:64px; font-size:.9rem; padding:0 20px; } }
 @media (prefers-reduced-motion:reduce){
-  .logo-track { animation:none !important; flex-wrap:wrap; justify-content:center; width:auto; }
-  .logo-row { overflow:visible; }
-  .logo-wall { width:100%; left:auto; transform:none; -webkit-mask-image:none; mask-image:none; }
+  .marquee-logos .marquee-track { animation:none !important; flex-wrap:wrap; justify-content:center; width:auto; }
+  .marquee-logos { -webkit-mask-image:none; mask-image:none; }
 }
 
 /* ============================================================
@@ -912,7 +939,6 @@ html:not([data-theme]) .stat .num .suf,
 html:not([data-theme]) .tl-item.reached .tl-year,
 html:not([data-theme]) .team-card .dept,
 html:not([data-theme]) .team-card ul li::before,
-html:not([data-theme]) .hoyejak-banner .tag,
 html:not([data-theme]) .vm-card .lbl,
 html:not([data-theme]) .info-card ul li::before,
 html:not([data-theme]) .info-card .big .u,
@@ -967,7 +993,7 @@ html:not([data-theme]) .logo-logline,
 .logo-sooper { width:210px; height:58px; max-width:none; object-fit:cover; object-position:center; }
 
 /* ---------- leadership: aligned 3-up grid + photo placeholders ---------- */
-.leader-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; align-items:stretch; }
+.leader-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; align-items:start; }
 .leader-grid .leader-card { flex:none; width:auto; min-height:0; }
 @media (max-width:900px){ .leader-grid { grid-template-columns:1fr; max-width:420px; margin:0 auto; } }
 
