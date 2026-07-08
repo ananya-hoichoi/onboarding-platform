@@ -11,6 +11,7 @@
     (function () {
       try {
         var t = localStorage.getItem('hoichoi-vertical') || 'hoichoi';
+        if (t === 'logline') { window.location.replace('logline.html'); return; }
         if (t !== 'hoichoi') document.documentElement.setAttribute('data-theme', t);
       } catch (e) {}
     })();
@@ -264,7 +265,7 @@
               <p>Shrikant Mohta, the creative muscle of SVF Entertainment &amp; hoichoi, has over 110 SVF film productions to his credit including 7 National Award &amp; various blockbusters of the last two decades.</p>
               <p>He is celebrated as the pioneer of the Bengali Film Production world for bringing in superior technical workmanship, launching new talent and availing the best labs in the country for post-production. Known for his stellar creative skills for rich and unique content creation, which resonates with the new age requirements as well as Indian ethos.</p>
             </div>
-            <button class="bio-toggle" aria-expanded="false">Read more <span class="arr">↓</span></button>
+            <button class="bio-toggle">View full profile <span class="arr">→</span></button>
           </div>
         </div>
         <div class="leader-card reveal d2">
@@ -280,7 +281,7 @@
               <p>An active member of Eastern India Motion Pictures Association (EIMPA), Kolkata International Film Festival (KIFF) and West Bengal Industrial Development Corporation (WBIDC). Mahendra also drives satellite and music syndication deals, along with film acquisitions thus playing a significant business role.</p>
               <p>He is also the Co-Founder of Music Network India (MNI) and Director at Collective Artists Network.</p>
             </div>
-            <button class="bio-toggle" aria-expanded="false">Read more <span class="arr">↓</span></button>
+            <button class="bio-toggle">View full profile <span class="arr">→</span></button>
           </div>
         </div>
         <div class="leader-card reveal d3">
@@ -295,7 +296,7 @@
               <p>Currently, he heads the New Media division &amp; launched its first venture, hoichoi, the one-stop destination for Bengali entertainment targeting worldwide.</p>
               <p>Vishnu is a member of various prestigious organizations including Entrepreneurs Organization (EO), The Indus Entrepreneurs (TiE) Beta Gamma Sigma (BGS), a society of top 10% students from the best B schools of the world.</p>
             </div>
-            <button class="bio-toggle" aria-expanded="false">Read more <span class="arr">↓</span></button>
+            <button class="bio-toggle">View full profile <span class="arr">→</span></button>
           </div>
         </div>
       </div>
@@ -435,9 +436,9 @@
 
       <div class="jpanel active" id="j0">
         <div class="jcards">
-          <div class="jcard"><div class="step">Course 01</div><h4>Complete Claude 101</h4><p>Your first step into working with Claude, Anthropic's AI assistant. Learn what Claude is, how to start a conversation, and how to write clear, effective prompts. Covers the essentials of everyday use — asking questions, summarising, drafting and iterating — so you can put AI to work from day one.</p></div>
-          <div class="jcard"><div class="step">Course 02</div><h4>Introduction to Claude &amp; Cowork</h4><p>Go beyond the basics into collaborative, agentic workflows. Understand how Cowork lets Claude take on multi-step tasks, work alongside your team and plug into the tools you already use — turning Claude from a chatbot into a genuine working partner across your day-to-day projects.</p></div>
-          <div class="jcard"><div class="step">Course 03</div><h4>AI Capabilities &amp; Limitations</h4><p>Build sound judgement for using AI responsibly. Learn what today's models do well, where they fall short, and how to spot &amp; guard against issues like hallucinations and bias. Covers verifying outputs, protecting confidential data, and knowing when a human must stay in the loop.</p></div>
+          <div class="jcard"><div class="step">Course 01</div><h4>Complete Claude 101</h4><p>Your first step into working with Claude, Anthropic's AI assistant. Learn what Claude is, how to start a conversation, and how to write clear, effective prompts. Covers the essentials of everyday use — asking questions, summarising, drafting and iterating — so you can put AI to work from day one.</p><a class="jcard-link" href="https://anthropic.skilljar.com/claude-101" target="_blank" rel="noopener noreferrer">Go to course <span class="arr">↗</span></a></div>
+          <div class="jcard"><div class="step">Course 02</div><h4>Introduction to Claude &amp; Cowork</h4><p>Go beyond the basics into collaborative, agentic workflows. Understand how Cowork lets Claude take on multi-step tasks, work alongside your team and plug into the tools you already use — turning Claude from a chatbot into a genuine working partner across your day-to-day projects.</p><a class="jcard-link" href="https://anthropic.skilljar.com/introduction-to-claude-cowork" target="_blank" rel="noopener noreferrer">Go to course <span class="arr">↗</span></a></div>
+          <div class="jcard"><div class="step">Course 03</div><h4>AI Capabilities &amp; Limitations</h4><p>Build sound judgement for using AI responsibly. Learn what today's models do well, where they fall short, and how to spot &amp; guard against issues like hallucinations and bias. Covers verifying outputs, protecting confidential data, and knowing when a human must stay in the loop.</p><a class="jcard-link" href="https://anthropic.skilljar.com/ai-capabilities-and-limitations" target="_blank" rel="noopener noreferrer">Go to course <span class="arr">↗</span></a></div>
         </div>
       </div>
 
@@ -538,7 +539,7 @@
           <span class="org-chip">Strategy &amp; Revenue</span><span class="org-chip">Product</span><span class="org-chip">Customer Support</span><span class="org-chip">Tech &amp; Engineering</span>
           <span class="org-chip">Content Marketing &amp; Discovery</span><span class="org-chip">Brand &amp; Social</span><span class="org-chip">Partnerships</span>
           <span class="org-chip">Growth, Retention &amp; Performance</span><span class="org-chip">Post Production</span><span class="org-chip">Content</span>
-          <span class="org-chip">Finance</span><span class="org-chip">HR</span><span class="org-chip">Sooper</span>
+          <span class="org-chip">Finance</span><span class="org-chip">Talent &amp; People</span><span class="org-chip">Sooper</span>
           <span class="org-chip">Audio / FM</span><span class="org-chip">LoglineAI</span><span class="org-chip">Bangladesh</span><span class="org-chip">Legal</span>
         </div>
       </div>
@@ -559,7 +560,10 @@
         <div class="team-card"><div class="dept">Post Production</div><ul><li>Oversees editing, finishing &amp; delivery pipelines</li><li>Ensures technical quality across every release</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/rajib-biswas.png" alt="Rajib Biswas" onerror="this.classList.add('hide')"><span class="initials">RB</span></div><div class="head-info"><div class="hn">Rajib Biswas</div><div class="hr">VP – Post Production</div></div></div></div>
         <div class="team-card"><div class="dept">Content</div><ul><li>Curation, development &amp; commissioning of originals</li><li>Works with creators to deliver web series, films &amp; specials</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sera-banerjee.png" alt="Sera Banerjee" onerror="this.classList.add('hide')"><span class="initials">SB</span></div><div class="head-info"><div class="hn">Sera Banerjee</div><div class="hr">Content Head, hoichoi · AVP – Content</div></div></div></div>
         <div class="team-card"><div class="dept">Finance</div><ul><li>Oversees budgets, payments, accounting &amp; settlements</li><li>Supports the business with financial planning &amp; reporting</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/abhishek-jhunjhunwala.jpg" alt="Abhishek Jhunjhunwala" onerror="this.classList.add('hide')"><span class="initials">AJ</span></div><div class="head-info"><div class="hn">Abhishek Jhunjhunwala</div><div class="hr">AVP – Finance</div></div></div></div>
-        <div class="team-card"><div class="dept">HR</div><ul><li>Recruitment, onboarding, engagement &amp; HR operations</li><li>Workplace services, facilities &amp; people support</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sushim-dutta.png" alt="Sushim Dutta" onerror="this.classList.add('hide')"><span class="initials">SD</span></div><div class="head-info"><div class="hn">Sushim Dutta</div><div class="hr">Manager – Talent Acquisition &amp; People Operations</div><div class="hn">Shirin Gupta</div><div class="hr">Head – Talent Acquisition</div></div></div></div>
+        <div class="team-card"><div class="dept">Talent &amp; People</div><ul><li>Recruitment, onboarding, engagement &amp; HR operations</li><li>Workplace services, facilities &amp; people support</li></ul><div class="head-group">
+            <div class="head"><div class="head-avatar"><img src="assets/team/sushim-dutta.png" alt="Sushim Dutta" onerror="this.classList.add('hide')"><span class="initials">SD</span></div><div class="head-info"><div class="hn">Sushim Dutta</div><div class="hr">Manager – Talent Acquisition &amp; People Operations</div></div></div>
+            <div class="head"><div class="head-avatar"><img src="assets/team/shirin-gupta.jpg" alt="Shirin Gupta" onerror="this.classList.add('hide')"><span class="initials">SG</span></div><div class="head-info"><div class="hn">Shirin Gupta</div><div class="hr">Head – Talent Acquisition</div></div></div>
+          </div></div>
         <div class="team-card"><div class="dept">Sooper</div><ul><li>Leads the Sooper micro-drama &amp; short-form platform</li><li>Drives content strategy for the scroll-first audience</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sambbhav-khettrapal.jpg" alt="Sambbhav Khettrapal" onerror="this.classList.add('hide')"><span class="initials">SK</span></div><div class="head-info"><div class="hn">Sambbhav Khettrapal</div><div class="hr">Head – Content (Fiction) · Head of Content, Sooper (Micro-Dramas)</div></div></div></div>
         <div class="team-card"><div class="dept">Audio / FM</div><ul><li>Produces audio-first storytelling &amp; episodic fiction</li><li>Programmes hoichoi FM — scripting, voice &amp; sound design</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/adhidev-mukherjee.png" alt="Adhidev Mukherjee" onerror="this.classList.add('hide')"><span class="initials">AM</span></div><div class="head-info"><div class="hn">Adhidev Mukherjee</div><div class="hr">Content Head – New Formats</div></div></div></div>
         <div class="team-card"><div class="dept">LoglineAI</div><ul><li>Leads the AI-native creative studio</li><li>Delivers AI-assisted visuals, animation &amp; production-ready content</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/mandar-banerjee.png" alt="Mandar Banerjee" onerror="this.classList.add('hide')"><span class="initials">MB</span></div><div class="head-info"><div class="hn">Mandar Banerjee</div><div class="hr">Head – Creative AI Productions</div></div></div></div>
@@ -650,6 +654,24 @@
   </div>
 
   <canvas class="confetti" id="confetti"></canvas>
+
+  <!-- LEADERSHIP MODAL -->
+  <div id="leaderModal" class="leader-modal" aria-hidden="true">
+    <div class="lm-backdrop"></div>
+    <div class="lm-card" role="dialog" aria-modal="true" aria-labelledby="lmName">
+      <button class="lm-close" aria-label="Close">✕</button>
+      <div class="lm-photo">
+        <img class="lm-img" alt="">
+        <svg class="avatar-ph lm-avatar-ph" viewBox="0 0 120 132" aria-hidden="true"><circle cx="60" cy="44" r="25"/><path d="M12 132c0-31 96-31 96 0Z"/></svg>
+      </div>
+      <div class="lm-body">
+        <h3 id="lmName"></h3>
+        <div class="lm-subrole"></div>
+        <div class="lm-bio"></div>
+      </div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>

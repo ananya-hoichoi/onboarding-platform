@@ -18,8 +18,14 @@ function closeGate() {
   document.body.classList.remove('locked');
 }
 function chooseVertical(v) {
-  setTheme(v);                       // applies theme + swaps navbar logo + recolours canvases
   try { localStorage.setItem('hoichoi-vertical', v); } catch (e) {}
+  const page = document.body.dataset.page || 'index';
+  const onRightPage = (page === 'logline') === (v === 'logline');
+  if (!onRightPage) {
+    window.location.href = v === 'logline' ? 'logline.html' : 'index.html';
+    return;
+  }
+  setTheme(v);                       // applies theme + swaps navbar logo + recolours canvases
   closeGate();
   window.scrollTo(0, 0);
 }
@@ -27,6 +33,8 @@ function chooseVertical(v) {
 window.addEventListener('load', () => {
   setTimeout(() => {
     document.getElementById('preloader').classList.add('done');
+    const page = document.body.dataset.page || 'index';
+    if (page === 'logline') { document.body.classList.remove('locked'); return; } // never auto-gate here
     let chosen = null;
     try { chosen = localStorage.getItem('hoichoi-vertical'); } catch (e) {}
     if (chosen) document.body.classList.remove('locked'); // returning visitor — skip the gate
@@ -105,23 +113,48 @@ document.querySelectorAll('.acc-item').forEach(item => {
   head.addEventListener('click', () => setOpen(!item.classList.contains('open'))); // touch/keyboard fallback
 });
 
-/* ---------- Leadership bios — click anywhere on the bio to expand ---------- */
-document.querySelectorAll('.leader-card').forEach(card => {
-  const btn = card.querySelector('.bio-toggle');
-  const bioFull = card.querySelector('.bio-full');
-  const clickable = [card.querySelector('.bio-preview'), bioFull, btn].filter(Boolean);
-  const toggle = () => {
-    const expanded = card.classList.toggle('expanded');
-    btn.setAttribute('aria-expanded', String(expanded));
-    btn.firstChild.textContent = expanded ? 'Show less ' : 'Read more ';
-    bioFull.style.maxHeight = expanded ? bioFull.scrollHeight + 'px' : '0';
-  };
-  clickable.forEach(el => { el.style.cursor = 'pointer'; el.addEventListener('click', toggle); });
-  // keep the measured height correct if the viewport is resized while expanded
-  window.addEventListener('resize', () => {
-    if (card.classList.contains('expanded')) bioFull.style.maxHeight = bioFull.scrollHeight + 'px';
+/* ---------- Leadership cards — click opens a full-profile modal ---------- */
+(function leaderModal() {
+  const modal = document.getElementById('leaderModal');
+  if (!modal) return;
+  const lmImg = modal.querySelector('.lm-img');
+  const lmName = modal.querySelector('#lmName');
+  const lmSubrole = modal.querySelector('.lm-subrole');
+  const lmBio = modal.querySelector('.lm-bio');
+  const closeBtn = modal.querySelector('.lm-close');
+
+  function open(card) {
+    const img = card.querySelector('.leader-img');
+    const name = card.querySelector('h4')?.textContent || '';
+    const subrole = card.querySelector('.subrole')?.textContent || '';
+    const bioFull = card.querySelector('.bio-full');
+
+    if (img && !img.classList.contains('hide')) {
+      lmImg.src = img.src; lmImg.alt = name; lmImg.classList.remove('hide');
+    } else {
+      lmImg.removeAttribute('src'); lmImg.classList.add('hide');
+    }
+    lmName.textContent = name;
+    lmSubrole.textContent = subrole;
+    lmBio.innerHTML = bioFull ? bioFull.innerHTML : '';
+
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('locked');
+  }
+  function close() {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('locked');
+  }
+
+  document.querySelectorAll('.leader-card').forEach(card => {
+    card.addEventListener('click', () => open(card));
   });
-});
+  closeBtn.addEventListener('click', close);
+  modal.querySelector('.lm-backdrop').addEventListener('click', close);
+  addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) close(); });
+})();
 
 /* ---------- Onboarding journey tabs ---------- */
 document.querySelectorAll('.jtab').forEach(tab => {
@@ -245,8 +278,13 @@ function setTheme(t) {
 document.querySelectorAll('[data-theme-btn]').forEach(b =>
   b.addEventListener('click', () => setTheme(b.dataset.themeBtn)));
 
+const PAGE = document.body.dataset.page || 'index';
 let savedTheme = 'hoichoi';
-try { savedTheme = localStorage.getItem(THEME_KEY) || 'hoichoi'; } catch (e) {}
+if (PAGE === 'logline') {
+  savedTheme = 'logline'; // this page is always the LoglineAI experience
+} else {
+  try { savedTheme = localStorage.getItem(THEME_KEY) || 'hoichoi'; } catch (e) {}
+}
 setTheme(savedTheme);
 
 /* ---------- Hero particle constellation ---------- */

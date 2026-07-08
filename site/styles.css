@@ -210,6 +210,7 @@ nav.scrolled .logo-img { height:23px; }
    LAYOUT PRIMITIVES
    ============================================================ */
 section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px); }
+#hr, #posh, #essentials, #journey, #calendar, #teams { padding-top:clamp(56px,6vw,90px); padding-bottom:clamp(56px,6vw,90px); }
 .wrap { max-width:var(--maxw); margin:0 auto; }
 .eyebrow {
   display:inline-flex; align-items:center; gap:10px; font-size:.72rem; font-weight:600;
@@ -312,6 +313,12 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
 }
 .brand-note { color:var(--muted); font-size:.95rem; margin-top:20px; }
 
+/* about — narrative copy block (LoglineAI) */
+.about-copy { max-width:760px; }
+.about-copy p { color:var(--muted); font-size:1.05rem; line-height:1.7; margin-bottom:18px; }
+.about-copy p:last-child { margin-bottom:0; }
+.about-copy .about-lineage { color:var(--text); font-weight:500; padding-left:18px; border-left:3px solid var(--red); }
+
 /* stats */
 .conglo-line { font-size:clamp(1.4rem,3.5vw,2.6rem); font-weight:800; text-align:center; margin:70px auto 44px; max-width:900px; }
 .conglo-line .hl { color:var(--red); }
@@ -322,7 +329,7 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
 }
 .stat:hover { transform:translateY(-6px); border-color:var(--red); background:rgba(var(--accent-rgb),.06); }
 .stat .num { font-family:'Anton',sans-serif; font-size:clamp(2.2rem,5vw,3.4rem); color:var(--hi); line-height:1; }
-.stat .num .suf { color:var(--red); }
+.stat .num .suf, .stat .num .pre { color:var(--red); }
 .stat .lbl { font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:10px; }
 
 /* ============================================================
@@ -403,7 +410,7 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
 .leader-card {
   flex:0 0 320px; scroll-snap-align:start; border-radius:20px; overflow:hidden; position:relative;
   background:linear-gradient(160deg,var(--bg-2),var(--bg-3)); border:1px solid var(--panel-brd);
-  transition:.4s var(--ease); min-height:420px; display:flex; flex-direction:column;
+  transition:.4s var(--ease); min-height:420px; display:flex; flex-direction:column; cursor:pointer;
 }
 .leader-card:hover { transform:translateY(-8px) scale(1.02); border-color:var(--red); box-shadow:var(--shadow); }
 .leader-photo {
@@ -417,17 +424,51 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
 .leader-body .subrole { color:var(--gold); font-size:.82rem; margin-bottom:12px; }
 .leader-body p { color:var(--muted); font-size:.82rem; }
 .bio-preview { margin-bottom:0; }
-.leader-card.expanded .bio-preview { display:none; }
-.bio-full { max-height:0; overflow:hidden; transition:max-height .6s var(--ease), opacity .5s var(--ease); opacity:.4; }
-.bio-full p { margin-bottom:12px; }
-.bio-full p:last-child { margin-bottom:0; }
-.leader-card.expanded .bio-full { opacity:1; }
+.bio-full { display:none; } /* hidden — used only as a data source for the modal */
 .bio-toggle {
   display:inline-flex; align-items:center; gap:6px; margin-top:12px; padding:0; border:0; background:none;
   color:var(--red); font-weight:600; font-size:.78rem; cursor:pointer; letter-spacing:.02em;
 }
-.bio-toggle .arr { transition:transform .3s var(--ease); font-size:.8em; }
-.leader-card.expanded .bio-toggle .arr { transform:rotate(180deg); }
+.bio-toggle .arr { transition:transform .25s var(--ease); font-size:.8em; }
+.leader-card:hover .bio-toggle .arr { transform:translateX(3px); }
+
+/* ---------- Leadership modal ---------- */
+.leader-modal {
+  position:fixed; inset:0; z-index:9600; display:flex; align-items:center; justify-content:center;
+  padding:24px; opacity:0; visibility:hidden; transition:opacity .35s var(--ease), visibility .35s;
+}
+.leader-modal.open { opacity:1; visibility:visible; }
+.lm-backdrop { position:absolute; inset:0; background:rgba(0,0,0,.72); backdrop-filter:blur(6px); }
+.lm-card {
+  position:relative; z-index:1; width:min(760px,100%); max-height:88vh; overflow-y:auto; display:flex;
+  background:var(--bg-2); border:1px solid var(--panel-brd); border-radius:24px; box-shadow:0 40px 100px -20px rgba(0,0,0,.7);
+  transform:translateY(24px) scale(.97); opacity:0; transition:transform .4s var(--ease), opacity .4s var(--ease);
+}
+.leader-modal.open .lm-card { transform:translateY(0) scale(1); opacity:1; }
+.lm-close {
+  position:absolute; top:16px; right:16px; z-index:2; width:36px; height:36px; border-radius:50%;
+  border:1px solid var(--panel-brd); background:rgba(var(--surface-rgb),.08); color:var(--text);
+  cursor:pointer; font-size:.85rem; display:flex; align-items:center; justify-content:center; transition:.25s var(--ease);
+}
+.lm-close:hover { background:var(--red); border-color:transparent; color:var(--on-accent); }
+.lm-photo {
+  flex:0 0 42%; position:relative; min-height:320px; overflow:hidden;
+  background:radial-gradient(circle at 50% 30%,rgba(var(--accent-rgb),.3),transparent 70%);
+}
+.lm-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 12%; }
+.lm-img.hide { display:none; }
+.lm-avatar-ph { position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:170px; height:170px; fill:rgba(var(--surface-rgb),.34); }
+.lm-photo:has(.lm-img:not(.hide)) .lm-avatar-ph { display:none; }
+.lm-body { flex:1; padding:40px 38px; min-width:0; }
+.lm-body h3 { font-size:1.7rem; margin-bottom:6px; }
+.lm-subrole { color:var(--gold); font-size:.9rem; margin-bottom:20px; }
+.lm-bio p { color:var(--muted); font-size:.92rem; line-height:1.65; margin-bottom:14px; }
+.lm-bio p:last-child { margin-bottom:0; }
+@media (max-width:640px){
+  .lm-card { flex-direction:column; max-height:92vh; }
+  .lm-photo { min-height:220px; }
+  .lm-body { padding:28px 24px; }
+}
 
 /* team cards */
 .team-card {
@@ -441,6 +482,8 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
 .team-card ul li { font-size:.82rem; color:var(--muted); padding-left:16px; position:relative; }
 .team-card ul li::before { content:'▹'; position:absolute; left:0; color:var(--red); }
 .team-card .head { display:flex; align-items:center; gap:12px; margin-top:18px; padding-top:16px; border-top:1px solid var(--panel-brd); }
+.team-card .head-group { margin-top:18px; padding-top:16px; border-top:1px solid var(--panel-brd); display:flex; flex-direction:column; gap:14px; }
+.team-card .head-group .head { margin-top:0; padding-top:0; border-top:none; }
 .head-avatar {
   width:52px; height:52px; border-radius:50%; overflow:hidden; flex-shrink:0;
   background:var(--panel); border:1px solid var(--panel-brd);
@@ -463,19 +506,19 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
 /* ============================================================
    VALUES flip cards + vision/mission
    ============================================================ */
-.values-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; }
-.flip { perspective:1200px; height:230px; }
+.values-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; }
+.flip { perspective:1200px; height:140px; }
 .flip-in { position:relative; width:100%; height:100%; transition:transform .8s var(--ease); transform-style:preserve-3d; }
 .flip:hover .flip-in { transform:rotateY(180deg); }
 .flip-face {
-  position:absolute; inset:0; backface-visibility:hidden; border-radius:20px; padding:28px;
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:18px; padding:20px 22px;
   display:flex; flex-direction:column; justify-content:flex-start; border:1px solid var(--panel-brd);
 }
 .flip-front { background:linear-gradient(160deg,var(--bg-2),var(--bg-3)); }
-.flip-front .ico { font-size:2.4rem; height:2.4rem; margin-bottom:14px; line-height:1; }
-.flip-front h4 { font-size:1.35rem; line-height:1.3; min-height:2.6em; display:flex; align-items:flex-start; }
-.flip-back { background:var(--grad); transform:rotateY(180deg); color:var(--on-accent); }
-.flip-back p { font-size:.9rem; }
+.flip-front .ico { font-size:1.9rem; height:1.9rem; margin-bottom:10px; line-height:1; }
+.flip-front h4 { font-size:1.05rem; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.flip-back { background:var(--grad); transform:rotateY(180deg); color:var(--on-accent); justify-content:center; }
+.flip-back p { font-size:.82rem; line-height:1.35; }
 
 .hoyejak-banner {
   margin-top:40px; text-align:center; padding:56px 20px; border-radius:24px;
@@ -490,6 +533,15 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
   font-family:'Baloo Da 2',sans-serif; font-weight:800; font-size:clamp(2.6rem,8.4vw,5.2rem);
   color:var(--on-accent); margin-top:-.08em;
 }
+/* Latin-script variant of the second line (e.g. "Right.") — same size, correct font */
+.boldly-tag .bl-genai { font-family:'Baloo 2',sans-serif; }
+
+/* founder's office video */
+.founder-wrap {
+  margin-top:10px; border-radius:22px; overflow:hidden; border:1px solid var(--panel-brd);
+  box-shadow:var(--shadow); background:#000; max-width:900px;
+}
+.founder-video { display:block; width:100%; max-height:70vh; background:#000; }
 
 .vm-grid { display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:40px; }
 .vm-card { padding:40px; border-radius:22px; border:1px solid var(--panel-brd); background:linear-gradient(160deg,var(--bg-2),var(--bg)); position:relative; overflow:hidden; }
@@ -557,6 +609,13 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
 .jcard p, .jcard li { color:var(--muted); font-size:.85rem; }
 .jcard ul{ list-style:none; display:flex; flex-direction:column; gap:6px; margin-top:6px; }
 .jcard ul li{ padding-left:16px; position:relative; } .jcard ul li::before{ content:'▹'; position:absolute; left:0; color:var(--red); }
+.jcard-link {
+  display:inline-flex; align-items:center; gap:6px; margin-top:14px; font-size:.82rem; font-weight:600;
+  color:var(--red); transition:.25s var(--ease);
+}
+.jcard-link .arr { transition:transform .25s var(--ease); }
+.jcard-link:hover { color:var(--hi); }
+.jcard-link:hover .arr { transform:translate(3px,-3px); }
 
 /* week table */
 .jtable { width:100%; border-collapse:collapse; margin-top:8px; font-size:.85rem; }
