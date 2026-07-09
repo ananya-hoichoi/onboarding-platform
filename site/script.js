@@ -373,18 +373,21 @@ if (finePointer) {
   document.body.classList.add('cursor-on');
   const glow = document.getElementById('cursor-glow');
   const dot = document.getElementById('cursor-dot');
-  let gx = 0, gy = 0, tx = 0, ty = 0, shown = false;
+  let gx = 0, gy = 0, tx = 0, ty = 0, shown = false, hovering = false;
+  const applyDotTransform = () => {
+    dot.style.transform = `translate(${tx}px, ${ty}px)${hovering ? ' scale(2.6)' : ''}`;
+  };
   addEventListener('mousemove', e => {
     tx = e.clientX; ty = e.clientY;
-    dot.style.transform = `translate(${tx}px, ${ty}px)`;
+    applyDotTransform();
     if (!shown) { shown = true; glow.style.opacity = 1; dot.style.opacity = 1; }
   });
   const hoverables = 'a, button, .flip, .tilt, .jtab, .cal-card, .acc-head, .org-chip';
   document.addEventListener('mouseover', e => {
-    if (e.target.closest(hoverables)) { dot.style.transform += ' scale(2.6)'; glow.style.width = glow.style.height = '620px'; }
+    if (e.target.closest(hoverables)) { hovering = true; applyDotTransform(); glow.style.width = glow.style.height = '620px'; }
   });
   document.addEventListener('mouseout', e => {
-    if (e.target.closest(hoverables)) { glow.style.width = glow.style.height = '460px'; }
+    if (e.target.closest(hoverables)) { hovering = false; applyDotTransform(); glow.style.width = glow.style.height = '460px'; }
   });
   (function lerp() {
     gx += (tx - gx) * .14; gy += (ty - gy) * .14;
