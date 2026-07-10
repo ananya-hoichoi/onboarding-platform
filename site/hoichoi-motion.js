@@ -140,7 +140,10 @@
   (function heroScene() {
     if (reduceMotion) return;
     if (typeof window.THREE === 'undefined') return;
-    const canvas = document.getElementById('heroCanvas');
+    // dedicated canvas — #heroCanvas is permanently 2d-bound by script.js's
+    // heroParticles() (Sooper's particle field), and a canvas element can
+    // never switch context types once one has been requested on it.
+    const canvas = document.getElementById('heroCanvasGL');
     const hero = document.getElementById('hero');
     if (!canvas || !hero) return;
 
@@ -286,11 +289,12 @@
       build();
       if (!renderer) return; // no WebGL — CSS hero-bg glow remains the fallback
       active = true;
+      canvas.style.display = 'block';
       if (!rafId) tick();
     }
     function disable() {
       active = false;
-      if (renderer) renderer.clearColor();
+      canvas.style.display = 'none';
     }
 
     if (isHoichoi()) enable();
