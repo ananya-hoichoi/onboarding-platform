@@ -168,6 +168,36 @@ body[data-page="logline"] .brandname-card { border-radius:var(--r-lg); box-shado
 body[data-page="logline"] .leader-card:hover,
 body[data-page="logline"] .cal-card:hover { box-shadow:var(--shadow-md); }
 body[data-page="logline"] .gate-panel { border-radius:var(--r-xl); }
+/* "Our Creative Tools" grid */
+.tools-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:34px; }
+.tool-chip {
+  padding:24px 18px; border-radius:var(--r-md,16px); border:1px solid var(--panel-brd); background:var(--panel);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; text-align:center;
+  transition:transform var(--dur-base,.35s) var(--ease-out,ease), border-color var(--dur-base,.35s) var(--ease-out,ease), box-shadow var(--dur-base,.35s) var(--ease-out,ease);
+}
+.tool-chip:hover { transform:translateY(-6px); border-color:var(--red); box-shadow:var(--shadow-md,var(--shadow)); }
+.tool-chip .tool-name { font-family:'Anton',sans-serif; font-size:1.15rem; letter-spacing:.01em; }
+.tool-chip .tool-tag { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted-2); }
+@media (max-width:860px){ .tools-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:520px){ .tools-grid { grid-template-columns:1fr 1fr; gap:12px; } }
+/* "We do GenAI, Right" reuses hoichoi's Boldly Bangali banner markup, which
+   is styled in playful Bengali display fonts — swap in the clean geometric
+   sans (same family as the LoglineAI logo/wordmark) here only. */
+body[data-page="logline"] .boldly-tag .bl-en,
+body[data-page="logline"] .boldly-tag .bl-bn { font-family:var(--font-ui); font-weight:800; }
+/* "Leading the vertical" — single spotlight card, replacing the old
+   carousel/org-chart layout now that only one department head remains. */
+.vlead { margin-top:34px; display:flex; gap:0; border-radius:var(--r-xl,24px); overflow:hidden; border:1px solid var(--panel-brd); background:var(--panel); box-shadow:var(--shadow-md,var(--shadow)); }
+.vlead-photo { flex:0 0 320px; aspect-ratio:2/3; overflow:hidden; background:#000; }
+.vlead-photo img { width:100%; height:100%; object-fit:cover; object-position:top center; display:block; }
+.vlead-body { flex:1; padding:40px clamp(24px,4vw,48px); display:flex; flex-direction:column; justify-content:center; gap:6px; }
+.vlead-dept { font-family:'Anton',sans-serif; text-transform:uppercase; letter-spacing:.08em; font-size:1rem; color:var(--red); margin-bottom:6px; }
+.vlead-body h3 { font-size:clamp(1.6rem,3vw,2.2rem); }
+.vlead-role { color:var(--gold); font-size:.95rem; font-weight:600; margin-top:4px; margin-bottom:20px; }
+.vlead-body ul { list-style:none; display:flex; flex-direction:column; gap:10px; }
+.vlead-body ul li { font-size:.95rem; color:var(--muted); padding-left:20px; position:relative; }
+.vlead-body ul li::before { content:'▹'; position:absolute; left:0; color:var(--red); }
+@media (max-width:720px){ .vlead { flex-direction:column; } .vlead-photo { flex:none; width:100%; aspect-ratio:16/10; } }
 /* "We do GenAI, Right" banner reuses hoichoi's Boldly Bangali markup/class but
    needs its own on-brand background here instead of the red/purple gradient. */
 body[data-page="logline"] .hoyejak-banner { background:var(--grad); }
@@ -252,6 +282,7 @@ body::after {
 .pl-word span:nth-child(8){animation-delay:.54s}
 .pl-word span:nth-child(9){animation-delay:.61s}
 .pl-word span.pl-ai { text-transform:uppercase; }
+.pl-word span.pl-cap { text-transform:uppercase; }
 /* "LoglineAI" (9 letters) is longer than "hoichoi"/"logline" (7) — the shared
    clamp() sized for 7 letters overflows/clips on narrower viewports here. */
 .pl-word-loglineai { font-size:clamp(2.2rem,9vw,7rem); }
