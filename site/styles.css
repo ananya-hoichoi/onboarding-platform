@@ -175,6 +175,11 @@ body[data-page="logline"] .hoyejak-banner { background:var(--grad); }
    logo — the shared .brand class lowercases everything by default. */
 body[data-page="logline"] footer .brand { text-transform:none; }
 body[data-page="logline"] footer .brand .brand-ai { text-transform:uppercase; }
+/* "Welcome to" / "LoglineAI" sit too close together under the tight .display
+   line-height (0.95) meant for single-line headings — add breathing room
+   between the two lines here only. */
+body[data-page="logline"] .fin-inner h2 { line-height:1.15; }
+body[data-page="logline"] .fin-inner h2 .r { display:inline-block; margin-top:.12em; }
 body[data-page="logline"] .acc-head:focus-visible,
 body[data-page="logline"] .cal-card:focus-visible,
 body[data-page="logline"] .btn:focus-visible,
@@ -247,6 +252,9 @@ body::after {
 .pl-word span:nth-child(8){animation-delay:.54s}
 .pl-word span:nth-child(9){animation-delay:.61s}
 .pl-word span.pl-ai { text-transform:uppercase; }
+/* "LoglineAI" (9 letters) is longer than "hoichoi"/"logline" (7) — the shared
+   clamp() sized for 7 letters overflows/clips on narrower viewports here. */
+.pl-word-loglineai { font-size:clamp(2.2rem,9vw,7rem); }
 .pl-bar {
   position:absolute; bottom:0; left:0; height:3px; width:0; background:var(--red);
   animation:plBar 1.9s var(--ease) forwards;
@@ -469,6 +477,7 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
 .tl-item.reached .tl-card{ opacity:1; transform:none; }
 .tl-item:hover .tl-card{ border-color:var(--red); transform:scale(1.03); }
 .tl-card h4{ font-size:1rem; }
+.tl-card h4 .tl-sep { color:var(--red); margin:0 2px; }
 
 /* ============================================================
    PILLARS (content is king etc.)
@@ -897,6 +906,10 @@ body.cursor-on a, body.cursor-on button, body.cursor-on .jtab, body.cursor-on .a
 /* light theme (sooper): invert direction so logos read dark instead of white */
 [data-theme="sooper"] .marquee-track .m-logo img { filter:brightness(0); opacity:.42; }
 [data-theme="sooper"] .marquee-track .m-logo:hover img { opacity:1; filter:none; }
+/* LoglineAI light mode has a near-white background — the white-silhouette
+   filter tuned for the dark theme was making these logos nearly invisible. */
+html[data-theme="logline"][data-lp-mode="light"] .marquee-track .m-logo img { filter:brightness(0); opacity:.55; }
+html[data-theme="logline"][data-lp-mode="light"] .marquee-track .m-logo:hover img { opacity:1; filter:none; }
 
 /* animated gradient text accent */
 .grad {
