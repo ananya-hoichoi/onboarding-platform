@@ -9,6 +9,14 @@
   <script>
     /* this page is always the LoglineAI theme, regardless of any saved choice */
     document.documentElement.setAttribute('data-theme', 'logline');
+    /* light/dark mode — respects saved choice, else system preference — set before first paint */
+    (function () {
+      try {
+        var saved = localStorage.getItem('logline-mode');
+        var mode = saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        if (mode === 'light') document.documentElement.setAttribute('data-lp-mode', 'light');
+      } catch (e) {}
+    })();
   </script>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23050506'/%3E%3Ctext x='50' y='72' font-size='70' text-anchor='middle' fill='%23f4f4f6' font-family='Arial' font-weight='bold'%3EL%3C/text%3E%3C/svg%3E" />
 </head>
@@ -20,8 +28,8 @@
 
   <!-- PRELOADER -->
   <div id="preloader">
-    <div class="pl-word" aria-label="logline">
-      <span>l</span><span>o</span><span>g</span><span>l</span><span>i</span><span>n</span><span>e</span>
+    <div class="pl-word" aria-label="LoglineAI">
+      <span>L</span><span>o</span><span>g</span><span>l</span><span>i</span><span>n</span><span>e</span><span class="pl-ai">A</span><span class="pl-ai">I</span>
     </div>
     <div class="pl-bar"></div>
   </div>
@@ -82,6 +90,10 @@
         <a href="#journey">Onboarding</a>
         <a href="#teams">Teams</a>
       </div>
+      <button class="lp-mode-toggle" id="lpModeToggle" aria-label="Toggle light/dark mode" aria-pressed="false">
+        <svg class="lp-icon lp-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v3M12 18.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2.5 12h3M18.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+        <svg class="lp-icon lp-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.6A9 9 0 1 1 9.4 3.5a7 7 0 0 0 11.1 11.1Z"/></svg>
+      </button>
       <button class="vertical-btn" id="gateOpen" aria-label="Switch vertical"><span class="vsw"></span><span class="vlbl">Switch vertical</span></button>
       <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
@@ -115,9 +127,9 @@
     <div class="hero-inner">
       <span class="hero-badge"><span class="live"></span> Employee Onboarding · LoglineAI</span>
       <h1 class="display">
-        <span class="line l1"><span>Human</span></span>
-        <span class="line l2"><span>creativity,</span></span>
-        <span class="line l3"><span>amplified</span></span>
+        <span class="line l1"><span>Welcoming</span></span>
+        <span class="line l2"><span>our new</span></span>
+        <span class="line l3"><span>members</span></span>
       </h1>
       <p class="hero-tag">We are <b>glad to have you onboard!</b> &nbsp;Let's take you behind the scenes of a creative AI studio building the future of storytelling.</p>
       <div class="hero-cta">
@@ -183,7 +195,7 @@
         <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">2017</div><div class="tl-card"><h4>Launched SVF World Studios · hoichoi</h4></div></div>
         <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">2020</div><div class="tl-card"><h4>SVF Brands</h4></div></div>
         <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">2024</div><div class="tl-card"><h4>SVF Mumbai</h4></div></div>
-        <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">2025</div><div class="tl-card"><h4>MNI (Music Network of India)</h4></div></div>
+        <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">2025</div><div class="tl-card"><h4>MNI (Music Network of India)</h4><h4 style="margin-top:6px">The start of LoglineAI</h4></div></div>
       </div>
     </div>
   </section>
@@ -299,10 +311,9 @@
           <div class="leader-body"><h4>Mahendra Soni</h4><div class="subrole">Co-founder, SVF &amp; hoichoi</div>
             <p class="bio-preview">Heads the Films, Television, Distribution, Cinemas and Music businesses of SVF. His contributions to Cinemas has made SVF nationally recognizable, and under his leadership, SVF has distributed almost 900 films.</p>
             <div class="bio-full">
-              <p>Mahendra Soni heads the Films, Television, Distribution, Cinemas and Music businesses of SVF. His contributions to Cinemas has made SVF nationally recognizable. Under his leadership, SVF has distributed almost 900 films.</p>
-              <p>On the Television front, he has turned Music India, Sangeet Bangla and Sangeet Bhojpuri into leading Channels within their respective segments and has led the reach out of over 5000 hours of TV content – 10000 Episodes to many households.</p>
-              <p>An active member of Eastern India Motion Pictures Association (EIMPA), Kolkata International Film Festival (KIFF) and West Bengal Industrial Development Corporation (WBIDC). Mahendra also drives satellite and music syndication deals, along with film acquisitions thus playing a significant business role.</p>
-              <p>He is also the Co-Founder of Music Network India (MNI) and Director at Collective Artists Network.</p>
+              <p>Mahendra Soni heads the Films, Television, Distribution, Cinemas and Music businesses of SVF. His contributions to Cinemas has made SVF nationally recognizable, and under his leadership, SVF has distributed almost 900 films.</p>
+              <p>On Television, he has turned Music India, Sangeet Bangla and Sangeet Bhojpuri into leading channels, reaching over 5,000 hours of content — around 10,000 episodes — to households across the country.</p>
+              <p>An active member of EIMPA, KIFF and WBIDC, he also drives satellite deals, music syndication and film acquisitions. He is Co-Founder of Music Network India (MNI) and a Director at Collective Artists Network.</p>
             </div>
             <button class="bio-toggle">View full profile <span class="arr">→</span></button>
           </div>
@@ -368,7 +379,7 @@
       <h2 class="sec-title reveal">A word on <span class="hl">the path forward</span>.</h2>
       <p class="sec-sub reveal">An overview of LoglineAI's AI storytelling engine, what sets us apart, and where we're headed — straight from the founder.</p>
       <div class="founder-wrap reveal d1">
-        <video class="founder-video" controls playsinline preload="metadata" poster="">
+        <video class="founder-video" controls autoplay muted loop playsinline preload="auto" poster="">
           <source src="assets/founder/founder-office.mp4" type="video/mp4">
           Your browser does not support the video tag.
         </video>
@@ -567,46 +578,11 @@
   <!-- ===================== TEAMS ===================== -->
   <section id="teams">
     <div class="wrap">
-      <span class="eyebrow reveal">Meet Our Teams</span>
-      <h2 class="sec-title reveal">The <span class="hl">crew</span> behind the magic.</h2>
-
-      <div class="org-chart reveal" style="margin-bottom:50px">
-        <div class="org-top"><div class="org-node">hoichoi</div></div>
-        <div class="org-connector"></div>
-        <div class="org-row">
-          <span class="org-chip">Strategy &amp; Revenue</span><span class="org-chip">Product</span><span class="org-chip">Customer Support</span><span class="org-chip">Tech &amp; Engineering</span>
-          <span class="org-chip">Content Marketing &amp; Discovery</span><span class="org-chip">Brand &amp; Social</span><span class="org-chip">Partnerships</span>
-          <span class="org-chip">Growth, Retention &amp; Performance</span><span class="org-chip">Post Production</span><span class="org-chip">Content</span>
-          <span class="org-chip">Finance</span><span class="org-chip">Talent &amp; People</span><span class="org-chip">Sooper</span>
-          <span class="org-chip">Audio / FM</span><span class="org-chip">LoglineAI</span><span class="org-chip">Bangladesh</span><span class="org-chip">Legal</span>
-        </div>
-      </div>
-
       <div class="row-head reveal">
         <h3>Departments &amp; their heads</h3>
-        <div class="row-nav"><button data-car="teamCar" data-dir="-1">‹</button><button data-car="teamCar" data-dir="1">›</button></div>
       </div>
       <div class="carousel" id="teamCar">
-        <div class="team-card"><div class="dept">Strategy &amp; Revenue</div><ul><li>Plans business strategy &amp; monitors revenue and monetization streams</li><li>Aligns business decisions with growth objectives alongside leadership</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/soumya-mukherjee.png" alt="Soumya Mukherjee" onerror="this.classList.add('hide')"><span class="initials">SM</span></div><div class="head-info"><div class="hn">Soumya Mukherjee</div><div class="hr">Chief Operating Officer</div></div></div></div>
-        <div class="team-card"><div class="dept">Product</div><ul><li>Owns the hoichoi product roadmap &amp; user experience across platforms</li><li>Prioritises features &amp; improvements around user and business needs</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/moloy-karmakar.jpg" alt="Moloy Karmkar" onerror="this.classList.add('hide')"><span class="initials">MK</span></div><div class="head-info"><div class="hn">Moloy Karmkar</div><div class="hr">GM – Product Operations</div></div></div></div>
-        <div class="team-card"><div class="dept">Customer Support</div><ul><li>Handles user queries, complaints &amp; feedback across channels</li><li>Supports account, payment &amp; content-access issues in a timely manner</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sayantan-raha.png" alt="Sayantan Raha" onerror="this.classList.add('hide')"><span class="initials">SR</span></div><div class="head-info"><div class="hn">Sayantan Raha</div><div class="hr">Manager – Customer Experience &amp; Quality Control</div></div></div></div>
-        <div class="team-card"><div class="dept">Tech &amp; Engineering</div><ul><li>Builds &amp; maintains the hoichoi app, website &amp; streaming infrastructure</li><li>Ensures platform stability, performance &amp; secure delivery</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/shabinder-singh.jpeg" alt="Shabinder Singh" onerror="this.classList.add('hide')"><span class="initials">SS</span></div><div class="head-info"><div class="hn">Shabinder Singh</div><div class="hr">Principal Engineer</div></div></div></div>
-        <div class="team-card"><div class="dept">Content Marketing &amp; Discovery</div><ul><li>Promotes new releases &amp; ensures discoverability on-platform &amp; externally</li><li>Drives viewership through targeted digital marketing</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/salankara-biswas.png" alt="Salankara Biswas" onerror="this.classList.add('hide')"><span class="initials">SB</span></div><div class="head-info"><div class="hn">Salankara Biswas</div><div class="hr">GM – Content Marketing &amp; Discovery</div></div></div></div>
-        <div class="team-card"><div class="dept">Brand &amp; Social</div><ul><li>Defines brand positioning &amp; consistency across communication</li><li>Runs social media, campaigns &amp; community engagement</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sayantan-guha.png" alt="Sayantan Guha" onerror="this.classList.add('hide')"><span class="initials">SG</span></div><div class="head-info"><div class="hn">Sayantan Guha</div><div class="hr">GM – Brand Strategy</div></div></div></div>
-        <div class="team-card"><div class="dept">Partnerships</div><ul><li>Builds branded-content deals &amp; co-branded initiatives</li><li>Manages relationships with brand &amp; distribution partners</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/shreya-kaushik.jpg" alt="Shreya Kaushik" onerror="this.classList.add('hide')"><span class="initials">SK</span></div><div class="head-info"><div class="hn">Shreya Kaushik</div><div class="hr">Sr. Manager – Brand Alliances &amp; Partnerships</div></div></div></div>
-        <div class="team-card"><div class="dept">Growth, Retention &amp; Performance</div><ul><li>Drives acquisition, subscriptions &amp; retention</li><li>Runs performance marketing &amp; growth experiments</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/gunturu-sai-avinash.png" alt="Gunturu Sai Avinash" onerror="this.classList.add('hide')"><span class="initials">GA</span></div><div class="head-info"><div class="hn">Gunturu Sai Avinash</div><div class="hr">Sr. Manager – Growth</div></div></div></div>
-        <div class="team-card"><div class="dept">Post Production</div><ul><li>Oversees editing, finishing &amp; delivery pipelines</li><li>Ensures technical quality across every release</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/rajib-biswas.png" alt="Rajib Biswas" onerror="this.classList.add('hide')"><span class="initials">RB</span></div><div class="head-info"><div class="hn">Rajib Biswas</div><div class="hr">VP – Post Production</div></div></div></div>
-        <div class="team-card"><div class="dept">Content</div><ul><li>Curation, development &amp; commissioning of originals</li><li>Works with creators to deliver web series, films &amp; specials</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sera-banerjee.png" alt="Sera Banerjee" onerror="this.classList.add('hide')"><span class="initials">SB</span></div><div class="head-info"><div class="hn">Sera Banerjee</div><div class="hr">Content Head, hoichoi · AVP – Content</div></div></div></div>
-        <div class="team-card"><div class="dept">Finance</div><ul><li>Oversees budgets, payments, accounting &amp; settlements</li><li>Supports the business with financial planning &amp; reporting</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/abhishek-jhunjhunwala.jpg" alt="Abhishek Jhunjhunwala" onerror="this.classList.add('hide')"><span class="initials">AJ</span></div><div class="head-info"><div class="hn">Abhishek Jhunjhunwala</div><div class="hr">AVP – Finance</div></div></div></div>
-        <div class="team-card"><div class="dept">Talent &amp; People</div><ul><li>Recruitment, onboarding, engagement &amp; HR operations</li><li>Workplace services, facilities &amp; people support</li></ul><div class="head-group">
-            <div class="head"><div class="head-avatar"><img src="assets/team/sushim-dutta.png" alt="Sushim Dutta" onerror="this.classList.add('hide')"><span class="initials">SD</span></div><div class="head-info"><div class="hn">Sushim Dutta</div><div class="hr">Manager – Talent Acquisition &amp; People Operations</div></div></div>
-            <div class="head"><div class="head-avatar"><img src="assets/team/shirin-gupta.jpg" alt="Shirin Gupta" onerror="this.classList.add('hide')"><span class="initials">SG</span></div><div class="head-info"><div class="hn">Shirin Gupta</div><div class="hr">Head – Talent Acquisition</div></div></div>
-          </div></div>
-        <div class="team-card"><div class="dept">Sooper</div><ul><li>Leads the Sooper micro-drama &amp; short-form platform</li><li>Drives content strategy for the scroll-first audience</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sambbhav-khettrapal.jpg" alt="Sambbhav Khettrapal" onerror="this.classList.add('hide')"><span class="initials">SK</span></div><div class="head-info"><div class="hn">Sambbhav Khettrapal</div><div class="hr">Head – Content (Fiction) · Head of Content, Sooper (Micro-Dramas)</div></div></div></div>
-        <div class="team-card"><div class="dept">Audio / FM</div><ul><li>Produces audio-first storytelling &amp; episodic fiction</li><li>Programmes hoichoi FM — scripting, voice &amp; sound design</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/adhidev-mukherjee.png" alt="Adhidev Mukherjee" onerror="this.classList.add('hide')"><span class="initials">AM</span></div><div class="head-info"><div class="hn">Adhidev Mukherjee</div><div class="hr">Content Head – New Formats</div></div></div></div>
         <div class="team-card"><div class="dept">LoglineAI</div><ul><li>Leads the AI-native creative studio</li><li>Delivers AI-assisted visuals, animation &amp; production-ready content</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/mandar-banerjee.png" alt="Mandar Banerjee" onerror="this.classList.add('hide')"><span class="initials">MB</span></div><div class="head-info"><div class="hn">Mandar Banerjee</div><div class="hr">Head – Creative AI Productions</div></div></div></div>
-        <div class="team-card"><div class="dept">Bangladesh</div><ul><li>Supports operations, production &amp; engagement in Bangladesh</li><li>Localizes strategies &amp; manages regional partnerships</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sakib-r-khan.jpg" alt="Sakib R Khan" onerror="this.classList.add('hide')"><span class="initials">SK</span></div><div class="head-info"><div class="hn">Sakib R Khan</div><div class="hr">Business Lead – Bangladesh</div></div></div></div>
-        <div class="team-card"><div class="dept">Legal</div><ul><li>Manages contracts, IP rights &amp; content agreements</li><li>Ensures regulatory &amp; legal compliance across operations</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/preeti-gandhi.png" alt="Preeti Gandhi" onerror="this.classList.add('hide')"><span class="initials">PG</span></div><div class="head-info"><div class="hn">Preeti Gandhi</div><div class="hr">Legal Consultant</div></div></div></div>
       </div>
     </div>
   </section>
@@ -660,7 +636,7 @@
     <div class="fin-glow"></div>
     <div class="fin-inner">
       <div class="k">The story starts now</div>
-      <h2 class="display">Welcome to<br><span class="r">Logline</span></h2>
+      <h2 class="display">Welcome to<br><span class="r">Logline<span class="ai-caps">AI</span></span></h2>
       <div class="hoye grad">We do GenAI, Right.</div>
       <p>You're now part of a team amplifying human creativity with AI — turning ideas into cinematic stories, faster. Let's keep imagination human, and make execution limitless.</p>
       <div class="hero-cta" style="justify-content:center;margin-top:34px">
@@ -671,7 +647,7 @@
   </section>
 
   <footer>
-    <div class="brand">hoichoi<span class="dot">.</span></div>
+    <div class="brand">Logline<span class="brand-ai">AI</span></div>
     <p style="margin-top:10px">Employee Onboarding · FY26 · An SVF Entertainment Pvt. Ltd. company</p>
     <p style="margin-top:6px">Interactive onboarding experience — recreated from the official onboarding deck.</p>
   </footer>
@@ -711,5 +687,11 @@
   </div>
 
   <script src="script.js"></script>
+  <!-- LoglineAI-only motion stack (never loaded by index.html) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="logline-motion.js"></script>
 </body>
 </html>

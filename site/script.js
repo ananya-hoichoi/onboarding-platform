@@ -291,6 +291,7 @@ setTheme(savedTheme);
 (function heroParticles() {
   const cv = document.getElementById('heroCanvas');
   if (!cv || reduceMotion) return;
+  if (document.body.dataset.page === 'logline') return; // logline hero uses the Three.js scene instead, see logline-motion.js
   const c = cv.getContext('2d');
   const hero = document.getElementById('hero');
   let w, h, parts = [], running = true, rafId = null;

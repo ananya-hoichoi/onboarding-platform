@@ -2,7 +2,7 @@
    hoichoi · Employee Onboarding — cinematic OTT experience
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700;800&family=Bebas+Neue&family=Baloo+2:wght@700;800&family=Baloo+Da+2:wght@700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700;800&family=Bebas+Neue&family=Baloo+2:wght@700;800&family=Baloo+Da+2:wght@700;800&family=Outfit:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
 
 :root {
   /* structural (theme-independent) */
@@ -97,8 +97,96 @@
 html { transition: background .5s var(--ease); }
 :root, [data-theme] { transition: none; }
 
+/* ============================================================
+   LOGLINEAI DESIGN SYSTEM — scoped tokens (page-local, additive)
+   Spacing / radius / elevation / motion tokens + a proper,
+   intentionally-designed light mode. Nothing here touches the
+   hoichoi/Sooper pages — it only ever applies under [data-page="logline"].
+   ============================================================ */
+[data-page="logline"] {
+  --font-ui: 'Manrope', 'Poppins', system-ui, sans-serif;
+
+  /* spacing scale — 4px base */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px;
+  --sp-6:32px; --sp-7:48px; --sp-8:64px; --sp-9:96px;
+
+  /* radius scale */
+  --r-sm:10px; --r-md:16px; --r-lg:22px; --r-xl:28px; --r-full:999px;
+
+  /* elevation */
+  --shadow-sm: 0 2px 10px -4px rgba(0,0,0,.28);
+  --shadow-md: 0 16px 40px -12px rgba(0,0,0,.38);
+  --shadow-lg: 0 32px 80px -24px rgba(0,0,0,.5);
+  --shadow-glow: 0 0 0 1px rgba(var(--accent-rgb),.16), 0 10px 30px -6px rgba(var(--accent-rgb),.28);
+
+  /* motion tokens */
+  --dur-fast:.18s; --dur-base:.4s; --dur-slow:.7s;
+  --ease-out: cubic-bezier(.16,1,.3,1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
+}
+[data-page="logline"] body,
+body[data-page="logline"] { font-family:var(--font-ui); }
+
+/* ---------- LoglineAI · Light mode (intentional, not inverted) ---------- */
+html[data-theme="logline"][data-lp-mode="light"] {
+  --bg:#faf9f7; --bg-2:#f1efec; --bg-3:#ffffff;
+  --surface-rgb: 20,20,23;
+  --red:#16161a; --red-2:#000000; --red-deep:#4a4a52;
+  --accent-rgb: 22,22,26;
+  --grad: linear-gradient(135deg,#16161a,#4a4a52);
+  --btn-bg: linear-gradient(135deg,#16161a,#33333a);
+  --on-accent:#ffffff; --hi:#0a0a0a;
+  --cream:#16161a; --gold:#6a6a72;
+  --text:#16161a; --muted:#55555c; --muted-2:#84848a;
+  --glow1:#e9e7e3; --glow2:#f1efeb; --glow3:#e3e1dc;
+  --dot-rgb: 20,20,23;
+  --nav-bg: rgba(250,249,247,.82); --menu-bg: rgba(255,255,255,.98);
+  --shadow: 0 24px 60px -20px rgba(20,20,23,.14);
+  --shadow-sm: 0 2px 10px -4px rgba(20,20,23,.1);
+  --shadow-md: 0 16px 40px -12px rgba(20,20,23,.14);
+  --shadow-lg: 0 32px 80px -24px rgba(20,20,23,.16);
+  --shadow-glow: 0 0 0 1px rgba(22,22,26,.08), 0 10px 30px -6px rgba(22,22,26,.12);
+}
+
+/* Nav logo was invert(1)-ed for the dark logline theme only; in light mode
+   that turns it near-white on a near-white background. Restore the original
+   artwork's own colors instead of inverting. */
+html[data-theme="logline"][data-lp-mode="light"] .logo-img { filter:none; }
+
+/* ---------- LoglineAI · component polish (design-token pass) ----------
+   Scoped to [data-page="logline"] only — applies the elevation/radius/
+   motion tokens above consistently across buttons, cards, accordions and
+   the calendar grid without touching hoichoi/Sooper's own component CSS. */
+body[data-page="logline"] .btn { border-radius:var(--r-full); transition:transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), filter var(--dur-base) var(--ease-out); }
+body[data-page="logline"] .btn-primary { box-shadow:var(--shadow-glow); }
+body[data-page="logline"] .btn-primary:hover { box-shadow:var(--shadow-md); }
+body[data-page="logline"] .btn-ghost { box-shadow:var(--shadow-sm); }
+body[data-page="logline"] .leader-card,
+body[data-page="logline"] .cal-card,
+body[data-page="logline"] .acc-item,
+body[data-page="logline"] .brandname-card { border-radius:var(--r-lg); box-shadow:var(--shadow-sm); transition:transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out); }
+body[data-page="logline"] .leader-card:hover,
+body[data-page="logline"] .cal-card:hover { box-shadow:var(--shadow-md); }
+body[data-page="logline"] .gate-panel { border-radius:var(--r-xl); }
+/* "We do GenAI, Right" banner reuses hoichoi's Boldly Bangali markup/class but
+   needs its own on-brand background here instead of the red/purple gradient. */
+body[data-page="logline"] .hoyejak-banner { background:var(--grad); }
+/* footer wordmark should read "LoglineAI" (capital L, capital AI) like the
+   logo — the shared .brand class lowercases everything by default. */
+body[data-page="logline"] footer .brand { text-transform:none; }
+body[data-page="logline"] footer .brand .brand-ai { text-transform:uppercase; }
+body[data-page="logline"] .acc-head:focus-visible,
+body[data-page="logline"] .cal-card:focus-visible,
+body[data-page="logline"] .btn:focus-visible,
+body[data-page="logline"] .lp-mode-toggle:focus-visible,
+body[data-page="logline"] a:focus-visible,
+body[data-page="logline"] button:focus-visible { outline:2px solid var(--red); outline-offset:3px; border-radius:var(--r-sm); }
+
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
+/* Lenis drives its own smoothing on the logline page — native smooth-scroll
+   fighting it on top is what made scrolling feel slow/laggy there. */
+html[data-theme="logline"] { scroll-behavior:auto; }
 body {
   font-family:'Poppins', system-ui, sans-serif;
   background:var(--bg);
@@ -141,9 +229,9 @@ body::after {
 }
 #preloader.done { opacity:0; visibility:hidden; }
 .pl-word {
-  font-family:'Anton',sans-serif; text-transform:lowercase;
+  font-family:'Outfit',sans-serif; font-weight:800; text-transform:lowercase;
   font-size:clamp(3rem,12vw,9rem); color:var(--red);
-  letter-spacing:.02em; display:flex; overflow:hidden;
+  letter-spacing:.01em; display:flex; overflow:hidden;
 }
 .pl-word span {
   display:inline-block; transform:translateY(110%);
@@ -156,6 +244,9 @@ body::after {
 .pl-word span:nth-child(5){animation-delay:.33s}
 .pl-word span:nth-child(6){animation-delay:.40s}
 .pl-word span:nth-child(7){animation-delay:.47s}
+.pl-word span:nth-child(8){animation-delay:.54s}
+.pl-word span:nth-child(9){animation-delay:.61s}
+.pl-word span.pl-ai { text-transform:uppercase; }
 .pl-bar {
   position:absolute; bottom:0; left:0; height:3px; width:0; background:var(--red);
   animation:plBar 1.9s var(--ease) forwards;
@@ -302,13 +393,13 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
 }
 .wrongways .ww .x { color:var(--red); text-decoration:none; font-size:1.1rem; }
 .rightway {
-  font-family:'Anton',sans-serif; text-transform:lowercase; font-size:clamp(3rem,7vw,5.5rem);
+  font-family:'Outfit',sans-serif; font-weight:800; text-transform:lowercase; font-size:clamp(3rem,7vw,5.5rem);
   color:var(--cream); position:relative; display:inline-block; margin-top:10px;
 }
 .rightway .dot{ color:var(--red); }
 .rightway .check {
   display:inline-flex; align-items:center; justify-content:center; width:44px;height:44px;
-  background:#1db954; border-radius:50%; color:#fff; font-size:1.3rem; margin-left:14px; vertical-align:middle;
+  background:#1db954; border-radius:50%; color:#fff; -webkit-text-fill-color:#fff; font-size:1.3rem; margin-left:14px; vertical-align:middle;
   font-family:'Poppins';
 }
 .brand-note { color:var(--muted); font-size:.95rem; margin-top:20px; }
@@ -543,7 +634,7 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
 /* founder's office video */
 .founder-wrap {
   margin-top:10px; border-radius:22px; overflow:hidden; border:1px solid var(--panel-brd);
-  box-shadow:var(--shadow); background:#000; max-width:900px;
+  box-shadow:var(--shadow); background:#000;
 }
 .founder-video { display:block; width:100%; max-height:70vh; background:#000; }
 
@@ -687,6 +778,7 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
   background:var(--grad); -webkit-background-clip:text; background-clip:text;
   -webkit-text-fill-color:transparent; color:transparent;
 }
+.fin-inner h2 .r .ai-caps { text-transform:uppercase; }
 .fin-inner .hoye { font-family:'Anton'; font-size:clamp(2rem,6vw,4rem); color:var(--cream); margin-top:10px; }
 .fin-inner p { color:var(--muted); margin-top:20px; max-width:520px; margin-inline:auto; }
 .confetti { position:fixed; inset:0; pointer-events:none; z-index:8000; }
@@ -944,6 +1036,29 @@ body.cursor-on a, body.cursor-on button, body.cursor-on .jtab, body.cursor-on .a
 .vertical-btn .vsw { width:14px; height:14px; border-radius:50%; background:var(--grad); box-shadow:inset 0 0 0 1px rgba(var(--surface-rgb),.25); flex-shrink:0; }
 @media (max-width:1040px){ .vertical-btn .vlbl { display:none; } .vertical-btn { padding:8px; } }
 
+/* ---------- LoglineAI · light/dark mode toggle ---------- */
+.lp-mode-toggle {
+  display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:50%;
+  border:1px solid var(--panel-brd); background:var(--panel); color:var(--text); cursor:pointer;
+  transition:border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  flex-shrink:0; position:relative; overflow:hidden;
+}
+.lp-mode-toggle:hover { border-color:var(--red); transform:translateY(-1px); }
+.lp-mode-toggle:active { transform:scale(.92); }
+.lp-icon { width:18px; height:18px; position:absolute; transition:transform var(--dur-base) var(--ease-spring), opacity var(--dur-base) var(--ease-out); }
+.lp-icon-sun { opacity:1; transform:rotate(0deg) scale(1); }
+.lp-icon-moon { opacity:0; transform:rotate(-90deg) scale(.5); }
+html[data-lp-mode="light"] .lp-icon-sun { opacity:0; transform:rotate(90deg) scale(.5); }
+html[data-lp-mode="light"] .lp-icon-moon { opacity:1; transform:rotate(0deg) scale(1); }
+
+/* smooth root-level cross-fade when the mode changes (LoglineAI only).
+   Deliberately scoped to html/body/section only — NOT a universal `*`
+   override — so it never fights the many existing component-level
+   transitions (accordion max-height, modal scale, flip cards, etc). */
+html[data-theme="logline"], body[data-page="logline"], body[data-page="logline"] > section {
+  transition: background-color var(--dur-base,.4s) var(--ease-out,ease), color var(--dur-base,.4s) var(--ease-out,ease);
+}
+
 /* ---------- app logos inside info cards (Keka, Teams) ---------- */
 .app-logo { height:46px; display:flex; align-items:center; margin-bottom:16px; }
 .app-logo img { height:42px; width:auto; max-width:130px; object-fit:contain; display:block; }
@@ -997,6 +1112,7 @@ html:not([data-theme]) .pl-word,
 html:not([data-theme]) .eyebrow,
 html:not([data-theme]) #hero h1 .l2 span,
 html:not([data-theme]) .wrongways .ww .x,
+html:not([data-theme]) .rightway,
 html:not([data-theme]) .rightway .dot,
 html:not([data-theme]) .stat .num .suf,
 html:not([data-theme]) .tl-item.reached .tl-year,
