@@ -15,6 +15,15 @@
         if (t !== 'hoichoi') document.documentElement.setAttribute('data-theme', t);
       } catch (e) {}
     })();
+    /* hoichoi light/dark mode — respects saved choice, else system preference — set before first paint */
+    (function () {
+      try {
+        if (document.documentElement.getAttribute('data-theme')) return; // only applies to the hoichoi theme
+        var saved = localStorage.getItem('hoichoi-mode');
+        var mode = saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        if (mode === 'light') document.documentElement.setAttribute('data-hc-mode', 'light');
+      } catch (e) {}
+    })();
   </script>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0a0d'/%3E%3Ctext x='50' y='72' font-size='70' text-anchor='middle' fill='%23ee1c2e' font-family='Arial' font-weight='bold'%3Eh%3C/text%3E%3C/svg%3E" />
 </head>
@@ -88,6 +97,10 @@
         <a href="#calendar">Calendar</a>
         <a href="#teams">Teams</a>
       </div>
+      <button class="hc-mode-toggle" id="hcModeToggle" aria-label="Toggle light/dark mode" aria-pressed="false">
+        <svg class="hc-icon hc-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v3M12 18.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2.5 12h3M18.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+        <svg class="hc-icon hc-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.6A9 9 0 1 1 9.4 3.5a7 7 0 0 0 11.1 11.1Z"/></svg>
+      </button>
       <button class="vertical-btn" id="gateOpen" aria-label="Switch vertical"><span class="vsw"></span><span class="vlbl">Switch vertical</span></button>
       <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
@@ -673,5 +686,12 @@
   </div>
 
   <script src="script.js"></script>
+  <!-- hoichoi-only motion stack (never loaded by logline.html; Sooper on this
+       same page is unaffected since every effect below checks the live theme) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="hoichoi-motion.js"></script>
 </body>
 </html>

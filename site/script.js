@@ -273,6 +273,7 @@ function setTheme(t) {
   const li = document.getElementById('navLogoImg');
   if (li) li.src = 'assets/logos/' + t + '.png';
   refreshPalette();
+  window.dispatchEvent(new CustomEvent('vertical:themechange', { detail: { theme: t } }));
 }
 
 document.querySelectorAll('[data-theme-btn]').forEach(b =>
@@ -292,9 +293,12 @@ setTheme(savedTheme);
   const cv = document.getElementById('heroCanvas');
   if (!cv || reduceMotion) return;
   if (document.body.dataset.page === 'logline') return; // logline hero uses the Three.js scene instead, see logline-motion.js
+  // hoichoi's hero uses the Three.js scene instead (see hoichoi-motion.js);
+  // Sooper keeps this original 2D canvas untouched.
+  const hoichoiActive = () => !document.body.dataset.page && !document.documentElement.getAttribute('data-theme');
   const c = cv.getContext('2d');
   const hero = document.getElementById('hero');
-  let w, h, parts = [], running = true, rafId = null;
+  let w, h, parts = [], running = !hoichoiActive(), rafId = null;
   const mouse = { x: -999, y: -999 };
 
   function size() {
@@ -346,9 +350,17 @@ setTheme(savedTheme);
   }
   start();
   // pause when hero scrolled away
+  let heroVisible = true;
   new IntersectionObserver(es => es.forEach(e => {
-    running = e.isIntersecting; start();
+    heroVisible = e.isIntersecting;
+    running = heroVisible && !hoichoiActive();
+    start();
   }), { threshold: 0 }).observe(hero);
+  // live "Switch vertical" toggle between hoichoi (Three.js takes over) and Sooper (this canvas)
+  window.addEventListener('vertical:themechange', () => {
+    running = heroVisible && !hoichoiActive();
+    if (running) start(); else c.clearRect(0, 0, w, h);
+  });
 })();
 
 /* ---------- Hero mouse-parallax (glows + reels) ---------- */

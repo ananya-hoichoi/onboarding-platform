@@ -94,6 +94,71 @@
   --shadow:    0 30px 70px -24px rgba(120,90,0,.28);
 }
 
+/* ---------- hoichoi · design tokens (spacing/radius/elevation/motion) ----------
+   Scoped to html:not([data-theme]) — hoichoi is the default/no-attribute
+   theme — so this never leaks into the Sooper or LoglineAI experiences. */
+html:not([data-theme]) {
+  --font-ui: 'Manrope', 'Poppins', system-ui, sans-serif;
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px;
+  --sp-6:32px; --sp-7:48px; --sp-8:64px; --sp-9:96px;
+  --r-sm:10px; --r-md:16px; --r-lg:22px; --r-xl:28px; --r-full:999px;
+  --shadow-sm: 0 2px 10px -4px rgba(0,0,0,.32);
+  --shadow-md: 0 16px 40px -12px rgba(0,0,0,.42);
+  --shadow-lg: 0 32px 80px -24px rgba(0,0,0,.55);
+  --shadow-glow: 0 0 0 1px rgba(var(--accent-rgb),.18), 0 10px 30px -6px rgba(var(--accent-rgb),.3);
+  --dur-fast:.18s; --dur-base:.4s; --dur-slow:.7s;
+  --ease-out: cubic-bezier(.16,1,.3,1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
+}
+html:not([data-theme]) body { font-family:var(--font-ui); }
+
+/* ---------- hoichoi · component polish (design-token pass) ----------
+   Scoped to html:not([data-theme]) only — never applies once Sooper's
+   data-theme="sooper" is set, and never applies on logline.html (which
+   always sets data-theme="logline"). */
+html:not([data-theme]) .btn { border-radius:var(--r-full); transition:transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), filter var(--dur-base) var(--ease-out); }
+html:not([data-theme]) .btn-primary { box-shadow:var(--shadow-glow); }
+html:not([data-theme]) .btn-primary:hover { box-shadow:var(--shadow-md); }
+html:not([data-theme]) .btn-ghost { box-shadow:var(--shadow-sm); }
+html:not([data-theme]) .leader-card,
+html:not([data-theme]) .cal-card,
+html:not([data-theme]) .acc-item,
+html:not([data-theme]) .brandname-card,
+html:not([data-theme]) .init-card,
+html:not([data-theme]) .team-card { border-radius:var(--r-lg); box-shadow:var(--shadow-sm); transition:transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out); }
+html:not([data-theme]) .leader-card:hover,
+html:not([data-theme]) .cal-card:hover,
+html:not([data-theme]) .init-card:hover,
+html:not([data-theme]) .team-card:hover { box-shadow:var(--shadow-md); }
+html:not([data-theme]) .gate-panel { border-radius:var(--r-xl); }
+html:not([data-theme]) .acc-head:focus-visible,
+html:not([data-theme]) .cal-card:focus-visible,
+html:not([data-theme]) .btn:focus-visible,
+html:not([data-theme]) .hc-mode-toggle:focus-visible,
+html:not([data-theme]) a:focus-visible,
+html:not([data-theme]) button:focus-visible { outline:2px solid var(--red); outline-offset:3px; border-radius:var(--r-sm); }
+
+/* ---------- hoichoi · Light mode (intentional, not inverted) ---------- */
+html:not([data-theme])[data-hc-mode="light"] {
+  --bg:#fbf8f7; --bg-2:#f3ede9; --bg-3:#ffffff;
+  --surface-rgb: 30,10,14;
+  --red:#c8082a; --red-2:#8f0a2e; --red-deep:#5a0538;
+  --accent-rgb: 200,8,42;
+  --grad: linear-gradient(135deg,#c8082a,#6d0550);
+  --btn-bg: linear-gradient(135deg,#c8082a,#6d0550);
+  --on-accent:#ffffff; --hi:#1a0508;
+  --cream:#3a1420; --gold:#a8601f;
+  --text:#20090d; --muted:#6a4a4f; --muted-2:#9c7f83;
+  --glow1:#f4e2e2; --glow2:#f8ece1; --glow3:#efe0d8;
+  --dot-rgb: 30,10,14;
+  --nav-bg: rgba(251,248,247,.82); --menu-bg: rgba(255,255,255,.98);
+  --shadow: 0 24px 60px -20px rgba(30,10,14,.14);
+  --shadow-sm: 0 2px 10px -4px rgba(30,10,14,.1);
+  --shadow-md: 0 16px 40px -12px rgba(30,10,14,.14);
+  --shadow-lg: 0 32px 80px -24px rgba(30,10,14,.16);
+  --shadow-glow: 0 0 0 1px rgba(200,8,42,.1), 0 10px 30px -6px rgba(200,8,42,.14);
+}
+
 html { transition: background .5s var(--ease); }
 :root, [data-theme] { transition: none; }
 
@@ -1113,6 +1178,27 @@ html[data-lp-mode="light"] .lp-icon-moon { opacity:1; transform:rotate(0deg) sca
    override — so it never fights the many existing component-level
    transitions (accordion max-height, modal scale, flip cards, etc). */
 html[data-theme="logline"], body[data-page="logline"], body[data-page="logline"] > section {
+  transition: background-color var(--dur-base,.4s) var(--ease-out,ease), color var(--dur-base,.4s) var(--ease-out,ease);
+}
+
+/* ---------- hoichoi · light/dark mode toggle ----------
+   Only meaningful for the hoichoi theme — hidden entirely once the
+   Sooper theme is active, since Sooper never had a mode toggle. */
+[data-theme] .hc-mode-toggle { display:none; }
+.hc-mode-toggle {
+  display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:50%;
+  border:1px solid var(--panel-brd); background:var(--panel); color:var(--text); cursor:pointer;
+  transition:border-color var(--dur-fast,.18s) var(--ease-out,ease), background var(--dur-fast,.18s) var(--ease-out,ease), transform var(--dur-fast,.18s) var(--ease-out,ease);
+  flex-shrink:0; position:relative; overflow:hidden;
+}
+.hc-mode-toggle:hover { border-color:var(--red); transform:translateY(-1px); }
+.hc-mode-toggle:active { transform:scale(.92); }
+.hc-icon { width:18px; height:18px; position:absolute; transition:transform var(--dur-base,.4s) var(--ease-spring,ease), opacity var(--dur-base,.4s) var(--ease-out,ease); }
+.hc-icon-sun { opacity:1; transform:rotate(0deg) scale(1); }
+.hc-icon-moon { opacity:0; transform:rotate(-90deg) scale(.5); }
+html[data-hc-mode="light"] .hc-icon-sun { opacity:0; transform:rotate(90deg) scale(.5); }
+html[data-hc-mode="light"] .hc-icon-moon { opacity:1; transform:rotate(0deg) scale(1); }
+html:not([data-theme]), html:not([data-theme]) body, html:not([data-theme]) body > section {
   transition: background-color var(--dur-base,.4s) var(--ease-out,ease), color var(--dur-base,.4s) var(--ease-out,ease);
 }
 
