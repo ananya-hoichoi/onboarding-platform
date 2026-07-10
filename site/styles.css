@@ -168,18 +168,26 @@ body[data-page="logline"] .brandname-card { border-radius:var(--r-lg); box-shado
 body[data-page="logline"] .leader-card:hover,
 body[data-page="logline"] .cal-card:hover { box-shadow:var(--shadow-md); }
 body[data-page="logline"] .gate-panel { border-radius:var(--r-xl); }
-/* "Our Creative Tools" grid */
-.tools-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:34px; }
-.tool-chip {
-  padding:24px 18px; border-radius:var(--r-md,16px); border:1px solid var(--panel-brd); background:var(--panel);
-  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; text-align:center;
+/* "Our Creative Tools" — grouped by pipeline category. Real brand logos sit
+   on a plain white plate (handles both transparent-bg and light-bg source
+   files consistently, same convention as the Keka/Teams app-logos above). */
+.tool-group { margin-top:36px; }
+.tool-group + .tool-group { margin-top:30px; }
+.tool-group-lbl { font-family:'Anton',sans-serif; text-transform:uppercase; letter-spacing:.1em; font-size:.85rem; color:var(--muted-2); margin-bottom:16px; }
+.tools-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+.tool-card {
+  padding:20px 14px; border-radius:var(--r-md,16px); border:1px solid var(--panel-brd); background:var(--panel);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; text-align:center;
   transition:transform var(--dur-base,.35s) var(--ease-out,ease), border-color var(--dur-base,.35s) var(--ease-out,ease), box-shadow var(--dur-base,.35s) var(--ease-out,ease);
 }
-.tool-chip:hover { transform:translateY(-6px); border-color:var(--red); box-shadow:var(--shadow-md,var(--shadow)); }
-.tool-chip .tool-name { font-family:'Anton',sans-serif; font-size:1.15rem; letter-spacing:.01em; }
-.tool-chip .tool-tag { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted-2); }
-@media (max-width:860px){ .tools-grid { grid-template-columns:repeat(2,1fr); } }
-@media (max-width:520px){ .tools-grid { grid-template-columns:1fr 1fr; gap:12px; } }
+.tool-card:hover { transform:translateY(-6px); border-color:var(--red); box-shadow:var(--shadow-md,var(--shadow)); }
+.tool-plate { width:100%; height:56px; border-radius:12px; background:#fff; display:flex; align-items:center; justify-content:center; padding:8px 12px; }
+.tool-plate img { height:100%; width:auto; max-width:100%; object-fit:contain; display:block; }
+.tool-plate-mono { background:var(--plate-bg,#111); }
+.tool-plate-mono .tool-mono { color:#fff; font-family:'Anton',sans-serif; font-size:1.1rem; letter-spacing:.02em; }
+.tool-card .tool-name { font-family:'Anton',sans-serif; font-size:1.02rem; letter-spacing:.01em; }
+@media (max-width:860px){ .tools-grid { grid-template-columns:repeat(3,1fr); } }
+@media (max-width:520px){ .tools-grid { grid-template-columns:1fr 1fr; gap:10px; } }
 /* "We do GenAI, Right" reuses hoichoi's Boldly Bangali banner markup, which
    is styled in playful Bengali display fonts — swap in the clean geometric
    sans (same family as the LoglineAI logo/wordmark) here only. */
@@ -340,6 +348,11 @@ nav.scrolled .logo-img { height:23px; }
    LAYOUT PRIMITIVES
    ============================================================ */
 section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px); }
+/* #tools and #founder each follow an unusually long/dense section (the AI
+   Workflow 5-stage grid, and the newly-merged Culture section) — the normal
+   top padding compounds with that into a long stretch of near-empty scroll
+   before any content appears. Tighten just the top edge here. */
+#tools, #founder { padding-top:clamp(40px,6vw,72px); }
 #hr, #posh, #essentials, #journey, #calendar, #teams { padding-top:clamp(56px,6vw,90px); padding-bottom:clamp(56px,6vw,90px); }
 .wrap { max-width:var(--maxw); margin:0 auto; }
 .eyebrow {

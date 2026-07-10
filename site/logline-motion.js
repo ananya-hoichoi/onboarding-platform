@@ -96,7 +96,7 @@
 
       /* Card-grid stagger for the denser grids, slightly snappier than the
          generic reveal above. */
-      ['.info-grid', '.pillars', '.jcards', '.stats', '.vm-grid', '.okr-grid'].forEach((sel) => {
+      ['.info-grid', '.pillars', '.jcards', '.stats', '.vm-grid', '.okr-grid', '.tools-grid'].forEach((sel) => {
         document.querySelectorAll(sel).forEach((grid) => {
           const cards = gsap.utils.toArray(grid.children);
           if (!cards.length) return;
