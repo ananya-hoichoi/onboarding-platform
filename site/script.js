@@ -320,6 +320,10 @@ setTheme(savedTheme);
   function draw() {
     rafId = null;
     if (!running) return;
+    // skip particle work while the vertical gate overlay is up — nothing is
+    // visible behind it, and it was competing for main-thread time with the
+    // gate panel's own hover transition
+    if (document.body.classList.contains('locked')) { rafId = requestAnimationFrame(draw); return; }
     c.clearRect(0, 0, w, h);
     for (const p of parts) {
       // gentle drift + subtle attraction to cursor

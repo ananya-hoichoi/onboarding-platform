@@ -73,7 +73,7 @@
 
     if (lenis) {
       lenis.on('scroll', ScrollTrigger.update);
-      gsap.ticker.add((time) => lenis.raf(time * 1000));
+      gsap.ticker.add((time) => { if (!document.body.classList.contains('locked')) lenis.raf(time * 1000); });
       gsap.ticker.lagSmoothing(0);
     }
 
@@ -238,6 +238,7 @@
     let rafId = null;
     function tick() {
       rafId = requestAnimationFrame(tick);
+      if (document.body.classList.contains('locked')) return;
       if (!visible) return;
       const pos = pointsGeo.attributes.position.array;
       for (let i = 0; i < NODE_COUNT; i++) {

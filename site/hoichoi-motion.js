@@ -77,7 +77,7 @@
 
     if (lenis) {
       lenis.on('scroll', ScrollTrigger.update);
-      gsap.ticker.add((time) => lenis.raf(time * 1000));
+      gsap.ticker.add((time) => { if (!document.body.classList.contains('locked')) lenis.raf(time * 1000); });
       gsap.ticker.lagSmoothing(0);
     }
 
@@ -245,6 +245,10 @@
 
     function tick() {
       rafId = requestAnimationFrame(tick);
+      // skip all work while the vertical gate overlay is up — no visible
+      // benefit to rendering behind it, and it was competing for main-thread
+      // time with the gate panel's own hover transition, making it feel laggy
+      if (document.body.classList.contains('locked')) return;
       if (!active || !visible || !renderer) return;
       const pos = pointsGeo.attributes.position.array;
       for (let i = 0; i < NODE_COUNT; i++) {
