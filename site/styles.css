@@ -1095,10 +1095,14 @@ html:not([data-theme])[data-hc-mode="light"] .marquee-track .m-logo:hover img { 
   flex:1 1 0; position:relative; overflow:hidden; border-radius:24px; cursor:pointer; padding:0;
   border:1px solid rgba(255,255,255,.12); background:#111; color:#fff;
   display:flex; align-items:flex-end; text-align:left;
-  transition:flex-grow .55s var(--ease), border-color .3s var(--ease), box-shadow .4s var(--ease);
+  will-change:transform;
+  /* transform/box-shadow/border-color only — animating flex-grow here used to
+     force a full flexbox reflow on every frame, which is what made the
+     panels feel jittery and laggy. */
+  transition:transform .45s var(--ease), border-color .3s var(--ease), box-shadow .4s var(--ease);
 }
 .gate-panel:hover, .gate-panel:focus-visible {
-  flex-grow:2.6; border-color:rgba(255,255,255,.45); outline:none; box-shadow:0 30px 70px -20px rgba(0,0,0,.7);
+  transform:translateY(-10px) scale(1.015); border-color:rgba(255,255,255,.45); outline:none; box-shadow:0 30px 70px -20px rgba(0,0,0,.7); z-index:3;
 }
 .gp-bg { position:absolute; inset:0; z-index:0; transition:transform .6s var(--ease); }
 .gate-panel:hover .gp-bg { transform:scale(1.07); }
@@ -1125,7 +1129,7 @@ html:not([data-theme])[data-hc-mode="light"] .marquee-track .m-logo:hover img { 
 @media (max-width:760px){
   .gate-panels { flex-direction:column; height:auto; width:100%; max-width:440px; gap:12px; }
   .gate-panel { min-height:120px; }
-  .gate-panel:hover, .gate-panel:focus-visible { flex-grow:1; }
+  .gate-panel:hover, .gate-panel:focus-visible { transform:scale(1.015); }
   .gp-enter { opacity:1; transform:none; }
   .gp-inner { padding:22px; }
   .gp-logo { height:30px; } .gp-sooper .gp-logo { height:44px; width:150px; }

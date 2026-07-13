@@ -7,12 +7,13 @@
   <meta name="description" content="Employee onboarding experience for hoichoi — India's leading Bengali OTT platform." />
   <link rel="stylesheet" href="styles.css" />
   <script>
-    /* apply saved theme before first paint to avoid a flash */
+    /* apply saved theme before first paint to avoid a flash — but landing on
+       this page always re-shows the "which world" gate (see script.js), so
+       we never silently redirect straight into a previously chosen vertical. */
     (function () {
       try {
         var t = localStorage.getItem('hoichoi-vertical') || 'hoichoi';
-        if (t === 'logline') { window.location.replace('logline.html'); return; }
-        if (t !== 'hoichoi') document.documentElement.setAttribute('data-theme', t);
+        if (t !== 'hoichoi' && t !== 'logline') document.documentElement.setAttribute('data-theme', t);
       } catch (e) {}
     })();
     /* hoichoi light/dark mode — respects saved choice, else system preference — set before first paint */
@@ -646,11 +647,6 @@
     </div>
   </section>
 
-  <footer>
-    <div class="brand">hoichoi<span class="dot">.</span></div>
-    <p style="margin-top:10px">Employee Onboarding · FY26 · An SVF Entertainment Pvt. Ltd. company</p>
-    <p style="margin-top:6px">Interactive onboarding experience — recreated from the official onboarding deck.</p>
-  </footer>
 
   <!-- CINEMATIC TOUR -->
   <div id="tourVignette" aria-hidden="true"></div>

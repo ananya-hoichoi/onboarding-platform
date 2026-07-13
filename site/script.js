@@ -35,10 +35,7 @@ window.addEventListener('load', () => {
     document.getElementById('preloader').classList.add('done');
     const page = document.body.dataset.page || 'index';
     if (page === 'logline') { document.body.classList.remove('locked'); return; } // never auto-gate here
-    let chosen = null;
-    try { chosen = localStorage.getItem('hoichoi-vertical'); } catch (e) {}
-    if (chosen) document.body.classList.remove('locked'); // returning visitor — skip the gate
-    else openGate();                                       // first visit — show the chooser
+    openGate(); // always ask "which world are you joining" on this entry point — never skip based on a saved preference
   }, 2000);
 });
 
