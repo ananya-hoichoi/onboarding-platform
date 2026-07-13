@@ -135,6 +135,23 @@
   })();
 
   /* ============================================================
+     2c) AI WORKFLOW — single-panel stepper
+     ============================================================ */
+  (function workflowStepper() {
+    const btns = document.querySelectorAll('.wf-btn');
+    if (!btns.length) return;
+    btns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        btns.forEach((b) => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+        document.querySelectorAll('.wf-panel').forEach((p) => p.classList.remove('active'));
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        document.getElementById(btn.dataset.wf)?.classList.add('active');
+      });
+    });
+  })();
+
+  /* ============================================================
      3) THREE.JS HERO EXPERIENCE
      A quiet particle-network field — nodes drifting and linking
      when close, echoing "logline" connecting scattered signals.
