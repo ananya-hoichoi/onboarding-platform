@@ -307,18 +307,13 @@ body[data-page="logline"] .boldly-tag .bl-bn { font-family:var(--font-ui); font-
 .vlead-body ul li::before { content:'▹'; position:absolute; left:0; color:var(--red); }
 @media (max-width:720px){ .vlead { flex-direction:column; } .vlead-photo { flex:none; width:100%; aspect-ratio:16/10; } }
 
-/* Sooper's team section — two cards side by side instead of one full-width
-   spotlight. At half-width the horizontal photo+text split (built for
-   logline's single full-width card) let the raw image balloon to its full
-   intrinsic size and crush the text into a sliver — stack vertically
-   instead, matching the proportions of hoichoi's own .leader-card
-   (fixed-height photo strip on top, body below). */
-.vlead-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:34px; }
-.vlead-grid .vlead { margin-top:0; flex-direction:column; }
-.vlead-grid .vlead-photo { flex:0 0 280px; width:100%; aspect-ratio:auto; }
-.vlead-grid .vlead-body { padding:28px clamp(22px,3vw,32px) 32px; }
-@media (max-width:900px){ .vlead-grid { grid-template-columns:1fr; } }
-@media (max-width:520px){ .vlead-grid .vlead-photo { flex-basis:220px; } }
+/* Sooper's team section — reuses the same .team-card used in hoichoi's
+   department carousel (small circular avatar + bullet list), just laid
+   out as a plain 2-up grid instead of a horizontal scroll strip, since
+   there are only two cards. */
+.sooper-team-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:34px; }
+.sooper-team-grid .team-card { flex:none; width:auto; }
+@media (max-width:640px){ .sooper-team-grid { grid-template-columns:1fr; } }
 
 /* Sections that exist for one vertical only — hidden everywhere else */
 .sooper-only { display:none; }

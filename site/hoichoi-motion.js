@@ -116,7 +116,7 @@
         });
       }
 
-      ['.info-grid', '.pillars', '.jcards', '.stats', '.vm-grid', '.okr-grid', '.init-grid', '.vlead-grid'].forEach((sel) => {
+      ['.info-grid', '.pillars', '.jcards', '.stats', '.vm-grid', '.okr-grid', '.init-grid', '.sooper-team-grid'].forEach((sel) => {
         document.querySelectorAll(sel).forEach((grid) => {
           const cards = gsap.utils.toArray(grid.children);
           if (!cards.length) return;
