@@ -126,7 +126,8 @@
    the name" section, nor the hoichoi-history/new-initiatives section —
    hoichoi and LoglineAI keep these unchanged. */
 [data-theme="sooper"] #about,
-[data-theme="sooper"] #hoichoi-story { display:none; }
+[data-theme="sooper"] #hoichoi-story,
+[data-theme="sooper"] #teams { display:none; }
 
 /* ---------- hoichoi · design tokens (spacing/radius/elevation/motion) ----------
    Scoped to html:not([data-theme]) — hoichoi is the default/no-attribute
@@ -782,6 +783,19 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
 }
 /* Latin-script variant of the second line (e.g. "Right.") — same size, correct font */
 .boldly-tag .bl-genai { font-family:'Baloo 2',sans-serif; }
+
+/* Sooper reuses the Boldly Bangali banner markup/class but needs its own
+   tagline and a background that matches its yellow logo instead of
+   hoichoi's red/purple gradient. */
+.sooper-tag { display:none; }
+[data-theme="sooper"] .hoyejak-banner { background:var(--grad); }
+[data-theme="sooper"] .boldly-logo,
+[data-theme="sooper"] .boldly-tag { display:none; }
+[data-theme="sooper"] .sooper-tag {
+  display:flex; flex-direction:column; align-items:center; gap:2px; line-height:1.08;
+  font-family:'Anton',sans-serif; text-transform:uppercase; letter-spacing:.01em;
+  font-size:clamp(1.8rem,5.4vw,3.4rem); color:var(--on-accent);
+}
 
 /* founder's office video */
 .founder-wrap {

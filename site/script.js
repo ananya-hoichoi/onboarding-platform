@@ -269,6 +269,8 @@ function setTheme(t) {
     b.classList.toggle('active', b.dataset.themeBtn === t));
   const li = document.getElementById('navLogoImg');
   if (li) li.src = 'assets/logos/' + t + '.png';
+  const fn = document.getElementById('finaleName');
+  if (fn && (t === 'hoichoi' || t === 'sooper')) fn.textContent = t === 'sooper' ? 'Sooper' : 'hoichoi';
   refreshPalette();
   window.dispatchEvent(new CustomEvent('vertical:themechange', { detail: { theme: t } }));
 }
