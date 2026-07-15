@@ -16,13 +16,21 @@
         if (t !== 'hoichoi' && t !== 'logline') document.documentElement.setAttribute('data-theme', t);
       } catch (e) {}
     })();
-    /* hoichoi light/dark mode — respects saved choice, else system preference — set before first paint */
+    /* light/dark mode for whichever vertical is active — respects saved
+       choice per vertical, else system preference — set before first paint */
     (function () {
       try {
-        if (document.documentElement.getAttribute('data-theme')) return; // only applies to the hoichoi theme
-        var saved = localStorage.getItem('hoichoi-mode');
-        var mode = saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-        if (mode === 'light') document.documentElement.setAttribute('data-hc-mode', 'light');
+        var theme = document.documentElement.getAttribute('data-theme');
+        var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+        if (theme === 'sooper') {
+          var savedSp = localStorage.getItem('sooper-mode');
+          var modeSp = savedSp || (prefersLight ? 'light' : 'dark');
+          if (modeSp === 'dark') document.documentElement.setAttribute('data-sp-mode', 'dark');
+        } else if (!theme) {
+          var savedHc = localStorage.getItem('hoichoi-mode');
+          var modeHc = savedHc || (prefersLight ? 'light' : 'dark');
+          if (modeHc === 'light') document.documentElement.setAttribute('data-hc-mode', 'light');
+        }
       } catch (e) {}
     })();
   </script>

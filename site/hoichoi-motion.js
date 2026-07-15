@@ -16,38 +16,60 @@
   function isHoichoi() { return !root.getAttribute('data-theme'); }
 
   /* ============================================================
-     1) LIGHT / DARK MODE TOGGLE (hoichoi only)
+     1) LIGHT / DARK MODE TOGGLE (hoichoi + Sooper)
+     One button, shared across both verticals. hoichoi defaults dark
+     (data-hc-mode="light" is the non-default state); Sooper defaults
+     light (data-sp-mode="dark" is the non-default state) — each theme
+     keeps its own saved preference under its own localStorage key.
      ============================================================ */
   (function modeToggle() {
     const btn = document.getElementById('hcModeToggle');
     if (!btn) return;
 
+    function isSooper() { return root.getAttribute('data-theme') === 'sooper'; }
+    function isLightNow() {
+      return isSooper() ? root.getAttribute('data-sp-mode') !== 'dark' : root.getAttribute('data-hc-mode') === 'light';
+    }
+
     function syncAria() {
-      const isLight = root.getAttribute('data-hc-mode') === 'light';
-      btn.setAttribute('aria-pressed', String(isLight));
-      btn.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+      const light = isLightNow();
+      btn.setAttribute('aria-pressed', String(light));
+      btn.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
     }
     syncAria();
 
-    btn.addEventListener('click', () => {
-      const isLight = root.getAttribute('data-hc-mode') === 'light';
-      const next = isLight ? 'dark' : 'light';
-      if (next === 'light') root.setAttribute('data-hc-mode', 'light');
-      else root.removeAttribute('data-hc-mode');
-      try { localStorage.setItem('hoichoi-mode', next); } catch (e) {}
+    function applyMode(mode) {
+      if (isSooper()) {
+        if (mode === 'dark') root.setAttribute('data-sp-mode', 'dark'); else root.removeAttribute('data-sp-mode');
+        try { localStorage.setItem('sooper-mode', mode); } catch (e) {}
+      } else {
+        if (mode === 'light') root.setAttribute('data-hc-mode', 'light'); else root.removeAttribute('data-hc-mode');
+        try { localStorage.setItem('hoichoi-mode', mode); } catch (e) {}
+      }
       syncAria();
-      window.dispatchEvent(new CustomEvent('hoichoi:modechange', { detail: { mode: next } }));
+      window.dispatchEvent(new CustomEvent('hoichoi:modechange', { detail: { mode } }));
+    }
+
+    btn.addEventListener('click', () => applyMode(isLightNow() ? 'dark' : 'light'));
+
+    // when the vertical switches live, re-apply that vertical's own saved
+    // mode (or system preference) and refresh the button's displayed state
+    window.addEventListener('vertical:themechange', () => {
+      if (isSooper()) {
+        let saved;
+        try { saved = localStorage.getItem('sooper-mode'); } catch (e) {}
+        const mode = saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        if (mode === 'dark') root.setAttribute('data-sp-mode', 'dark'); else root.removeAttribute('data-sp-mode');
+      }
+      syncAria();
     });
 
     try {
-      if (!localStorage.getItem('hoichoi-mode')) {
-        window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
-          if (!isHoichoi()) return;
-          if (e.matches) root.setAttribute('data-hc-mode', 'light'); else root.removeAttribute('data-hc-mode');
-          syncAria();
-          window.dispatchEvent(new CustomEvent('hoichoi:modechange', { detail: { mode: e.matches ? 'light' : 'dark' } }));
-        });
-      }
+      window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
+        const key = isSooper() ? 'sooper-mode' : 'hoichoi-mode';
+        if (localStorage.getItem(key)) return; // this vertical has an explicit saved choice already
+        applyMode(e.matches ? 'light' : 'dark');
+      });
     } catch (e) {}
   })();
 

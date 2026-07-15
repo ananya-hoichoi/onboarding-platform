@@ -94,6 +94,40 @@
   --shadow:    0 30px 70px -24px rgba(120,90,0,.28);
 }
 
+/* ---------- THEME: Sooper · dark mode (warm amber-black, not inverted) ---------- */
+[data-theme="sooper"][data-sp-mode="dark"] {
+  --bg:        #161208;
+  --bg-2:      #1f1a0d;
+  --bg-3:      #252012;
+  --surface-rgb: 255,247,224;
+  --red:       #ffcb2e;
+  --red-2:     #ffe066;
+  --red-deep:  #c98a00;
+  --accent-rgb: 255,203,46;
+  --grad:      linear-gradient(135deg,#ffcb2e,#f59e00);
+  --btn-bg:    linear-gradient(135deg,#ffcb2e,#f59e00);
+  --on-accent: #241f10;
+  --hi:        #fffaf0;
+  --cream:     #fdf6e3;
+  --gold:      #ffcb2e;
+  --text:      #f5efe0;
+  --muted:     #b8ab8c;
+  --muted-2:   #8a7d61;
+  --glow1:     #5c4413;
+  --glow2:     #3d2e0c;
+  --glow3:     #4a3810;
+  --dot-rgb:   255,247,224;
+  --nav-bg:    rgba(22,18,8,.85);
+  --menu-bg:   rgba(22,18,8,.97);
+  --shadow:    0 30px 80px -20px rgba(0,0,0,.7);
+}
+
+/* Sooper doesn't need the hoichoi-brand-specific "one correct way to write
+   the name" section, nor the hoichoi-history/new-initiatives section —
+   hoichoi and LoglineAI keep these unchanged. */
+[data-theme="sooper"] #about,
+[data-theme="sooper"] #hoichoi-story { display:none; }
+
 /* ---------- hoichoi · design tokens (spacing/radius/elevation/motion) ----------
    Scoped to html:not([data-theme]) — hoichoi is the default/no-attribute
    theme — so this never leaks into the Sooper or LoglineAI experiences. */
@@ -292,13 +326,12 @@ body[data-page="logline"] button:focus-visible { outline:2px solid var(--red); o
 
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
-/* Lenis drives its own smoothing on the logline page and hoichoi theme —
-   native smooth-scroll fighting it on top is what made scrolling feel
-   slow/laggy. Sooper has no Lenis instance, so it keeps native smooth-scroll. */
-html[data-theme="logline"], html:not([data-theme]) { scroll-behavior:auto; }
+/* Lenis drives its own smoothing on all three verticals — native
+   smooth-scroll fighting it on top is what made scrolling feel slow/laggy. */
+html[data-theme="logline"], html:not([data-theme]), html[data-theme="sooper"] { scroll-behavior:auto; }
 body {
   font-family:'Poppins', system-ui, sans-serif;
-  background:var(--bg);
+  background-color:var(--bg);
   color:var(--text);
   line-height:1.6;
   overflow-x:hidden;
@@ -939,7 +972,7 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
 .confetti { position:fixed; inset:0; pointer-events:none; z-index:8000; }
 
 /* footer */
-footer { padding:50px clamp(20px,5vw,60px); border-top:1px solid var(--panel-brd); text-align:center; color:var(--muted-2); font-size:.82rem; background:var(--bg); }
+footer { padding:50px clamp(20px,5vw,60px); border-top:1px solid var(--panel-brd); text-align:center; color:var(--muted-2); font-size:.82rem; background-color:var(--bg); }
 footer .brand { font-size:1.4rem; }
 
 /* ============================================================
@@ -1015,7 +1048,10 @@ body.cursor-on a, body.cursor-on button, body.cursor-on .jtab, body.cursor-on .a
 /* the reel's stroke is a hardcoded near-white rgba() on the <svg> element,
    tuned for the dark themes — nearly invisible on a light background. */
 html[data-theme="logline"][data-lp-mode="light"] .reel,
-html:not([data-theme])[data-hc-mode="light"] .reel { stroke:rgba(0,0,0,.35); }
+html:not([data-theme])[data-hc-mode="light"] .reel,
+html[data-theme="sooper"] .reel { stroke:rgba(0,0,0,.35); }
+/* ...but Sooper's own dark mode needs the original light stroke back */
+html[data-theme="sooper"][data-sp-mode="dark"] .reel { stroke:rgba(255,255,255,.5); }
 @keyframes spin { to{ transform:rotate(360deg); } }
 .float-play {
   position:absolute; width:44px; height:44px; border-radius:50%; border:1px solid rgba(var(--surface-rgb),.18);
@@ -1234,10 +1270,10 @@ html[data-theme="logline"], body[data-page="logline"], body[data-page="logline"]
   transition: background-color var(--dur-base,.4s) var(--ease-out,ease), color var(--dur-base,.4s) var(--ease-out,ease);
 }
 
-/* ---------- hoichoi · light/dark mode toggle ----------
-   Only meaningful for the hoichoi theme — hidden entirely once the
-   Sooper theme is active, since Sooper never had a mode toggle. */
-[data-theme] .hc-mode-toggle { display:none; }
+/* ---------- hoichoi/Sooper · light/dark mode toggle ----------
+   One button, shared across both verticals on index.html — its meaning
+   (and which data attribute it flips) depends on whichever theme is
+   currently active; see hoichoi-motion.js. */
 .hc-mode-toggle {
   display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:50%;
   border:1px solid var(--panel-brd); background:var(--panel); color:var(--text); cursor:pointer;
@@ -1249,9 +1285,12 @@ html[data-theme="logline"], body[data-page="logline"], body[data-page="logline"]
 .hc-icon { width:18px; height:18px; position:absolute; transition:transform var(--dur-base,.4s) var(--ease-spring,ease), opacity var(--dur-base,.4s) var(--ease-out,ease); }
 .hc-icon-sun { opacity:1; transform:rotate(0deg) scale(1); }
 .hc-icon-moon { opacity:0; transform:rotate(-90deg) scale(.5); }
-html[data-hc-mode="light"] .hc-icon-sun { opacity:0; transform:rotate(90deg) scale(.5); }
-html[data-hc-mode="light"] .hc-icon-moon { opacity:1; transform:rotate(0deg) scale(1); }
-html:not([data-theme]), html:not([data-theme]) body, html:not([data-theme]) body > section {
+html[data-hc-mode="light"] .hc-icon-sun,
+html[data-theme="sooper"][data-sp-mode="dark"] .hc-icon-sun { opacity:0; transform:rotate(90deg) scale(.5); }
+html[data-hc-mode="light"] .hc-icon-moon,
+html[data-theme="sooper"][data-sp-mode="dark"] .hc-icon-moon { opacity:1; transform:rotate(0deg) scale(1); }
+html:not([data-theme]), html:not([data-theme]) body, html:not([data-theme]) body > section,
+html[data-theme="sooper"], html[data-theme="sooper"] body, html[data-theme="sooper"] body > section {
   transition: background-color var(--dur-base,.4s) var(--ease-out,ease), color var(--dur-base,.4s) var(--ease-out,ease);
 }
 
