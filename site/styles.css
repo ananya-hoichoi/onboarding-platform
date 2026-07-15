@@ -306,6 +306,16 @@ body[data-page="logline"] .boldly-tag .bl-bn { font-family:var(--font-ui); font-
 .vlead-body ul li { font-size:.95rem; color:var(--muted); padding-left:20px; position:relative; }
 .vlead-body ul li::before { content:'▹'; position:absolute; left:0; color:var(--red); }
 @media (max-width:720px){ .vlead { flex-direction:column; } .vlead-photo { flex:none; width:100%; aspect-ratio:16/10; } }
+
+/* Sooper's team section — two spotlight cards side by side instead of one */
+.vlead-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:34px; }
+.vlead-grid .vlead { margin-top:0; }
+.vlead-grid .vlead-photo { flex-basis:auto; aspect-ratio:3/4; }
+@media (max-width:900px){ .vlead-grid { grid-template-columns:1fr; } }
+
+/* Sections that exist for one vertical only — hidden everywhere else */
+.sooper-only { display:none; }
+[data-theme="sooper"] .sooper-only { display:block; }
 /* "We do GenAI, Right" banner reuses hoichoi's Boldly Bangali markup/class but
    needs its own on-brand background here instead of the red/purple gradient. */
 body[data-page="logline"] .hoyejak-banner { background:var(--grad); }
@@ -981,6 +991,9 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
   -webkit-text-fill-color:transparent; color:transparent;
 }
 .fin-inner h2 .r .ai-caps { text-transform:uppercase; }
+/* "Sooper" keeps its capital S — the lowercase transform above was written
+   for hoichoi's naturally-lowercase brand name. */
+[data-theme="sooper"] .fin-inner h2 .r { text-transform:none; }
 .fin-inner .hoye { font-family:'Anton'; font-size:clamp(2rem,6vw,4rem); color:var(--cream); margin-top:10px; }
 .fin-inner p { color:var(--muted); margin-top:20px; max-width:520px; margin-inline:auto; }
 .confetti { position:fixed; inset:0; pointer-events:none; z-index:8000; }
