@@ -5,8 +5,65 @@
 /* ---------- Preloader + vertical gate ---------- */
 const gateEl = document.getElementById('gate');
 
+/* ---------- personalised onboarding: user's first name ---------- */
+const NAME_KEY = 'hoichoi-user-name';
+function getUserName() {
+  try { return (localStorage.getItem(NAME_KEY) || '').trim(); } catch (e) { return ''; }
+}
+function setUserName(n) {
+  try { localStorage.setItem(NAME_KEY, n); } catch (e) {}
+}
+function updateGreeting() {
+  const name = getUserName();
+  const hi = document.getElementById('hiUser');
+  if (hi) {
+    if (name) { hi.textContent = 'Hi, ' + name + ' \u{1F44B}'; hi.classList.add('show'); }
+    else { hi.textContent = ''; hi.classList.remove('show'); }
+  }
+  const heroName = document.getElementById('heroUserName');
+  if (heroName) {
+    if (name) { heroName.textContent = name + ', '; heroName.classList.add('show'); }
+    else { heroName.textContent = ''; heroName.classList.remove('show'); }
+  }
+}
+updateGreeting();
+
+const gateStageName = document.getElementById('gateStageName');
+const gateStageWorld = document.getElementById('gateStageWorld');
+const gateNameForm = document.getElementById('gateNameForm');
+const gateNameInput = document.getElementById('gateNameInput');
+const gateSkipBtn = document.getElementById('gateSkip');
+const gateGreetEyebrow = document.getElementById('gateGreetEyebrow');
+
+function showWorldStage() {
+  const name = getUserName();
+  if (gateGreetEyebrow) gateGreetEyebrow.textContent = name ? ('Welcome aboard, ' + name) : 'Welcome aboard';
+  if (gateStageName) gateStageName.classList.remove('active');
+  if (gateStageWorld) gateStageWorld.classList.add('active');
+}
+function showNameStage() {
+  if (gateStageWorld) gateStageWorld.classList.remove('active');
+  if (gateStageName) {
+    gateStageName.classList.add('active');
+    if (gateNameInput) setTimeout(() => gateNameInput.focus(), 350);
+  }
+}
+if (gateNameForm) {
+  gateNameForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const val = (gateNameInput.value || '').trim();
+    if (val) { setUserName(val); updateGreeting(); }
+    showWorldStage();
+  });
+}
+if (gateSkipBtn) gateSkipBtn.addEventListener('click', showWorldStage);
+
 function openGate() {
   if (!gateEl) return;
+  // returning users who already gave their name skip straight to the world
+  // picker; first-time visitors are asked their name first, every time the
+  // gate opens without a stored name — never re-ask once it's known.
+  if (getUserName()) showWorldStage(); else showNameStage();
   gateEl.classList.add('show');
   gateEl.setAttribute('aria-hidden', 'false');
   document.body.classList.add('locked');

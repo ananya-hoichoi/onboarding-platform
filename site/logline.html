@@ -36,38 +36,56 @@
 
   <!-- VERTICAL GATE -->
   <div id="gate" aria-hidden="true">
-    <div class="gate-head">
-      <span class="gate-eyebrow">Welcome aboard</span>
-      <h1 class="gate-title display">Which world are<br>you joining?</h1>
-      <p class="gate-sub">Choose your vertical to begin your onboarding journey.</p>
+    <div class="gate-stage gate-stage-name active" id="gateStageName">
+      <div class="gate-orb gate-orb-1"></div>
+      <div class="gate-orb gate-orb-2"></div>
+      <div class="gate-orb gate-orb-3"></div>
+      <div class="gate-name-inner">
+        <span class="gate-eyebrow">Welcome aboard</span>
+        <h1 class="gate-title display">Let's make this<br>yours.</h1>
+        <p class="gate-sub">Tell us your name — we'll tailor the whole journey around it.</p>
+        <form id="gateNameForm" class="gate-name-form" autocomplete="off">
+          <span class="gate-name-caret">✦</span>
+          <input type="text" id="gateNameInput" class="gate-name-input" placeholder="Your first name" maxlength="30" required />
+          <button type="submit" class="gate-name-btn">Continue <span class="arr">→</span></button>
+        </form>
+        <button type="button" class="gate-skip" id="gateSkip">Skip for now</button>
+      </div>
     </div>
-    <div class="gate-panels">
-      <button class="gate-panel gp-hoichoi" data-vertical="hoichoi" aria-label="Join hoichoi">
-        <div class="gp-bg"></div>
-        <div class="gp-inner">
-          <img class="gp-logo" src="assets/logos/hoichoi.png" alt="hoichoi" />
-          <p class="gp-tag">Bengali entertainment for 250 million, worldwide.</p>
-          <span class="gp-enter">Enter <span class="arr">→</span></span>
-        </div>
-      </button>
-      <button class="gate-panel gp-logline" data-vertical="logline" aria-label="Join LoglineAI">
-        <div class="gp-bg"></div>
-        <div class="gp-inner">
-          <img class="gp-logo" src="assets/logos/logline.png" alt="LoglineAI" />
-          <p class="gp-tag">AI-native creative studio — Hollywood-grade, 10× speed.</p>
-          <span class="gp-enter">Enter <span class="arr">→</span></span>
-        </div>
-      </button>
-      <button class="gate-panel gp-sooper" data-vertical="sooper" aria-label="Join Sooper">
-        <div class="gp-bg"></div>
-        <div class="gp-inner">
-          <img class="gp-logo" src="assets/logos/sooper.png" alt="Sooper" />
-          <p class="gp-tag">Micro-dramas &amp; audio for the scroll-first generation.</p>
-          <span class="gp-enter">Enter <span class="arr">→</span></span>
-        </div>
-      </button>
+    <div class="gate-stage gate-stage-world" id="gateStageWorld">
+      <div class="gate-head">
+        <span class="gate-eyebrow" id="gateGreetEyebrow">Welcome aboard</span>
+        <h1 class="gate-title display">Which world are<br>you joining?</h1>
+        <p class="gate-sub">Choose your vertical to begin your onboarding journey.</p>
+      </div>
+      <div class="gate-panels">
+        <button class="gate-panel gp-hoichoi" data-vertical="hoichoi" aria-label="Join hoichoi">
+          <div class="gp-bg"></div>
+          <div class="gp-inner">
+            <img class="gp-logo" src="assets/logos/hoichoi.png" alt="hoichoi" />
+            <p class="gp-tag">Bengali entertainment for 250 million, worldwide.</p>
+            <span class="gp-enter">Enter <span class="arr">→</span></span>
+          </div>
+        </button>
+        <button class="gate-panel gp-logline" data-vertical="logline" aria-label="Join LoglineAI">
+          <div class="gp-bg"></div>
+          <div class="gp-inner">
+            <img class="gp-logo" src="assets/logos/logline.png" alt="LoglineAI" />
+            <p class="gp-tag">AI-native creative studio — Hollywood-grade, 10× speed.</p>
+            <span class="gp-enter">Enter <span class="arr">→</span></span>
+          </div>
+        </button>
+        <button class="gate-panel gp-sooper" data-vertical="sooper" aria-label="Join Sooper">
+          <div class="gp-bg"></div>
+          <div class="gp-inner">
+            <img class="gp-logo" src="assets/logos/sooper.png" alt="Sooper" />
+            <p class="gp-tag">Micro-dramas &amp; audio for the scroll-first generation.</p>
+            <span class="gp-enter">Enter <span class="arr">→</span></span>
+          </div>
+        </button>
+      </div>
+      <div class="gate-foot">Employee Onboarding</div>
     </div>
-    <div class="gate-foot">Employee Onboarding</div>
   </div>
 
   <!-- PROGRESS -->
@@ -89,6 +107,7 @@
         <a href="#journey">Onboarding</a>
         <a href="#teams">Teams</a>
       </div>
+      <span class="hi-user" id="hiUser" aria-live="polite"></span>
       <button class="lp-mode-toggle" id="lpModeToggle" aria-label="Toggle light/dark mode" aria-pressed="false">
         <svg class="lp-icon lp-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v3M12 18.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2.5 12h3M18.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
         <svg class="lp-icon lp-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.6A9 9 0 1 1 9.4 3.5a7 7 0 0 0 11.1 11.1Z"/></svg>
@@ -130,7 +149,7 @@
         <span class="line l2"><span>our new</span></span>
         <span class="line l3"><span>members</span></span>
       </h1>
-      <p class="hero-tag">We are <b>glad to have you onboard!</b> &nbsp;Let's take you behind the scenes of a creative AI studio building the future of storytelling.</p>
+      <p class="hero-tag"><span id="heroUserName"></span>We are <b>glad to have you onboard!</b> &nbsp;Let's take you behind the scenes of a creative AI studio building the future of storytelling.</p>
       <div class="hero-cta">
         <a href="#about" class="btn btn-primary"><span class="ico">▶</span> Explore LoglineAI</a>
         <a href="#journey" class="btn btn-ghost">Your first 90 days</a>
