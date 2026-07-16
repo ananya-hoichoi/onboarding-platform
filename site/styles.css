@@ -1310,12 +1310,17 @@ html:not([data-theme])[data-hc-mode="light"] .marquee-track .m-logo:hover img { 
 .gate-foot { position:relative; z-index:2; color:#6c6c78; font-size:.78rem; letter-spacing:.04em; text-align:center; }
 
 @media (max-width:760px){
-  .gate-panels { flex-direction:column; height:auto; width:100%; max-width:440px; gap:12px; }
-  .gate-panel { min-height:120px; }
+  #gate { padding:16px 18px; gap:12px; }
+  .gate-title { font-size:clamp(1.9rem,8vw,3rem); }
+  .gate-sub { margin-top:8px; font-size:.88rem; }
+  .gate-panels { flex-direction:column; height:auto; width:100%; max-width:440px; gap:10px; }
+  .gate-panel { min-height:92px; }
+  .gp-inner { padding:16px; gap:8px; }
+  .gp-tag { font-size:.86rem; }
+  .gate-foot { font-size:.7rem; }
   .gate-panel:hover, .gate-panel:focus-visible { flex-grow:1; }
-  .gp-enter { opacity:1; transform:none; }
-  .gp-inner { padding:22px; }
-  .gp-logo { height:30px; } .gp-sooper .gp-logo { height:44px; width:150px; }
+  .gp-enter { opacity:1; transform:none; font-size:.8rem; }
+  .gp-logo { height:26px; } .gp-sooper .gp-logo { height:38px; width:130px; }
 }
 @media (prefers-reduced-motion:reduce){ #gate::before { animation:none; } }
 
