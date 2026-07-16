@@ -1313,10 +1313,10 @@ html:not([data-theme])[data-hc-mode="light"] .marquee-track .m-logo:hover img { 
   #gate { padding:16px 18px; gap:12px; }
   .gate-title { font-size:clamp(1.9rem,8vw,3rem); }
   .gate-sub { margin-top:8px; font-size:.88rem; }
-  .gate-panels { flex-direction:column; height:auto; width:100%; max-width:440px; gap:10px; }
-  .gate-panel { min-height:92px; }
-  .gp-inner { padding:16px; gap:8px; }
-  .gp-tag { font-size:.86rem; }
+  .gate-panels { flex-direction:column; height:auto; width:100%; max-width:440px; gap:8px; }
+  .gate-panel { flex:none; min-height:80px; contain:none; }
+  .gp-inner { padding:14px 16px; gap:5px; }
+  .gp-tag { font-size:.82rem; line-height:1.3; }
   .gate-foot { font-size:.7rem; }
   .gate-panel:hover, .gate-panel:focus-visible { flex-grow:1; }
   .gp-enter { opacity:1; transform:none; font-size:.8rem; }
