@@ -342,8 +342,8 @@ body[data-page="logline"] footer .brand .brand-ai { text-transform:uppercase; }
 /* "Welcome to" / "LoglineAI" sit too close together under the tight .display
    line-height (0.95) meant for single-line headings — add breathing room
    between the two lines here only. */
-body[data-page="logline"] .fin-inner h2 { line-height:1.15; }
-body[data-page="logline"] .fin-inner h2 .r { display:inline-block; margin-top:.12em; }
+body[data-page="logline"] .fin-inner h2 { line-height:.95; }
+body[data-page="logline"] .fin-inner h2 .r { display:inline-block; }
 body[data-page="logline"] .acc-head:focus-visible,
 body[data-page="logline"] .cal-card:focus-visible,
 body[data-page="logline"] .btn:focus-visible,
