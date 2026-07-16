@@ -1200,7 +1200,7 @@ html:not([data-theme])[data-hc-mode="light"] .marquee-track .m-logo:hover img { 
   position:fixed; inset:0; z-index:9997; background:#08080b;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   justify-content:safe center;
-  gap:clamp(24px,4vw,42px); padding:40px 20px;
+  gap:clamp(14px,2.6vw,28px); padding:24px 20px;
   overflow-y:auto; -webkit-overflow-scrolling:touch;
   opacity:0; visibility:hidden; transition:opacity .6s var(--ease), visibility .6s;
 }
@@ -1265,11 +1265,11 @@ html:not([data-theme])[data-hc-mode="light"] .marquee-track .m-logo:hover img { 
 
 .gate-head { text-align:center; position:relative; z-index:2; }
 .gate-eyebrow { display:inline-block; font-size:.72rem; letter-spacing:.32em; text-transform:uppercase; color:#ff3b57; margin-bottom:14px; }
-.gate-title { font-size:clamp(2rem,6vw,4.2rem); color:#fff; }
+.gate-title { font-size:clamp(2rem,6vw,3.8rem); color:#fff; }
 .gate-sub { color:#9a9aa8; margin-top:16px; font-size:1rem; }
 
 .gate-panels {
-  position:relative; z-index:2; display:flex; gap:16px; width:min(1080px,94vw); height:min(56vh,470px);
+  position:relative; z-index:2; display:flex; gap:16px; width:min(1080px,94vw); height:min(50vh,440px);
   /* contain the reflow cost of animating flex-grow below to this subtree only,
      so the browser never has to re-measure the rest of the page on every
      frame of the hover transition — this is what actually fixed the jitter,
