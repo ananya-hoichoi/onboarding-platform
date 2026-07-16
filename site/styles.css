@@ -352,7 +352,7 @@ body[data-page="logline"] a:focus-visible,
 body[data-page="logline"] button:focus-visible { outline:2px solid var(--red); outline-offset:3px; border-radius:var(--r-sm); }
 
 * { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; }
+html { scroll-behavior:smooth; overflow-x:hidden; background-color:var(--bg); width:100%; }
 /* Lenis drives its own smoothing on all three verticals — native
    smooth-scroll fighting it on top is what made scrolling feel slow/laggy. */
 html[data-theme="logline"], html:not([data-theme]), html[data-theme="sooper"] { scroll-behavior:auto; }
