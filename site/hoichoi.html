@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hoichoi · Welcome Onboard</title>
+  <meta name="description" content="Employee onboarding experience for hoichoi — India's leading Bengali OTT platform." />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    /* apply saved theme before first paint to avoid a flash — but landing on
+       this page always re-shows the "which world" gate (see script.js), so
+       we never silently redirect straight into a previously chosen vertical. */
+    (function () {
+      try {
+        var t = localStorage.getItem('hoichoi-vertical') || 'hoichoi';
+        if (t !== 'hoichoi' && t !== 'logline') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+    /* light/dark mode for whichever vertical is active — respects saved
+       choice per vertical, else system preference — set before first paint */
+    (function () {
+      try {
+        var theme = document.documentElement.getAttribute('data-theme');
+        var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+        if (theme === 'sooper') {
+          var savedSp = localStorage.getItem('sooper-mode');
+          var modeSp = savedSp || (prefersLight ? 'light' : 'dark');
+          if (modeSp === 'dark') document.documentElement.setAttribute('data-sp-mode', 'dark');
+        } else if (!theme) {
+          var savedHc = localStorage.getItem('hoichoi-mode');
+          var modeHc = savedHc || (prefersLight ? 'light' : 'dark');
+          if (modeHc === 'light') document.documentElement.setAttribute('data-hc-mode', 'light');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0a0d'/%3E%3Ctext x='50' y='72' font-size='70' text-anchor='middle' fill='%23ee1c2e' font-family='Arial' font-weight='bold'%3Eh%3C/text%3E%3C/svg%3E" />
+</head>
+<body class="locked" data-page="hoichoi">
+
+  <!-- CURSOR -->
+  <div id="cursor-glow"></div>
+  <div id="cursor-dot"></div>
+
+  <!-- PRELOADER -->
+  <div id="preloader">
+    <div class="pl-word pl-word-svf" aria-label="SVF">
+      <span>S</span><span>V</span><span>F</span>
+    </div>
+    <div class="pl-bar"></div>
+  </div>
+
+  <!-- VERTICAL GATE -->
+  <div id="gate" aria-hidden="true">
+    <div class="gate-stage gate-stage-name active" id="gateStageName">
+      <div class="gate-orb gate-orb-1"></div>
+      <div class="gate-orb gate-orb-2"></div>
+      <div class="gate-orb gate-orb-3"></div>
+      <div class="gate-name-inner">
+        <span class="gate-eyebrow">Welcome aboard</span>
+        <h1 class="gate-title display">Let's make this<br>yours.</h1>
+        <p class="gate-sub">Tell us your name — we'll tailor the whole journey around it.</p>
+        <form id="gateNameForm" class="gate-name-form" autocomplete="off">
+          <span class="gate-name-caret">✦</span>
+          <input type="text" id="gateNameInput" class="gate-name-input" placeholder="Your first name" maxlength="30" required />
+          <button type="submit" class="gate-name-btn">Continue <span class="arr">→</span></button>
+        </form>
+        <button type="button" class="gate-skip" id="gateSkip">Skip for now</button>
+      </div>
+    </div>
+    <div class="gate-stage gate-stage-world" id="gateStageWorld">
+      <div class="gate-head">
+        <span class="gate-eyebrow" id="gateGreetEyebrow">Welcome aboard</span>
+        <h1 class="gate-title display">Which world are<br>you joining?</h1>
+        <p class="gate-sub">Choose your vertical to begin your onboarding journey.</p>
+      </div>
+      <div class="gate-panels">
+        <button class="gate-panel gp-hoichoi" data-vertical="hoichoi" aria-label="Join hoichoi">
+          <div class="gp-bg"></div>
+          <div class="gp-inner">
+            <img class="gp-logo" src="assets/logos/hoichoi.png" alt="hoichoi" />
+            <p class="gp-tag">Bengali entertainment for 250 million, worldwide.</p>
+            <span class="gp-enter">Enter <span class="arr">→</span></span>
+          </div>
+        </button>
+        <button class="gate-panel gp-logline" data-vertical="logline" aria-label="Join LoglineAI">
+          <div class="gp-bg"></div>
+          <div class="gp-inner">
+            <img class="gp-logo" src="assets/logos/logline.png" alt="LoglineAI" />
+            <p class="gp-tag">AI-native creative studio — Hollywood-grade, 10× speed.</p>
+            <span class="gp-enter">Enter <span class="arr">→</span></span>
+          </div>
+        </button>
+        <button class="gate-panel gp-sooper" data-vertical="sooper" aria-label="Join Sooper">
+          <div class="gp-bg"></div>
+          <div class="gp-inner">
+            <img class="gp-logo" src="assets/logos/sooper.png" alt="Sooper" />
+            <p class="gp-tag">Micro-dramas &amp; audio for the scroll-first generation.</p>
+            <span class="gp-enter">Enter <span class="arr">→</span></span>
+          </div>
+        </button>
+      </div>
+      <div class="gate-foot">Employee Onboarding</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div id="progress"></div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#hero" class="logo" id="navLogo" aria-label="hoichoi">
+      <img class="logo-img" id="navLogoImg" src="assets/logos/hoichoi.png" alt="hoichoi" onerror="document.getElementById('navLogo').classList.add('noimg')" />
+      <span class="logo-text">hoichoi<span class="dot">.</span></span>
+    </a>
+    <div class="nav-right">
+      <div class="nav-links" id="navLinks">
+        <a href="#about">About</a>
+        <a href="#story">Story</a>
+        <a href="#leadership">Leadership</a>
+        <a href="#culture">Culture</a>
+        <a href="#hr">HR &amp; Benefits</a>
+        <a href="#journey">Onboarding</a>
+        <a href="#calendar">Calendar</a>
+        <a href="#teams">Teams</a>
+      </div>
+      <span class="hi-user" id="hiUser" aria-live="polite"></span>
+      <button class="hc-mode-toggle" id="hcModeToggle" aria-label="Toggle light/dark mode" aria-pressed="false">
+        <svg class="hc-icon hc-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v3M12 18.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2.5 12h3M18.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+        <svg class="hc-icon hc-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.6A9 9 0 1 1 9.4 3.5a7 7 0 0 0 11.1 11.1Z"/></svg>
+      </button>
+      <button class="vertical-btn" id="gateOpen" aria-label="Switch vertical"><span class="vsw"></span><span class="vlbl">Switch vertical</span></button>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- ===================== HERO ===================== -->
+  <section id="hero">
+    <div class="hero-bg">
+      <div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div>
+    </div>
+    <div class="hero-grid"></div>
+    <canvas id="heroCanvas"></canvas>
+    <canvas id="heroCanvasGL"></canvas>
+    <div class="hero-decor">
+      <div class="reel-wrap reel-wrap-1">
+        <svg class="reel" viewBox="0 0 100 100" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="3">
+          <circle cx="50" cy="50" r="46"/><circle cx="50" cy="50" r="9" fill="var(--red)" stroke="none"/>
+          <circle cx="50" cy="22" r="8"/><circle cx="50" cy="78" r="8"/><circle cx="22" cy="50" r="8"/><circle cx="78" cy="50" r="8"/>
+          <circle cx="30" cy="30" r="6"/><circle cx="70" cy="30" r="6"/><circle cx="30" cy="70" r="6"/><circle cx="70" cy="70" r="6"/>
+        </svg>
+      </div>
+      <div class="reel-wrap reel-wrap-2">
+        <svg class="reel reel-2" viewBox="0 0 100 100" fill="none" stroke="rgba(238,28,46,.6)" stroke-width="3">
+          <circle cx="50" cy="50" r="46"/><circle cx="50" cy="50" r="9" fill="var(--red)" stroke="none"/>
+          <circle cx="50" cy="22" r="8"/><circle cx="50" cy="78" r="8"/><circle cx="22" cy="50" r="8"/><circle cx="78" cy="50" r="8"/>
+        </svg>
+      </div>
+      <div class="float-play p1">▶</div>
+      <div class="float-play p2">▶</div>
+      <div class="float-play p3">▶</div>
+    </div>
+    <div class="hero-inner">
+      <span class="hero-badge"><span class="live"></span> Employee Onboarding · FY26</span>
+      <h1 class="display">
+        <span class="line l1"><span>Welcoming</span></span>
+        <span class="line l2"><span>our new</span></span>
+        <span class="line l3"><span>members</span></span>
+      </h1>
+      <p class="hero-tag"><span id="heroUserName"></span>We are <b>glad to have you onboard!</b> &nbsp;Let's take you behind the scenes of India's leading Regional OTT platform.</p>
+      <div class="hero-cta">
+        <a href="#about" id="startTour" class="btn btn-primary"><span class="ico">▶</span> Start the tour</a>
+        <a href="#journey" class="btn btn-ghost">Your first 90 days</a>
+      </div>
+    </div>
+    <div class="scroll-hint"><div class="mouse"></div><span>Scroll</span></div>
+  </section>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section id="about">
+    <div class="wrap">
+      <span class="eyebrow reveal">About Us</span>
+      <h2 class="sec-title reveal">One name. <span class="hl">One</span> correct way to write it.</h2>
+
+      <div class="brandname-card reveal d1">
+        <div>
+          <div class="wrongways">
+            <div class="ww"><span class="x">✕</span> HoiChoi</div>
+            <div class="ww"><span class="x">✕</span> Hoi Choi</div>
+            <div class="ww"><span class="x">✕</span> hoi choi</div>
+          </div>
+          <p class="brand-note">Capitalisation, spacing and styling all matter. When in doubt, keep it simple, lowercase and together.</p>
+        </div>
+        <div style="text-align:center">
+          <div class="rightway">hoichoi<span class="check">✓</span></div>
+          <p class="brand-note" style="margin-top:16px">The one &amp; only correct way to write the brand name.</p>
+        </div>
+      </div>
+
+      <p class="conglo-line reveal">Part of the <span class="hl">largest Media &amp; Entertainment conglomerate</span> in Eastern India.</p>
+
+      <div class="stats">
+        <div class="stat reveal d1"><div class="num" data-count="220" data-suffix="+"><span class="v">0</span><span class="suf">+</span></div><div class="lbl">Movies Produced</div></div>
+        <div class="stat reveal d2"><div class="num" data-count="1500" data-suffix="+"><span class="v">0</span><span class="suf">+</span></div><div class="lbl">Movies Distributed</div></div>
+        <div class="stat reveal d3"><div class="num" data-count="2000" data-suffix="+"><span class="v">0</span><span class="suf">+</span></div><div class="lbl">Songs in Music Catalogue</div></div>
+        <div class="stat reveal d4"><div class="num" data-count="20000" data-suffix=""><span class="v">0</span></div><div class="lbl">Hours of TV Content</div></div>
+        <div class="stat reveal d1"><div class="num" data-count="320" data-suffix=""><span class="v">0</span></div><div class="lbl">Digital Cinema Installations</div></div>
+        <div class="stat reveal d2"><div class="num" data-count="60" data-suffix=""><span class="v">0</span></div><div class="lbl">Cinema Screens</div></div>
+        <div class="stat reveal d3"><div class="num" data-count="8" data-suffix=""><span class="v">0</span></div><div class="lbl">National Awards</div></div>
+        <div class="stat reveal d4"><div class="num" data-count="47" data-suffix="M"><span class="v">0</span><span class="suf">M</span></div><div class="lbl">Social Media Universe</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SOOPER ABOUT US (Sooper only) ===================== -->
+  <section id="sooper-about" class="sooper-only">
+    <div class="wrap">
+      <span class="eyebrow reveal">About Us</span>
+      <h2 class="sec-title reveal">Quick entertainment, <span class="hl">on demand</span>.</h2>
+      <p class="sec-sub reveal" style="max-width:640px">Sooper is your go-to app for quick entertainment! Watch exciting short dramas and listen to engaging audio series that hook you in seconds. Easy to use, fun, and made for your phone, Sooper makes every free moment entertaining.</p>
+      <div class="info-grid" style="margin-top:40px">
+        <div class="info-card reveal d1"><div class="ico">🎬</div><h4>Short Dramas</h4><p>Bite-sized stories that hook you in seconds — made to binge on the go.</p></div>
+        <div class="info-card reveal d2"><div class="ico">🎧</div><h4>Audio Series</h4><p>Immersive listening for every commute, queue &amp; quiet moment.</p></div>
+        <div class="info-card reveal d3"><div class="ico">📱</div><h4>Built for Your Phone</h4><p>Easy, fun &amp; made for scroll-first, phone-first entertainment.</p></div>
+      </div>
+
+      <div class="about-faq reveal">
+        <div class="about-faq-head">
+          <span class="eyebrow">Still curious?</span>
+          <h3>Quick answers.</h3>
+        </div>
+        <div class="accordion">
+          <div class="acc-item"><div class="acc-head">What kind of content can I expect on Sooper? <span class="plus">+</span></div><div class="acc-body"><div class="inner">From intense thrillers to romantic dramas, horror, comedy &amp; suspense — Sooper brings you engaging short dramas and immersive audio series. All content is original and crafted for quick, addictive viewing or listening.</div></div></div>
+          <div class="acc-item"><div class="acc-head">What makes Sooper different from other streaming platforms? <span class="plus">+</span></div><div class="acc-body"><div class="inner">Sooper is the only platform that brings together short dramas and audio series under one roof — both designed for quick, on-the-go consumption. It's storytelling reimagined for your phone, in formats you'll actually finish!</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span class="m">Content is King<span class="sep">★</span></span><span class="m ghost">#hoyejak<span class="sep">★</span></span>
+      <span class="m">WOW Customers<span class="sep">★</span></span><span class="m ghost">250 Million Bengalis<span class="sep">★</span></span>
+      <span class="m">185+ Originals<span class="sep">★</span></span><span class="m ghost">100+ Countries<span class="sep">★</span></span>
+      <span class="m">Content is King<span class="sep">★</span></span><span class="m ghost">#hoyejak<span class="sep">★</span></span>
+      <span class="m">WOW Customers<span class="sep">★</span></span><span class="m ghost">250 Million Bengalis<span class="sep">★</span></span>
+      <span class="m">185+ Originals<span class="sep">★</span></span><span class="m ghost">100+ Countries<span class="sep">★</span></span>
+    </div>
+  </div>
+
+  <!-- ===================== STORY / TIMELINE ===================== -->
+  <section id="story" style="background:linear-gradient(180deg,var(--bg),var(--bg-2),var(--bg))">
+    <div class="wrap">
+      <span class="eyebrow reveal">Our Story So Far</span>
+      <h2 class="sec-title reveal">Three decades of <span class="hl">storytelling</span>.</h2>
+      <p class="sec-sub reveal">Eastern India's largest regional media &amp; entertainment company — a 100% family-owned business, 600+ strong, 8 National Awards, and a 47M+ social community. hoichoi is the digital heartbeat of that legacy.</p>
+
+      <div class="timeline"><span class="tl-spine-fill"></span>
+        <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">1995</div><div class="tl-card"><h4>Beginning of SVF's journey</h4></div></div>
+        <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">2000</div><div class="tl-card"><h4>SVF Music</h4></div></div>
+        <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">2007</div><div class="tl-card"><h4>Launched Sangeet Bangla</h4></div></div>
+        <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">2008</div><div class="tl-card"><h4>QUBE &amp; SVF Television</h4></div></div>
+        <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">2016</div><div class="tl-card"><h4>SVF Cinemas</h4></div></div>
+        <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">2017</div><div class="tl-card"><h4>Launched SVF World Studios · hoichoi</h4></div></div>
+        <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">2020</div><div class="tl-card"><h4>SVF Brands</h4></div></div>
+        <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">2024</div><div class="tl-card"><h4>SVF Mumbai</h4></div></div>
+        <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">2025</div><div class="tl-card"><h4>MNI (Music Network of India)</h4></div></div>
+        <div class="tl-item reveal sooper-only"><span class="dot"></span><div class="tl-year">2026</div><div class="tl-card"><h4>The start of Sooper</h4></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== hoichoi OVER THE YEARS ===================== -->
+  <section id="hoichoi-story">
+    <div class="wrap">
+      <span class="eyebrow reveal">The hoichoi Journey</span>
+      <h2 class="sec-title reveal">360° entertainment for <span class="hl">250 million</span> Bengalis worldwide.</h2>
+      <p class="sec-sub reveal">Owned by SVF Entertainment Pvt. Ltd., hoichoi is an on-demand video streaming platform launched in 2017. With 650+ Bengali movies, 185+ originals and 3000+ hours of content, hoichoi takes the best of Bengali entertainment global — home to the largest Bengali Original IP.</p>
+
+      <div class="timeline"><span class="tl-spine-fill"></span>
+        <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">Sep 2017</div><div class="tl-card"><h4>Launch of the hoichoi App</h4></div></div>
+        <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">2019</div><div class="tl-card"><h4>Expanded operations in Bangladesh</h4></div></div>
+        <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">2021</div><div class="tl-card"><h4>Introduced Branded Content &amp; Partnerships</h4></div></div>
+        <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">2022</div><div class="tl-card"><h4>Available in Retail Channels</h4></div></div>
+        <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">2023</div><div class="tl-card"><h4>Launched hoichoi Studios</h4></div></div>
+        <div class="tl-item reveal"><span class="dot"></span><div class="tl-year">2025</div><div class="tl-card"><h4>hoichoi FM, TV+ &amp; TVOD · Logline AI · New Brand Identity &amp; Sooper</h4></div></div>
+      </div>
+
+      <div class="pillars" style="margin-top:60px">
+        <div class="pillar reveal d1" data-n="01"><div class="ico">👑</div><h3>Content is King</h3><p>The largest library of Bengali movies &amp; original web series — content first, always.</p></div>
+        <div class="pillar reveal d2" data-n="02"><div class="ico">💛</div><h3>Customer First</h3><p>Great product, great experience — 360° entertainment built around the viewer.</p></div>
+        <div class="pillar reveal d3" data-n="03"><div class="ico">🤝</div><h3>Stronger Together</h3><p>Strong partners, stronger outcomes. Together, we deliver.</p></div>
+        <div class="pillar reveal d4" data-n="04"><div class="ico">🌏</div><h3>Globally Bengali</h3><p>100+ countries. A 20M+ strong community. One language, one heartbeat.</p></div>
+      </div>
+
+      <!-- ventures -->
+      <div class="row-head" style="margin-top:70px"><h3 class="reveal">New initiatives from the family</h3></div>
+      <div class="init-grid">
+        <a class="init-card reveal d1" href="https://sooper.tv/" target="_blank" rel="noopener noreferrer" aria-label="Visit Sooper website">
+          <div class="init-logo"><img class="brand-logo logo-sooper" src="assets/logos/sooper.png" alt="Sooper" onerror="this.closest('.init-logo').classList.add('noimg')"><span class="fallback">🎬</span></div>
+          <p>An OTT platform offering short, engaging video micro-dramas &amp; immersive audio series — designed for the scroll-first generation seeking quick, high-impact entertainment. Content-first, AI-led micro-drama stories for the world. <b style="color:var(--gold)">100K+ downloads.</b></p>
+          <span class="init-link">Visit sooper.tv <span class="arr">↗</span></span>
+        </a>
+        <a class="init-card reveal d2" href="https://www.logline.ai/" target="_blank" rel="noopener noreferrer" aria-label="Visit LoglineAI website">
+          <div class="init-logo"><img class="brand-logo logo-logline" src="assets/logos/logline.png" alt="LoglineAI" onerror="this.closest('.init-logo').classList.add('noimg')"><span class="fallback">🤖</span></div>
+          <p>An AI-native creative studio delivering Hollywood-grade content at 10x speed &amp; 10% cost. Partners with studios, streamers, agencies &amp; brands — turning concepts and scripts into cinematic assets that slot into existing production workflows.</p>
+          <span class="init-link">Visit logline.ai <span class="arr">↗</span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE — BRAND PARTNERS -->
+  <div class="marquee marquee-logos" id="partnerMarquee" aria-label="Brand partners">
+    <div class="marquee-track" id="partnerTrack"></div>
+  </div>
+
+  <!-- ===================== LEADERSHIP ===================== -->
+  <section id="leadership" style="background:linear-gradient(180deg,var(--bg),var(--bg-2))">
+    <div class="wrap">
+      <span class="eyebrow reveal">Our Leadership</span>
+      <h2 class="sec-title reveal">The people who <span class="hl">set the vision</span>.</h2>
+      <div class="leader-grid">
+        <div class="leader-card reveal d1">
+          <div class="leader-photo">
+            <img class="leader-img" src="assets/leaders/shrikant-mohta.png" alt="Shrikant Mohta" onerror="this.classList.add('hide')">
+            <svg class="avatar-ph" viewBox="0 0 120 132" aria-hidden="true"><circle cx="60" cy="44" r="25"/><path d="M12 132c0-31 96-31 96 0Z"/></svg>
+          </div>
+          <div class="leader-body"><h4>Shrikant Mohta</h4><div class="subrole">Co-founder, SVF &amp; hoichoi</div>
+            <p class="bio-preview">The creative muscle of SVF Entertainment &amp; hoichoi, with over 110 SVF film productions to his credit including 7 National Awards &amp; various blockbusters of the last two decades.</p>
+            <div class="bio-full">
+              <p>Shrikant Mohta, the creative muscle of SVF Entertainment &amp; hoichoi, has over 110 SVF film productions to his credit including 7 National Award &amp; various blockbusters of the last two decades.</p>
+              <p>He is celebrated as the pioneer of the Bengali Film Production world for bringing in superior technical workmanship, launching new talent and availing the best labs in the country for post-production. Known for his stellar creative skills for rich and unique content creation, which resonates with the new age requirements as well as Indian ethos.</p>
+            </div>
+            <button class="bio-toggle">View full profile <span class="arr">→</span></button>
+          </div>
+        </div>
+        <div class="leader-card reveal d2">
+          <div class="leader-photo">
+            <img class="leader-img" src="assets/leaders/mahendra-soni.png" alt="Mahendra Soni" onerror="this.classList.add('hide')">
+            <svg class="avatar-ph" viewBox="0 0 120 132" aria-hidden="true"><circle cx="60" cy="44" r="25"/><path d="M12 132c0-31 96-31 96 0Z"/></svg>
+          </div>
+          <div class="leader-body"><h4>Mahendra Soni</h4><div class="subrole">Co-founder, SVF &amp; hoichoi</div>
+            <p class="bio-preview">Heads the Films, Television, Distribution, Cinemas and Music businesses of SVF. His contributions to Cinemas has made SVF nationally recognizable, and under his leadership, SVF has distributed almost 900 films.</p>
+            <div class="bio-full">
+              <p>Mahendra Soni heads the Films, Television, Distribution, Cinemas and Music businesses of SVF. His contributions to Cinemas has made SVF nationally recognizable, and under his leadership, SVF has distributed almost 900 films.</p>
+              <p>On Television, he has turned Music India, Sangeet Bangla and Sangeet Bhojpuri into leading channels, reaching over 5,000 hours of content — around 10,000 episodes — to households across the country.</p>
+              <p>An active member of EIMPA, KIFF and WBIDC, he also drives satellite deals, music syndication and film acquisitions. He is Co-Founder of Music Network India (MNI) and a Director at Collective Artists Network.</p>
+            </div>
+            <button class="bio-toggle">View full profile <span class="arr">→</span></button>
+          </div>
+        </div>
+        <div class="leader-card reveal d3">
+          <div class="leader-photo">
+            <img class="leader-img" src="assets/leaders/vishnu-mohta.png" alt="Vishnu Mohta" onerror="this.classList.add('hide')">
+            <svg class="avatar-ph" viewBox="0 0 120 132" aria-hidden="true"><circle cx="60" cy="44" r="25"/><path d="M12 132c0-31 96-31 96 0Z"/></svg>
+          </div>
+          <div class="leader-body"><h4>Vishnu Mohta</h4><div class="subrole">Co-Founder, hoichoi · Founder, LoglineAI</div>
+            <p class="bio-preview">Started with SVF as head of the Digital Cinema business and soon made it the largest player in West Bengal and fourth-largest network in India within a year of operations.</p>
+            <div class="bio-full">
+              <p>Vishnu Mohta started with SVF as the head of the Digital Cinema business and soon went ahead to make it the largest player in West Bengal and fourth-largest network in India within a year of operations.</p>
+              <p>Currently, he heads the New Media division &amp; launched its first venture, hoichoi, the one-stop destination for Bengali entertainment targeting worldwide.</p>
+              <p>Vishnu is a member of various prestigious organizations including Entrepreneurs Organization (EO), The Indus Entrepreneurs (TiE) Beta Gamma Sigma (BGS), a society of top 10% students from the best B schools of the world.</p>
+            </div>
+            <button class="bio-toggle">View full profile <span class="arr">→</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CULTURE ===================== -->
+  <section id="culture">
+    <div class="wrap">
+      <span class="eyebrow reveal">Organisational Culture</span>
+      <h2 class="sec-title reveal">Our <span class="hl">core values</span>. Hover to flip.</h2>
+      <div class="values-grid">
+        <div class="flip reveal d1"><div class="flip-in">
+          <div class="flip-face flip-front"><div class="ico">🤩</div><h4>WOW Customers</h4></div>
+          <div class="flip-face flip-back"><p>Go beyond expectations. Every interaction should leave the customer delighted.</p></div>
+        </div></div>
+        <div class="flip reveal d2"><div class="flip-in">
+          <div class="flip-face flip-front"><div class="ico">⚖️</div><h4>Do What is Right</h4></div>
+          <div class="flip-face flip-back"><p>Integrity over convenience — always. Choose the right thing, even when no one is watching.</p></div>
+        </div></div>
+        <div class="flip reveal d3"><div class="flip-in">
+          <div class="flip-face flip-front"><div class="ico">📈</div><h4>Continuous Learning</h4></div>
+          <div class="flip-face flip-back"><p>Stay curious, keep growing. Learning never stops at hoichoi.</p></div>
+        </div></div>
+        <div class="flip reveal d4"><div class="flip-in">
+          <div class="flip-face flip-front"><div class="ico">🎭</div><h4>hoichoi @ Work</h4></div>
+          <div class="flip-face flip-back"><p>Bring energy, fun &amp; ownership to everything we build together.</p></div>
+        </div></div>
+      </div>
+
+      <div class="hoyejak-banner reveal">
+        <img class="boldly-logo" src="assets/logos/boldly-bangali.png" alt="#Boldly বাঙালি" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex'">
+        <div class="boldly-tag" style="display:none"><span class="bl-en">#Boldly</span><span class="bl-bn">বাঙালি</span></div>
+        <div class="sooper-tag"><span>Sooper Stories.</span><span>Sooper Entertainment.</span></div>
+      </div>
+
+      <div class="vm-grid">
+        <div class="vm-card reveal d1"><div class="lbl">Vision</div><p>To entertain everyone in their native language.</p><div class="big-ico">👁️</div></div>
+        <div class="vm-card reveal d2"><div class="lbl">Mission</div><p>To create, curate &amp; deliver stories by inspiring our creators, partners &amp; teams.</p><div class="big-ico">🚀</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HR & BENEFITS ===================== -->
+  <section id="hr" style="background:linear-gradient(180deg,var(--bg-2),var(--bg))">
+    <div class="wrap">
+      <span class="eyebrow reveal">HR Brief &amp; Benefits</span>
+      <h2 class="sec-title reveal">The essentials, <span class="hl">sorted</span>.</h2>
+
+      <div class="info-grid" style="margin-bottom:22px">
+        <div class="info-card reveal d1"><div class="ico">📋</div><h4>Probation Period</h4><div class="big">6 <span style="font-size:1rem;font-family:Poppins">months</span></div><p>Extendable up to 3 months, subject to successful completion.</p></div>
+        <div class="info-card reveal d2"><div class="ico">👕</div><h4>Dress Code</h4><p>No strict dress codes — wear what makes you feel confident &amp; comfortable. Just keep it appropriate for the day, whether it's a client meeting or a casual catch-up.</p></div>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-card reveal d1" style="grid-column:span 1">
+          <div class="ico">🏥</div><h4>Corporate Mediclaim</h4>
+          <ul>
+            <li>Individual coverage up to ₹5L</li>
+            <li>ESI employees also covered</li>
+            <li>Optional family coverage (spouse, children, parents) at nominal premium</li>
+            <li>Availed upon intimation · premium deducted monthly</li>
+          </ul>
+        </div>
+        <div class="info-card reveal d2" style="grid-column:span 2">
+          <div class="ico">🌴</div><h4>Leave Policy</h4>
+          <div class="accordion" style="margin-top:16px">
+            <div class="acc-item"><div class="acc-head">During Probation <span class="plus">+</span></div><div class="acc-body"><div class="inner">7 days Sick Leave (up to 3 days may be taken during probation).</div></div></div>
+            <div class="acc-item"><div class="acc-head">On Completion of Probation <span class="plus">+</span></div><div class="acc-body"><div class="inner">10 days Casual Leave · carried-over Sick Leaves · 10 days Marriage Leave.</div></div></div>
+            <div class="acc-item"><div class="acc-head">On Completion of 1 Year <span class="plus">+</span></div><div class="acc-body"><div class="inner">14 days Privilege Leave.</div></div></div>
+            <div class="acc-item"><div class="acc-head">Casual &amp; Sick Leave <span class="plus">+</span></div><div class="acc-body"><div class="inner">Casual: continuous leave for not more than 3 days. Sick: doctor's certificate required for more than 3 continuous days off.</div></div></div>
+            <div class="acc-item"><div class="acc-head">Privilege &amp; Maternity <span class="plus">+</span></div><div class="acc-body"><div class="inner">Privilege Leave: upon approval. Maternity Leave: as per the Maternity Benefit Act, 1961.</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== POSH ===================== -->
+  <section id="posh">
+    <div class="wrap">
+      <span class="eyebrow reveal">POSH Guidelines</span>
+      <h2 class="sec-title reveal">Prevention of Sexual Harassment.</h2>
+      <p class="sec-sub reveal">A safe, respectful workplace is non-negotiable. Here's what you need to know.</p>
+
+      <div class="info-grid">
+        <div class="info-card reveal d1"><div class="ico">❓</div><h4>What is it?</h4><p>Any unwelcome act or behaviour — touching, comments, or anything else that makes a person uncomfortable.</p></div>
+        <div class="info-card reveal d2"><div class="ico">🚫</div><h4>What counts?</h4><ul><li>Touching</li><li>Hugging</li><li>Unwanted advances</li><li>Making comments</li><li>Sharing sexual pictures/messages</li></ul></div>
+        <div class="info-card reveal d3"><div class="ico">🙋</div><h4>Who can raise a complaint?</h4><ul><li>You</li><li>A co-worker</li><li>A guest visiting the facility</li></ul></div>
+      </div>
+
+      <h3 class="reveal" style="margin:50px 0 6px">Internal Complaints Committee</h3>
+      <p class="sec-sub reveal" style="margin-bottom:24px">Constituted as per law to address &amp; resolve all issues related to sexual harassment at hoichoi.</p>
+      <div class="icc-grid">
+        <div class="icc-card reveal d1"><div class="av">SB</div><div class="nm">Sera Banerjee</div><div class="rl">Presiding Officer</div><div class="ct">+91 97483 10902<br>sera.banerjee@hoichoi.tv</div></div>
+        <div class="icc-card reveal d2"><div class="av">SR</div><div class="nm">Sangeeta Roy Bardhan</div><div class="rl">External Member</div><div class="ct">+91 98320 15319<br>sangeetarm.kolkata@gmail.com</div></div>
+        <div class="icc-card reveal d3"><div class="av">SB</div><div class="nm">Salankara Biswas</div><div class="rl">Member</div><div class="ct">+91 90735 52307<br>salankara.biswas@hoichoi.tv</div></div>
+        <div class="icc-card reveal d4"><div class="av">SG</div><div class="nm">Sayantan Guha</div><div class="rl">Member</div><div class="ct">+91 98749 62424<br>sayantan.guha@hoichoi.tv</div></div>
+      </div>
+
+      <h3 class="reveal" style="margin:44px 0 4px">Penal Consequences</h3>
+      <div class="penal">
+        <div class="p reveal d1">Withholding of Promotion</div>
+        <div class="p reveal d2">Withholding Increment</div>
+        <div class="p reveal d3">Termination</div>
+        <div class="p reveal d4">Punishment as per Service Rules</div>
+        <div class="p reveal d1">Deduction of Compensation from Salary</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ESSENTIALS ===================== -->
+  <section id="essentials" style="background:linear-gradient(180deg,var(--bg),var(--bg-2))">
+    <div class="wrap">
+      <span class="eyebrow reveal">Essentials at Work</span>
+      <h2 class="sec-title reveal">Ground rules &amp; <span class="hl">tools</span>.</h2>
+      <div class="info-grid">
+        <div class="info-card reveal d1"><div class="ico">📏</div><h4>Ground Rules</h4><ul><li>Silence is acceptance</li><li>Any question is a valid question</li><li>Be mentally &amp; physically present</li><li>Business confidentiality is a must</li></ul></div>
+        <div class="info-card reveal d2"><div class="app-logo"><img src="assets/logos/keka.svg" alt="Keka"></div><h4>HRMS Platform &mdash; Keka</h4><ul><li>Mark daily attendance (web/app)</li><li>View leave balance &amp; apply</li><li>Employee directory &amp; reporting structure</li><li>Update your profile &amp; details</li><li>Tax declarations for accurate TDS</li><li>Access payroll &amp; download payslips</li></ul></div>
+        <div class="info-card reveal d3"><div class="app-logo"><img src="assets/logos/teams.webp" alt="Microsoft Teams"></div><h4>Online Collaboration &mdash; Teams</h4><ul><li>Online meetings &amp; video conferencing</li><li>Screen sharing</li><li>Instant messaging &amp; internal updates</li><li>File sharing &amp; more</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ONBOARDING JOURNEY ===================== -->
+  <section id="journey">
+    <div class="wrap">
+      <span class="eyebrow reveal">Employee Onboarding</span>
+      <h2 class="sec-title reveal">Your first <span class="hl">90 days</span>.</h2>
+      <p class="sec-sub reveal">A guided journey from Day 1 to Month 3 — click through each stage.</p>
+
+      <div class="journey-tabs reveal">
+        <button class="jtab active" data-j="j0">Day 1</button>
+        <button class="jtab" data-j="j1">Day 2</button>
+        <button class="jtab" data-j="jw">Week 1</button>
+        <button class="jtab" data-j="jm1">Month 1</button>
+        <button class="jtab" data-j="jm23">Month 2 &amp; 3</button>
+      </div>
+
+      <div class="jpanel active" id="j0">
+        <div class="jcards">
+          <div class="jcard"><div class="step">Course 01</div><h4>Complete Claude 101</h4><p>Your first step into working with Claude, Anthropic's AI assistant. Learn what Claude is, how to start a conversation, and how to write clear, effective prompts. Covers the essentials of everyday use — asking questions, summarising, drafting and iterating — so you can put AI to work from day one.</p><a class="jcard-link" href="https://anthropic.skilljar.com/claude-101" target="_blank" rel="noopener noreferrer">Go to course <span class="arr">↗</span></a></div>
+          <div class="jcard"><div class="step">Course 02</div><h4>Introduction to Claude &amp; Cowork</h4><p>Go beyond the basics into collaborative, agentic workflows. Understand how Cowork lets Claude take on multi-step tasks, work alongside your team and plug into the tools you already use — turning Claude from a chatbot into a genuine working partner across your day-to-day projects.</p><a class="jcard-link" href="https://anthropic.skilljar.com/introduction-to-claude-cowork" target="_blank" rel="noopener noreferrer">Go to course <span class="arr">↗</span></a></div>
+          <div class="jcard"><div class="step">Course 03</div><h4>AI Capabilities &amp; Limitations</h4><p>Build sound judgement for using AI responsibly. Learn what today's models do well, where they fall short, and how to spot &amp; guard against issues like hallucinations and bias. Covers verifying outputs, protecting confidential data, and knowing when a human must stay in the loop.</p><a class="jcard-link" href="https://anthropic.skilljar.com/ai-capabilities-and-limitations" target="_blank" rel="noopener noreferrer">Go to course <span class="arr">↗</span></a></div>
+        </div>
+      </div>
+
+      <div class="jpanel" id="j1">
+        <div class="jcards">
+          <div class="jcard"><div class="step">Formalities</div><h4>Documentation</h4><p>Submit signed offer letter &amp; other required documents on Day 2 of joining.</p></div>
+          <div class="jcard"><div class="step">Setup</div><h4>Asset Allocation</h4><p>Working laptop provided · accessories &amp; tools as per role.</p></div>
+          <div class="jcard"><div class="step">Access</div><h4>Email &amp; Software</h4><p>Microsoft Outlook ID activated · inclusion in distribution groups/teams.</p></div>
+          <div class="jcard"><div class="step">People</div><h4>Meet Your Team</h4><p>Connect with your reporting manager &amp; team members.</p></div>
+        </div>
+      </div>
+
+      <div class="jpanel" id="jw">
+        <h4 class="hl" style="margin-bottom:14px">CX Interaction</h4>
+        <div class="table-scroll" style="margin-bottom:30px">
+          <table class="jtable">
+            <thead><tr><th>Activity</th><th>Details</th><th>Target</th></tr></thead>
+            <tbody>
+              <tr><td>Inbound Calls</td><td>Respond to live support calls to understand real-time concerns, queries &amp; preferences</td><td>Min. 20 calls</td></tr>
+              <tr><td>Outbound Calls</td><td>Call existing/past users to gather feedback, usage patterns &amp; behavioural insights</td><td>Min. 50 customers</td></tr>
+              <tr><td>Support Tool Access</td><td>Use call tracker/CRM to log observations &amp; consumer insights</td><td>Daily for 1 week</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h4 class="hl" style="margin-bottom:14px">Team Interactions</h4>
+        <div class="table-scroll">
+          <table class="jtable">
+            <thead><tr><th>Day</th><th>Departments</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Strategy &amp; Revenue; Brand Strategy</td><td>Strategic goals, monetization plans &amp; brand positioning</td></tr>
+              <tr><td>2</td><td>Content; Post Production</td><td>How originals are conceptualized, produced &amp; finalized</td></tr>
+              <tr><td>3</td><td>Content Marketing &amp; Discovery; Audio Visual; Creative – Graphics</td><td>How hoichoi communicates through content, campaigns &amp; design</td></tr>
+              <tr><td>4</td><td>Tech &amp; Product; Customer Support; Growth</td><td>User journey across product, acquisition &amp; support</td></tr>
+              <tr><td>5</td><td>Audio Stories; Sooper</td><td>Emerging formats — audio &amp; short-form — &amp; their impact</td></tr>
+              <tr><td>6</td><td>Legal; HR; Finance</td><td>Operational functions: compliance, people &amp; finance</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="jpanel" id="jm1">
+        <div class="jcards">
+          <div class="jcard"><div class="step">Explore</div><h4>Cross-Department Walkthrough</h4><p>Spend a week working closely with a different team to see how other departments operate &amp; contribute.</p></div>
+          <div class="jcard"><div class="step">Align</div><h4>Reporting Manager Check-In</h4><p>Weekly 1:1s to track progress, align expectations &amp; address blockers.</p></div>
+          <div class="jcard"><div class="step">Reflect</div><h4>HR Check-In</h4><p>An informal conversation with HR at the end of month 1 to reflect &amp; give feedback.</p></div>
+        </div>
+      </div>
+
+      <div class="jpanel" id="jm23">
+        <div class="jcards">
+          <div class="jcard"><div class="step">Inspire</div><h4>Founder's Meet</h4><p>An informal catch-up with Executive Leadership on hoichoi's journey, vision &amp; your role in the bigger picture.</p></div>
+          <div class="jcard"><div class="step">Grow</div><h4>Training Module Completion</h4><p>Complete min. 1 department-relevant certification, based on your role &amp; manager's recommendation.</p></div>
+          <div class="jcard"><div class="step">Align</div><h4>Reporting Manager Check-In</h4><p>Continue biweekly sync-ups to review performance, set goals &amp; explore growth areas.</p></div>
+          <div class="jcard"><div class="step">Reflect</div><h4>HR Check-In</h4><p>A check-in at quarter's end to ensure your onboarding has been smooth &amp; aligned.</p></div>
+        </div>
+      </div>
+
+      <div class="callout reveal">
+        <div class="big-emoji">🧑‍🤝‍🧑</div>
+        <div><h4>Better with a Buddy</h4><p>You'll be assigned a buddy — a peer from your team or another — as your first point of informal support: helping you understand workplace culture, settle into daily routines, and ease into your new role with confidence &amp; comfort.</p></div>
+      </div>
+      <div class="callout reveal">
+        <div class="big-emoji">📊</div>
+        <div><h4>Performance Review</h4><p>Reviewed every quarter, aligned with the Financial Year. Q1/Q2/Q3 focus on ongoing feedback &amp; goal alignment; Q4 is a comprehensive year-end assessment. Led by your reporting manager, supported by functional heads &amp; HR.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ENGAGEMENT CALENDAR ===================== -->
+  <section id="calendar" style="background:linear-gradient(180deg,var(--bg-2),var(--bg))">
+    <div class="wrap">
+      <span class="eyebrow reveal">Engagement Calendar · FY26</span>
+      <h2 class="sec-title reveal">Work. Play. <span class="hl">Connect</span>.</h2>
+      <p class="sec-sub reveal">A full year of moments to connect, learn &amp; celebrate. Click a card for details.</p>
+      <div class="cal-grid">
+        <div class="cal-card reveal d1"><div class="ico">📣</div><h4>Townhall</h4><div class="detail">All-hands hosted by Leadership · department highlights · roadmap &amp; key initiatives · employee recognition · open Q&amp;A.</div></div>
+        <div class="cal-card reveal d2"><div class="ico">🏝️</div><h4>Company Offsite</h4><div class="detail">Weekend retreat for all · team bonding · cross-department networking · recognition, games, talent showcase &amp; surprises.</div></div>
+        <div class="cal-card reveal d3"><div class="ico">🤝</div><h4>Team Building Workshop</h4><div class="detail">Guided training led by a professional mentor (collaboration, trust &amp; leadership) + a light activity night — bowling, pickleball, badminton, football.</div></div>
+        <div class="cal-card reveal d4"><div class="ico">💡</div><h4>L&amp;D – Skill &amp; Personality</h4><div class="detail">Need-based tech upskilling — AI tools in workflow, Excel mastery, time-saving tech tips — plus instructor-led sessions on communication, team management, leadership &amp; empathy. Interactive, hands-on format for all levels.</div></div>
+        <div class="cal-card reveal d1"><div class="ico">👨‍👩‍👧</div><h4>Family Day at Work</h4><div class="detail">Invite family to office · guided tour of the work environment · refreshments &amp; activity corners · build emotional connection.</div></div>
+        <div class="cal-card reveal d2"><div class="ico">🩺</div><h4>Wellness Day</h4><div class="detail">In-office health camp with medical partner · blood test, BMI, eye check-up · health awareness desk &amp; lifestyle tips.</div></div>
+        <div class="cal-card reveal d3"><div class="ico">🎥</div><h4>Film Screening</h4><div class="detail">Fun Fridays 6–8 PM in the DI Room · movie chosen by internal poll · light snacks &amp; casual seating.</div></div>
+        <div class="cal-card reveal d4"><div class="ico">🍽️</div><h4>Internal Team Lunch</h4><div class="detail">Team leads organise for members to connect beyond work — bonding, team spirit &amp; open conversations.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TEAMS ===================== -->
+  <section id="teams">
+    <div class="wrap">
+      <span class="eyebrow reveal">Meet Our Teams</span>
+      <h2 class="sec-title reveal">The <span class="hl">crew</span> behind the magic.</h2>
+
+      <div class="org-chart reveal" style="margin-bottom:50px">
+        <div class="org-top"><div class="org-node">hoichoi</div></div>
+        <div class="org-connector"></div>
+        <div class="org-row">
+          <span class="org-chip">Strategy &amp; Revenue</span><span class="org-chip">Product</span><span class="org-chip">Customer Support</span><span class="org-chip">Tech &amp; Engineering</span>
+          <span class="org-chip">Content Marketing &amp; Discovery</span><span class="org-chip">Brand &amp; Social</span><span class="org-chip">Partnerships</span>
+          <span class="org-chip">Growth, Retention &amp; Performance</span><span class="org-chip">Post Production</span><span class="org-chip">Content</span>
+          <span class="org-chip">Finance</span><span class="org-chip">Talent &amp; People</span><span class="org-chip">Sooper</span>
+          <span class="org-chip">Audio / FM</span><span class="org-chip">LoglineAI</span><span class="org-chip">Bangladesh</span><span class="org-chip">Legal</span>
+        </div>
+      </div>
+
+      <div class="row-head reveal">
+        <h3>Departments &amp; their heads</h3>
+        <div class="row-nav"><button data-car="teamCar" data-dir="-1">‹</button><button data-car="teamCar" data-dir="1">›</button></div>
+      </div>
+      <div class="carousel" id="teamCar">
+        <div class="team-card"><div class="dept">Strategy &amp; Revenue</div><ul><li>Plans business strategy &amp; monitors revenue and monetization streams</li><li>Aligns business decisions with growth objectives alongside leadership</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/soumya-mukherjee.png" alt="Soumya Mukherjee" onerror="this.classList.add('hide')"><span class="initials">SM</span></div><div class="head-info"><div class="hn">Soumya Mukherjee</div><div class="hr">Chief Operating Officer</div></div></div></div>
+        <div class="team-card"><div class="dept">Product</div><ul><li>Owns the hoichoi product roadmap &amp; user experience across platforms</li><li>Prioritises features &amp; improvements around user and business needs</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/moloy-karmakar.jpg" alt="Moloy Karmkar" onerror="this.classList.add('hide')"><span class="initials">MK</span></div><div class="head-info"><div class="hn">Moloy Karmkar</div><div class="hr">GM – Product Operations</div></div></div></div>
+        <div class="team-card"><div class="dept">Customer Support</div><ul><li>Handles user queries, complaints &amp; feedback across channels</li><li>Supports account, payment &amp; content-access issues in a timely manner</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sayantan-raha.png" alt="Sayantan Raha" onerror="this.classList.add('hide')"><span class="initials">SR</span></div><div class="head-info"><div class="hn">Sayantan Raha</div><div class="hr">Manager – Customer Experience &amp; Quality Control</div></div></div></div>
+        <div class="team-card"><div class="dept">Tech &amp; Engineering</div><ul><li>Builds &amp; maintains the hoichoi app, website &amp; streaming infrastructure</li><li>Ensures platform stability, performance &amp; secure delivery</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/shabinder-singh.jpeg" alt="Shabinder Singh" onerror="this.classList.add('hide')"><span class="initials">SS</span></div><div class="head-info"><div class="hn">Shabinder Singh</div><div class="hr">Principal Engineer</div></div></div></div>
+        <div class="team-card"><div class="dept">Content Marketing &amp; Discovery</div><ul><li>Promotes new releases &amp; ensures discoverability on-platform &amp; externally</li><li>Drives viewership through targeted digital marketing</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/salankara-biswas.png" alt="Salankara Biswas" onerror="this.classList.add('hide')"><span class="initials">SB</span></div><div class="head-info"><div class="hn">Salankara Biswas</div><div class="hr">GM – Content Marketing &amp; Discovery</div></div></div></div>
+        <div class="team-card"><div class="dept">Brand &amp; Social</div><ul><li>Defines brand positioning &amp; consistency across communication</li><li>Runs social media, campaigns &amp; community engagement</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sayantan-guha.png" alt="Sayantan Guha" onerror="this.classList.add('hide')"><span class="initials">SG</span></div><div class="head-info"><div class="hn">Sayantan Guha</div><div class="hr">GM – Brand Strategy</div></div></div></div>
+        <div class="team-card"><div class="dept">Partnerships</div><ul><li>Builds branded-content deals &amp; co-branded initiatives</li><li>Manages relationships with brand &amp; distribution partners</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/shreya-kaushik.jpg" alt="Shreya Kaushik" onerror="this.classList.add('hide')"><span class="initials">SK</span></div><div class="head-info"><div class="hn">Shreya Kaushik</div><div class="hr">Sr. Manager – Brand Alliances &amp; Partnerships</div></div></div></div>
+        <div class="team-card"><div class="dept">Growth, Retention &amp; Performance</div><ul><li>Drives acquisition, subscriptions &amp; retention</li><li>Runs performance marketing &amp; growth experiments</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/gunturu-sai-avinash.png" alt="Gunturu Sai Avinash" onerror="this.classList.add('hide')"><span class="initials">GA</span></div><div class="head-info"><div class="hn">Gunturu Sai Avinash</div><div class="hr">Sr. Manager – Growth</div></div></div></div>
+        <div class="team-card"><div class="dept">Post Production</div><ul><li>Oversees editing, finishing &amp; delivery pipelines</li><li>Ensures technical quality across every release</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/rajib-biswas.png" alt="Rajib Biswas" onerror="this.classList.add('hide')"><span class="initials">RB</span></div><div class="head-info"><div class="hn">Rajib Biswas</div><div class="hr">VP – Post Production</div></div></div></div>
+        <div class="team-card"><div class="dept">Content</div><ul><li>Curation, development &amp; commissioning of originals</li><li>Works with creators to deliver web series, films &amp; specials</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sera-banerjee.png" alt="Sera Banerjee" onerror="this.classList.add('hide')"><span class="initials">SB</span></div><div class="head-info"><div class="hn">Sera Banerjee</div><div class="hr">Content Head, hoichoi · AVP – Content</div></div></div></div>
+        <div class="team-card"><div class="dept">Finance</div><ul><li>Oversees budgets, payments, accounting &amp; settlements</li><li>Supports the business with financial planning &amp; reporting</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/abhishek-jhunjhunwala.jpg" alt="Abhishek Jhunjhunwala" onerror="this.classList.add('hide')"><span class="initials">AJ</span></div><div class="head-info"><div class="hn">Abhishek Jhunjhunwala</div><div class="hr">AVP – Finance</div></div></div></div>
+        <div class="team-card"><div class="dept">Talent &amp; People</div><ul><li>Recruitment, onboarding, engagement &amp; HR operations</li><li>Workplace services, facilities &amp; people support</li></ul><div class="head-group">
+            <div class="head"><div class="head-avatar"><img src="assets/team/sushim-dutta.png" alt="Sushim Dutta" onerror="this.classList.add('hide')"><span class="initials">SD</span></div><div class="head-info"><div class="hn">Sushim Dutta</div><div class="hr">Manager – Talent Acquisition &amp; People Operations</div></div></div>
+            <div class="head"><div class="head-avatar"><img src="assets/team/shirin-gupta.jpg" alt="Shirin Gupta" onerror="this.classList.add('hide')"><span class="initials">SG</span></div><div class="head-info"><div class="hn">Shirin Gupta</div><div class="hr">Head – Talent Acquisition</div></div></div>
+          </div></div>
+        <div class="team-card"><div class="dept">Sooper</div><ul><li>Leads the Sooper micro-drama &amp; short-form platform</li><li>Drives content strategy for the scroll-first audience</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sambbhav-khettrapal.jpg" alt="Sambbhav Khettrapal" onerror="this.classList.add('hide')"><span class="initials">SK</span></div><div class="head-info"><div class="hn">Sambbhav Khettrapal</div><div class="hr">Head – Content (Fiction) · Head of Content, Sooper (Micro-Dramas)</div></div></div></div>
+        <div class="team-card"><div class="dept">Audio / FM</div><ul><li>Produces audio-first storytelling &amp; episodic fiction</li><li>Programmes hoichoi FM — scripting, voice &amp; sound design</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/adhidev-mukherjee.png" alt="Adhidev Mukherjee" onerror="this.classList.add('hide')"><span class="initials">AM</span></div><div class="head-info"><div class="hn">Adhidev Mukherjee</div><div class="hr">Content Head – New Formats</div></div></div></div>
+        <div class="team-card"><div class="dept">LoglineAI</div><ul><li>Leads the AI-native creative studio</li><li>Delivers AI-assisted visuals, animation &amp; production-ready content</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/mandar-banerjee.png" alt="Mandar Banerjee" onerror="this.classList.add('hide')"><span class="initials">MB</span></div><div class="head-info"><div class="hn">Mandar Banerjee</div><div class="hr">Head – Creative AI Productions</div></div></div></div>
+        <div class="team-card"><div class="dept">Bangladesh</div><ul><li>Supports operations, production &amp; engagement in Bangladesh</li><li>Localizes strategies &amp; manages regional partnerships</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sakib-r-khan.jpg" alt="Sakib R Khan" onerror="this.classList.add('hide')"><span class="initials">SK</span></div><div class="head-info"><div class="hn">Sakib R Khan</div><div class="hr">Business Lead – Bangladesh</div></div></div></div>
+        <div class="team-card"><div class="dept">Legal</div><ul><li>Manages contracts, IP rights &amp; content agreements</li><li>Ensures regulatory &amp; legal compliance across operations</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/preeti-gandhi.png" alt="Preeti Gandhi" onerror="this.classList.add('hide')"><span class="initials">PG</span></div><div class="head-info"><div class="hn">Preeti Gandhi</div><div class="hr">Legal Consultant</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SOOPER TEAM (Sooper only) ===================== -->
+  <section id="sooper-team" class="sooper-only">
+    <div class="wrap">
+      <span class="eyebrow reveal">Our Team</span>
+      <h2 class="sec-title reveal">Leading the <span class="hl">vertical</span>.</h2>
+      <div class="sooper-team-grid">
+        <div class="team-card reveal"><div class="dept">Sooper</div><ul><li>Leads the Sooper micro-drama &amp; short-form platform</li><li>Drives content strategy for the scroll-first audience</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/sambbhav-khettrapal.jpg" alt="Sambbhav Khettrapal" onerror="this.classList.add('hide')"><span class="initials">SK</span></div><div class="head-info"><div class="hn">Sambbhav Khettrapal</div><div class="hr">Head – Content (Fiction) · Head of Content, Sooper (Micro-Dramas)</div></div></div></div>
+        <div class="team-card reveal"><div class="dept">Audio / FM</div><ul><li>Produces audio-first storytelling &amp; episodic fiction</li><li>Programmes hoichoi FM — scripting, voice &amp; sound design</li></ul><div class="head"><div class="head-avatar"><img src="assets/team/adhidev-mukherjee.png" alt="Adhidev Mukherjee" onerror="this.classList.add('hide')"><span class="initials">AM</span></div><div class="head-info"><div class="hn">Adhidev Mukherjee</div><div class="hr">Content Head – New Formats</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE 2 -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span class="m ghost">Do What is Right<span class="sep">✦</span></span><span class="m">Continuous Learning<span class="sep">✦</span></span>
+      <span class="m ghost">hoichoi @ Work<span class="sep">✦</span></span><span class="m">Great Product<span class="sep">✦</span></span>
+      <span class="m ghost">Great Experience<span class="sep">✦</span></span><span class="m">Together We Deliver<span class="sep">✦</span></span>
+      <span class="m ghost">Do What is Right<span class="sep">✦</span></span><span class="m">Continuous Learning<span class="sep">✦</span></span>
+      <span class="m ghost">hoichoi @ Work<span class="sep">✦</span></span><span class="m">Great Product<span class="sep">✦</span></span>
+      <span class="m ghost">Great Experience<span class="sep">✦</span></span><span class="m">Together We Deliver<span class="sep">✦</span></span>
+    </div>
+  </div>
+
+  <!-- ===================== OKR ===================== -->
+  <section id="okr" style="background:linear-gradient(180deg,var(--bg),var(--bg-2))">
+    <div class="wrap">
+      <span class="eyebrow reveal">Objectives &amp; Key Responsibilities</span>
+      <h2 class="sec-title reveal">Know your <span class="hl">OKRs</span>.</h2>
+      <div class="okr-grid">
+        <div class="okr-card reveal d1">
+          <div class="kind">Departmental</div><h3>Team-level OKRs</h3>
+          <ul class="okr-list">
+            <li><span class="n">1</span> Objective &amp; key result — description</li>
+            <li><span class="n">2</span> Objective &amp; key result — description</li>
+            <li><span class="n">3</span> Objective &amp; key result — description</li>
+            <li><span class="n">4</span> Objective &amp; key result — description</li>
+            <li><span class="n">5</span> Objective &amp; key result — description</li>
+          </ul>
+          <div class="okr-note">All OKRs are to be submitted by the reporting manager to HR on intimation.</div>
+        </div>
+        <div class="okr-card reveal d2">
+          <div class="kind">Individual</div><h3>Your role OKRs</h3>
+          <ul class="okr-list">
+            <li><span class="n">1</span> Objective &amp; key result — description</li>
+            <li><span class="n">2</span> Objective &amp; key result — description</li>
+            <li><span class="n">3</span> Objective &amp; key result — description</li>
+            <li><span class="n">4</span> Objective &amp; key result — description</li>
+            <li><span class="n">5</span> Objective &amp; key result — description</li>
+          </ul>
+          <div class="okr-note">Defined with your reporting manager &amp; aligned to your department's goals.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FINALE ===================== -->
+  <section id="finale">
+    <div class="fin-glow"></div>
+    <div class="fin-inner">
+      <div class="k">The story starts now</div>
+      <h2 class="display">Welcome to<br><span class="r" id="finaleName">hoichoi</span></h2>
+      <div class="hoye grad">#hoyejak</div>
+      <p>You're now part of a growing community bringing the best of Bengali entertainment to 250 million people worldwide. Let's create, curate &amp; deliver — together.</p>
+      <div class="hero-cta" style="justify-content:center;margin-top:34px">
+        <button class="btn btn-primary" id="celebrate"><span class="ico">🎉</span> Celebrate</button>
+        <a href="#hero" class="btn btn-ghost">Back to top ↑</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- CINEMATIC TOUR -->
+  <div id="tourVignette" aria-hidden="true"></div>
+  <div id="tourBar" aria-hidden="true">
+    <div class="tour-progress"><span id="tourProgress"></span></div>
+    <div class="tour-main">
+      <span class="tour-dot"></span>
+      <span class="tour-caption" id="tourCaption">Starting tour…</span>
+      <div class="tour-actions">
+        <button id="tourPause" aria-label="Pause">❚❚</button>
+        <button id="tourNext" aria-label="Next">›</button>
+        <button id="tourExit" aria-label="Exit tour">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <canvas class="confetti" id="confetti"></canvas>
+
+  <!-- LEADERSHIP MODAL -->
+  <div id="leaderModal" class="leader-modal" aria-hidden="true">
+    <div class="lm-backdrop"></div>
+    <div class="lm-card" role="dialog" aria-modal="true" aria-labelledby="lmName">
+      <button class="lm-close" aria-label="Close">✕</button>
+      <div class="lm-photo">
+        <img class="lm-img" alt="">
+        <svg class="avatar-ph lm-avatar-ph" viewBox="0 0 120 132" aria-hidden="true"><circle cx="60" cy="44" r="25"/><path d="M12 132c0-31 96-31 96 0Z"/></svg>
+      </div>
+      <div class="lm-body">
+        <h3 id="lmName"></h3>
+        <div class="lm-subrole"></div>
+        <div class="lm-bio"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <!-- hoichoi-only motion stack (never loaded by logline.html; Sooper on this
+       same page is unaffected since every effect below checks the live theme) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="hoichoi-motion.js"></script>
+</body>
+</html>

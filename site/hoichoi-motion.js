@@ -8,7 +8,7 @@
    ============================================================ */
 (function () {
   'use strict';
-  if (document.body.dataset.page) return; // only index.html (hoichoi/Sooper) has no data-page
+  if (document.body.dataset.page === 'logline') return; // this file never runs on logline.html
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const root = document.documentElement;

@@ -80,9 +80,12 @@ function closeGate() {
 function chooseVertical(v) {
   try { localStorage.setItem('hoichoi-vertical', v); } catch (e) {}
   const page = document.body.dataset.page || 'index';
-  const onRightPage = (page === 'logline') === (v === 'logline');
-  if (!onRightPage) {
-    window.location.href = v === 'logline' ? 'logline.html' : 'index.html';
+  // hoichoi.html hosts both the hoichoi and Sooper themes at one URL, so a
+  // choice of either stays put there; logline.html is its own page; the
+  // root "/" gate never hosts content itself, it always hands off.
+  const targetPage = v === 'logline' ? 'logline' : 'hoichoi';
+  if (page !== targetPage) {
+    window.location.href = v === 'logline' ? 'logline.html' : 'hoichoi.html';
     return;
   }
   setTheme(v);                       // applies theme + swaps navbar logo + recolours canvases
@@ -92,23 +95,24 @@ function chooseVertical(v) {
 
 window.addEventListener('load', () => {
   const page = document.body.dataset.page || 'index';
-  if (page === 'logline') {
-    // a direct visit to logline.html is a deliberate deep link to that one
-    // vertical, so its own branded preloader still plays before revealing the page
+  if (page === 'logline' || page === 'hoichoi') {
+    // a direct visit to hoichoi.html/logline.html is a deliberate deep link
+    // to that one vertical, so its own branded preloader plays before
+    // revealing the page — the "which world" gate never shows here.
     setTimeout(() => {
       document.getElementById('preloader').classList.add('done');
       document.body.classList.remove('locked');
     }, 2000);
     return;
   }
-  // index.html is the "which world are you joining" entry point — that gate
-  // must be the very first thing shown, so skip the branded hoichoi
+  // "/" (index.html) is the "which world are you joining" entry point —
+  // that gate must be the very first thing shown, so skip the branded
   // preloader animation here entirely instead of waiting 2s to reveal it.
   // The gate is snapped to fully visible (transition disabled, then a forced
   // reflow, then transition restored) BEFORE the preloader starts fading —
   // otherwise the two independent opacity transitions race and there's a
-  // brief window where neither is fully opaque, flashing hoichoi's actual
-  // page content underneath both.
+  // brief window where neither is fully opaque, flashing page content
+  // underneath both.
   if (gateEl) {
     gateEl.style.transition = 'none';
     openGate(); // always ask "which world are you joining" on this entry point — never skip based on a saved preference
@@ -382,7 +386,7 @@ setTheme(savedTheme);
   if (document.body.dataset.page === 'logline') return; // logline hero uses the Three.js scene instead, see logline-motion.js
   // hoichoi's hero uses the Three.js scene instead (see hoichoi-motion.js);
   // Sooper keeps this original 2D canvas untouched.
-  const hoichoiActive = () => !document.body.dataset.page && !document.documentElement.getAttribute('data-theme');
+  const hoichoiActive = () => !document.documentElement.getAttribute('data-theme');
   const c = cv.getContext('2d');
   const hero = document.getElementById('hero');
   let w, h, parts = [], running = !hoichoiActive(), rafId = null;
