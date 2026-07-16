@@ -318,6 +318,9 @@ body[data-page="logline"] .boldly-tag .bl-bn { font-family:var(--font-ui); font-
 /* Sections that exist for one vertical only — hidden everywhere else */
 .sooper-only { display:none; }
 [data-theme="sooper"] .sooper-only { display:block; }
+/* "#hoyejak" and its hoichoi-specific paragraph don't apply to Sooper's finale */
+[data-theme="sooper"] #finale .hoye,
+[data-theme="sooper"] #finale .fin-inner > p { display:none; }
 
 /* Sooper's "Still curious?" FAQ — an inset subsection within About Us,
    set apart from the intro copy/cards above it with its own panel. */
