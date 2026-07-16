@@ -1265,11 +1265,11 @@ html:not([data-theme])[data-hc-mode="light"] .marquee-track .m-logo:hover img { 
 
 .gate-head { text-align:center; position:relative; z-index:2; }
 .gate-eyebrow { display:inline-block; font-size:.72rem; letter-spacing:.32em; text-transform:uppercase; color:#ff3b57; margin-bottom:14px; }
-.gate-title { font-size:clamp(2rem,6vw,3.8rem); color:#fff; }
+.gate-title { font-size:clamp(2.2rem,6.5vw,4.6rem); color:#fff; }
 .gate-sub { color:#9a9aa8; margin-top:16px; font-size:1rem; }
 
 .gate-panels {
-  position:relative; z-index:2; display:flex; gap:16px; width:min(1080px,94vw); height:min(50vh,440px);
+  position:relative; z-index:2; display:flex; gap:16px; width:min(1080px,94vw); height:min(36vh,320px);
   /* contain the reflow cost of animating flex-grow below to this subtree only,
      so the browser never has to re-measure the rest of the page on every
      frame of the hover transition — this is what actually fixed the jitter,
