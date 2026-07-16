@@ -1226,7 +1226,6 @@ html:not([data-theme])[data-hc-mode="light"] .marquee-track .m-logo:hover img { 
   background:
     radial-gradient(600px circle at 22% 28%, rgba(210,8,32,.18), transparent 60%),
     radial-gradient(620px circle at 80% 72%, rgba(109,5,80,.20), transparent 62%);
-  animation:float 16s ease-in-out infinite;
 }
 /* hide nav + progress while the gate is open */
 #gate.show ~ nav, #gate.show ~ #progress { opacity:0; pointer-events:none; transition:opacity .3s; }
@@ -1340,7 +1339,6 @@ html:not([data-theme])[data-hc-mode="light"] .marquee-track .m-logo:hover img { 
   .gp-enter { opacity:1; transform:none; font-size:.8rem; }
   .gp-logo { height:26px; } .gp-sooper .gp-logo { height:38px; width:130px; }
 }
-@media (prefers-reduced-motion:reduce){ #gate::before { animation:none; } }
 
 /* ---------- gate panel photo backgrounds (revealed on expand) ---------- */
 .gp-bg::after {
