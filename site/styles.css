@@ -364,7 +364,7 @@ body {
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
 }
-body.locked { overflow:hidden; }
+body.locked { position:fixed; overflow:hidden; width:100%; left:0; right:0; }
 
 ::selection { background:var(--red); color:var(--on-accent); }
 

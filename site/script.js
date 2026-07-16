@@ -69,6 +69,11 @@ function openGate() {
   if (getUserName()) showWorldStage(); else showNameStage();
   gateEl.classList.add('show');
   gateEl.setAttribute('aria-hidden', 'false');
+  // iOS Safari's collapsing address bar can reveal a sliver of the page
+  // behind a merely overflow:hidden body — pinning the body in place with
+  // position:fixed (restoring scroll position on close) shuts that gap.
+  lockScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+  document.body.style.top = -lockScrollY + 'px';
   document.body.classList.add('locked');
 }
 function closeGate() {
@@ -76,7 +81,10 @@ function closeGate() {
   gateEl.classList.remove('show');
   gateEl.setAttribute('aria-hidden', 'true');
   document.body.classList.remove('locked');
+  document.body.style.top = '';
+  window.scrollTo(0, lockScrollY);
 }
+let lockScrollY = 0;
 function chooseVertical(v) {
   try { localStorage.setItem('hoichoi-vertical', v); } catch (e) {}
   const page = document.body.dataset.page || 'index';
