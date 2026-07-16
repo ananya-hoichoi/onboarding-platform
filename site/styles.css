@@ -1254,12 +1254,13 @@ html:not([data-theme])[data-hc-mode="light"] .marquee-track .m-logo:hover img { 
 .gate-skip {
   margin-top:18px; background:none; border:none; color:#8a8a96; font-size:.84rem; letter-spacing:.02em;
   cursor:pointer; text-decoration:underline; text-underline-offset:3px; transition:color .2s var(--ease);
+  padding:12px; margin-top:6px; margin-bottom:-12px;
 }
 .gate-skip:hover { color:#c8c8d4; }
 @media (max-width:480px){
   .gate-name-form { flex-wrap:wrap; border-radius:22px; padding:14px; }
-  .gate-name-input { width:100%; padding:6px 4px; }
-  .gate-name-btn { width:100%; justify-content:center; }
+  .gate-name-input { width:100%; padding:10px 6px; min-height:24px; font-size:16px; }
+  .gate-name-btn { width:100%; justify-content:center; padding:14px 22px; }
 }
 @media (prefers-reduced-motion:reduce){ .gate-orb { animation:none; } }
 
