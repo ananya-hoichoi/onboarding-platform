@@ -471,7 +471,7 @@ nav.scrolled .logo-img { height:23px; }
   border-radius:40px; transition:.25s var(--ease); white-space:nowrap;
 }
 .nav-links a:hover { color:var(--hi); background:var(--panel); }
-.nav-toggle { display:none; background:none; border:0; cursor:pointer; flex-direction:column; gap:5px; }
+.nav-toggle { display:none; background:none; border:0; cursor:pointer; flex-direction:column; gap:5px; padding:14px 9px; margin:-14px -9px; }
 .nav-toggle span { width:26px; height:2px; background:var(--text); transition:.3s; }
 
 /* ============================================================
