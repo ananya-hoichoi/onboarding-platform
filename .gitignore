@@ -4,6 +4,9 @@ node_modules/
 .DS_Store
 site/assets/card-bgs/Screenshot 2026-07-07 133148.png
 
+
+
+
 # unused originals — site references the slugified copies instead
 site/assets/team/Abhisekh Jhunjhunwala.jpg
 site/assets/team/Adhidev Mukherjee.png
