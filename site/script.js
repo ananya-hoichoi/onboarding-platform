@@ -44,8 +44,20 @@ window.addEventListener('load', () => {
   // index.html is the "which world are you joining" entry point — that gate
   // must be the very first thing shown, so skip the branded hoichoi
   // preloader animation here entirely instead of waiting 2s to reveal it.
+  // The gate is snapped to fully visible (transition disabled, then a forced
+  // reflow, then transition restored) BEFORE the preloader starts fading —
+  // otherwise the two independent opacity transitions race and there's a
+  // brief window where neither is fully opaque, flashing hoichoi's actual
+  // page content underneath both.
+  if (gateEl) {
+    gateEl.style.transition = 'none';
+    openGate(); // always ask "which world are you joining" on this entry point — never skip based on a saved preference
+    void gateEl.offsetWidth; // force the browser to apply the transitionless state before we restore it
+    gateEl.style.transition = '';
+  } else {
+    openGate();
+  }
   document.getElementById('preloader').classList.add('done');
-  openGate(); // always ask "which world are you joining" on this entry point — never skip based on a saved preference
 });
 
 // gate panel selection + reopen control
