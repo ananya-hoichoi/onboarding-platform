@@ -1,4 +1,10 @@
 {
   "cleanUrls": true,
-  "outputDirectory": "site"
+  "outputDirectory": "site",
+  "rewrites": [
+    { "source": "/hoichoi", "destination": "/index.html" }
+  ],
+  "redirects": [
+    { "source": "/hoichoi.html", "destination": "/hoichoi", "permanent": true }
+  ]
 }

@@ -5,6 +5,13 @@
 /* ---------- Preloader + vertical gate ---------- */
 const gateEl = document.getElementById('gate');
 
+/* Which experience is this load? logline.html declares data-page="logline";
+   "/" and "/hoichoi" are BOTH served by index.html (vercel.json rewrite —
+   no duplicate hoichoi.html to keep in sync), so the route decides between
+   the "which world" gate entry point and the hoichoi/Sooper vertical. */
+const PAGE = document.body.dataset.page ||
+  (/^\/hoichoi(\.html)?\/?$/i.test(location.pathname) ? 'hoichoi' : 'index');
+
 /* ---------- personalised onboarding: user's first name ---------- */
 const NAME_KEY = 'hoichoi-user-name';
 // every fresh page load is treated as a new session — the name is asked
@@ -61,6 +68,22 @@ if (gateNameForm) {
 }
 if (gateSkipBtn) gateSkipBtn.addEventListener('click', showWorldStage);
 
+// iOS Safari's collapsing address bar can reveal a sliver of the page
+// behind a merely overflow:hidden body — pinning the body in place with
+// position:fixed (restoring scroll position on unlock) shuts that gap.
+// Shared by the gate AND the leadership modal: locking without the top
+// compensation silently resets the window scroll to 0.
+let lockScrollY = 0;
+function lockBody() {
+  lockScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+  document.body.style.top = -lockScrollY + 'px';
+  document.body.classList.add('locked');
+}
+function unlockBody() {
+  document.body.classList.remove('locked');
+  document.body.style.top = '';
+  window.scrollTo(0, lockScrollY);
+}
 function openGate() {
   if (!gateEl) return;
   // returning users who already gave their name skip straight to the world
@@ -69,41 +92,41 @@ function openGate() {
   if (getUserName()) showWorldStage(); else showNameStage();
   gateEl.classList.add('show');
   gateEl.setAttribute('aria-hidden', 'false');
-  // iOS Safari's collapsing address bar can reveal a sliver of the page
-  // behind a merely overflow:hidden body — pinning the body in place with
-  // position:fixed (restoring scroll position on close) shuts that gap.
-  lockScrollY = window.scrollY || document.documentElement.scrollTop || 0;
-  document.body.style.top = -lockScrollY + 'px';
-  document.body.classList.add('locked');
+  lockBody();
 }
 function closeGate() {
   if (!gateEl) return;
   gateEl.classList.remove('show');
   gateEl.setAttribute('aria-hidden', 'true');
-  document.body.classList.remove('locked');
-  document.body.style.top = '';
-  window.scrollTo(0, lockScrollY);
+  unlockBody();
 }
-let lockScrollY = 0;
 function chooseVertical(v) {
   try { localStorage.setItem('hoichoi-vertical', v); } catch (e) {}
-  const page = document.body.dataset.page || 'index';
-  // hoichoi.html hosts both the hoichoi and Sooper themes at one URL, so a
-  // choice of either stays put there; logline.html is its own page; the
-  // root "/" gate never hosts content itself, it always hands off.
+  // "/hoichoi" hosts both the hoichoi and Sooper themes at one URL;
+  // logline.html is its own page; the root "/" gate never hosts content
+  // itself, it always hands off.
   const targetPage = v === 'logline' ? 'logline' : 'hoichoi';
-  if (page !== targetPage) {
-    window.location.href = v === 'logline' ? 'logline.html' : 'hoichoi.html';
-    return;
+  if (PAGE !== targetPage) {
+    if (location.protocol !== 'file:') {
+      window.location.href = '/' + targetPage; // clean URLs (vercel.json cleanUrls + rewrite)
+      return;
+    }
+    // file:// preview — logline.html is the only separate file on disk; the
+    // hoichoi/Sooper experience lives on this same index.html, theme in place
+    if (targetPage === 'logline') { window.location.href = 'logline.html'; return; }
+    if (PAGE === 'logline') { window.location.href = 'index.html'; return; }
   }
   setTheme(v);                       // applies theme + swaps navbar logo + recolours canvases
   closeGate();
   window.scrollTo(0, 0);
 }
 
-window.addEventListener('load', () => {
-  const page = document.body.dataset.page || 'index';
-  if (page === 'logline' || page === 'hoichoi') {
+/* Runs at parse time (this script sits at the end of <body>) rather than on
+   window 'load' — the synchronous CDN motion scripts loaded after this one
+   (GSAP/Lenis/Three.js) hold the 'load' event back on slow connections,
+   which left mobile users staring at a finished-but-frozen preloader bar. */
+(() => {
+  if (PAGE === 'logline' || PAGE === 'hoichoi') {
     // a direct visit to hoichoi.html/logline.html is a deliberate deep link
     // to that one vertical, so its own branded preloader plays before
     // revealing the page — the "which world" gate never shows here.
@@ -130,7 +153,7 @@ window.addEventListener('load', () => {
     openGate();
   }
   document.getElementById('preloader').classList.add('done');
-});
+})();
 
 // gate panel selection + reopen control
 document.querySelectorAll('#gate [data-vertical]').forEach(p =>
@@ -191,6 +214,10 @@ const countObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.num[data-count]').forEach(el => countObserver.observe(el));
 
 /* ---------- Accordions (leave policy) — expand on hover ---------- */
+/* hover-open only on true hover devices: touch browsers fire mouseenter on
+   tap right before click, so both handlers ran and every tap opened the
+   accordion and immediately re-closed it. */
+const hoverAccordions = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
 document.querySelectorAll('.acc-item').forEach(item => {
   const head = item.querySelector('.acc-head');
   const body = head.nextElementSibling;
@@ -198,9 +225,11 @@ document.querySelectorAll('.acc-item').forEach(item => {
     item.classList.toggle('open', open);
     body.style.maxHeight = open ? body.scrollHeight + 'px' : '0';
   };
-  item.addEventListener('mouseenter', () => setOpen(true));
-  item.addEventListener('mouseleave', () => setOpen(false));
-  head.addEventListener('click', () => setOpen(!item.classList.contains('open'))); // touch/keyboard fallback
+  if (hoverAccordions) {
+    item.addEventListener('mouseenter', () => setOpen(true));
+    item.addEventListener('mouseleave', () => setOpen(false));
+  }
+  head.addEventListener('click', () => setOpen(!item.classList.contains('open'))); // touch/keyboard
 });
 
 /* ---------- Leadership cards — click opens a full-profile modal ---------- */
@@ -230,12 +259,12 @@ document.querySelectorAll('.acc-item').forEach(item => {
 
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('locked');
+    lockBody();
   }
   function close() {
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('locked');
+    unlockBody();
   }
 
   document.querySelectorAll('.leader-card').forEach(card => {
@@ -371,7 +400,6 @@ function setTheme(t) {
 document.querySelectorAll('[data-theme-btn]').forEach(b =>
   b.addEventListener('click', () => setTheme(b.dataset.themeBtn)));
 
-const PAGE = document.body.dataset.page || 'index';
 let savedTheme = 'hoichoi';
 if (PAGE === 'logline') {
   savedTheme = 'logline'; // this page is always the LoglineAI experience

@@ -365,6 +365,9 @@ body {
   -webkit-font-smoothing:antialiased;
 }
 body.locked { position:fixed; overflow:hidden; width:100%; left:0; right:0; }
+/* never allow a sideways rubber-band on the root scroller (iOS shows the
+   page background as a strip beside the page when it happens) */
+html, body { overscroll-behavior-x:none; }
 
 ::selection { background:var(--red); color:var(--on-accent); }
 
@@ -503,7 +506,9 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
    HERO
    ============================================================ */
 #hero {
-  min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+  min-height:100vh;
+  min-height:100svh; /* iOS: 100vh includes the collapsed URL bar, causing a jump */
+  display:flex; flex-direction:column; justify-content:center;
   padding-top:120px; overflow:hidden;
 }
 .hero-bg { position:absolute; inset:0; z-index:0; }
@@ -859,6 +864,10 @@ section { position:relative; padding:clamp(70px,10vw,140px) clamp(20px,5vw,60px)
 .info-card ul li::before { content:'✓'; position:absolute; left:0; color:var(--red); font-weight:700; }
 .info-card .big { font-family:'Anton'; font-size:2.4rem; color:var(--hi); }
 .info-card .big .u { color:var(--red); }
+.info-card.info-wide { grid-column:span 2; }
+/* once the auto-fit grid collapses to one column, a forced 2-track span mints
+   an implicit column and pushes the card past the viewport edge on phones */
+@media (max-width:600px){ .info-card.info-wide { grid-column:auto; } }
 
 /* accordion */
 .accordion { display:flex; flex-direction:column; gap:12px; margin-top:14px; }
@@ -1030,7 +1039,8 @@ footer .brand { font-size:1.4rem; }
 @media (max-width:900px){
   .nav-links { position:fixed; inset:0 0 0 auto; width:min(80vw,320px); flex-direction:column; align-items:flex-start;
     background:var(--menu-bg); backdrop-filter:blur(16px); padding:100px 30px; gap:6px; transform:translateX(100%);
-    transition:transform .4s var(--ease); border-left:1px solid var(--panel-brd); }
+    transition:transform .4s var(--ease); border-left:1px solid var(--panel-brd);
+    overflow-y:auto; -webkit-overflow-scrolling:touch; /* short/landscape phones: links would clip with no way to reach them */ }
   .nav-links.open { transform:none; }
   .nav-links a { width:100%; font-size:1rem; padding:14px; }
   .nav-toggle { display:flex; z-index:9500; }
@@ -1192,6 +1202,8 @@ html:not([data-theme])[data-hc-mode="light"] .marquee-track .m-logo:hover img { 
 
 @media (max-width:1040px){ .theme-switch .lbl { display:none; } .theme-switch button { padding:7px; } }
 @media (max-width:900px){ .nav-right { gap:10px; } }
+/* very narrow phones: wide wordmark + three nav buttons don't all fit */
+@media (max-width:380px){ .logo-img { max-width:150px; } .nav-right { gap:8px; } }
 
 /* ============================================================
    VERTICAL GATE — "choose your world" intro
@@ -1201,7 +1213,11 @@ html:not([data-theme])[data-hc-mode="light"] .marquee-track .m-logo:hover img { 
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   justify-content:safe center;
   gap:clamp(14px,2.6vw,28px); padding:24px 20px;
-  overflow-y:auto; -webkit-overflow-scrolling:touch;
+  /* overflow-y:auto silently computes overflow-x to auto too, giving iOS a
+     horizontal pan axis on this overlay — the "black strip beside the page".
+     Pin the x axis shut and keep any rubber-banding contained in here. */
+  overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain; touch-action:pan-y pinch-zoom;
   opacity:0; visibility:hidden; transition:opacity .6s var(--ease), visibility .6s;
 }
 #gate.show { opacity:1; visibility:visible; }
@@ -1296,7 +1312,9 @@ html:not([data-theme])[data-hc-mode="light"] .marquee-track .m-logo:hover img { 
 .gp-logo { height:36px; width:auto; max-width:70%; object-fit:contain; align-self:flex-start; filter:drop-shadow(0 4px 14px rgba(0,0,0,.45)); transition:transform .5s var(--ease); }
 .gate-panel:hover .gp-logo { transform:scale(1.08); }
 .gp-logline .gp-logo { filter:invert(1) brightness(1.9) drop-shadow(0 4px 14px rgba(0,0,0,.4)); }
-.gp-sooper  .gp-logo { height:52px; width:172px; max-width:none; object-fit:cover; object-position:center; }
+/* max-width 100% (not none): when a sibling panel hover-expands, this panel
+   shrinks below 172px and a fixed width clips the logo at the panel edge */
+.gp-sooper  .gp-logo { height:52px; width:172px; max-width:100%; object-fit:cover; object-position:center; }
 .gp-tag { font-size:.96rem; line-height:1.4; opacity:.92; max-width:300px; }
 .gp-sooper .gp-tag { color:#3a2c00; }
 .gp-enter {
