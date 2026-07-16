@@ -292,7 +292,14 @@ let savedTheme = 'hoichoi';
 if (PAGE === 'logline') {
   savedTheme = 'logline'; // this page is always the LoglineAI experience
 } else {
-  try { savedTheme = localStorage.getItem(THEME_KEY) || 'hoichoi'; } catch (e) {}
+  try {
+    const saved = localStorage.getItem(THEME_KEY);
+    // index.html only ever has hoichoi/Sooper content — a saved 'logline'
+    // choice (from a previous visit to that page) must never apply here,
+    // or the nav logo/theme colors briefly go LoglineAI on hoichoi markup
+    // before the "which world" gate opens and resets it, causing a jitter.
+    if (saved && saved !== 'logline') savedTheme = saved;
+  } catch (e) {}
 }
 setTheme(savedTheme);
 
