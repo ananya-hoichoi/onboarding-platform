@@ -7,6 +7,9 @@ const gateEl = document.getElementById('gate');
 
 /* ---------- personalised onboarding: user's first name ---------- */
 const NAME_KEY = 'hoichoi-user-name';
+// every fresh page load is treated as a new session — the name is asked
+// again each time (refresh = logout) rather than remembered indefinitely.
+try { localStorage.removeItem(NAME_KEY); } catch (e) {}
 function getUserName() {
   try { return (localStorage.getItem(NAME_KEY) || '').trim(); } catch (e) { return ''; }
 }
