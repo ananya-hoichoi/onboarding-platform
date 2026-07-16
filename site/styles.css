@@ -318,6 +318,17 @@ body[data-page="logline"] .boldly-tag .bl-bn { font-family:var(--font-ui); font-
 /* Sections that exist for one vertical only — hidden everywhere else */
 .sooper-only { display:none; }
 [data-theme="sooper"] .sooper-only { display:block; }
+
+/* Sooper's "Still curious?" FAQ — an inset subsection within About Us,
+   set apart from the intro copy/cards above it with its own panel. */
+.about-faq {
+  margin-top:56px; padding:clamp(28px,4vw,44px); border-radius:24px;
+  background:var(--bg-2); border:1px solid var(--panel-brd);
+}
+.about-faq-head { margin-bottom:22px; }
+.about-faq-head .eyebrow { display:block; margin-bottom:6px; }
+.about-faq-head h3 { font-size:clamp(1.3rem,2.4vw,1.7rem); }
+.about-faq .accordion { margin-top:0; }
 /* "We do GenAI, Right" banner reuses hoichoi's Boldly Bangali markup/class but
    needs its own on-brand background here instead of the red/purple gradient. */
 body[data-page="logline"] .hoyejak-banner { background:var(--grad); }
