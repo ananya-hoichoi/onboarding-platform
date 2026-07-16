@@ -31,12 +31,21 @@ function chooseVertical(v) {
 }
 
 window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.getElementById('preloader').classList.add('done');
-    const page = document.body.dataset.page || 'index';
-    if (page === 'logline') { document.body.classList.remove('locked'); return; } // never auto-gate here
-    openGate(); // always ask "which world are you joining" on this entry point — never skip based on a saved preference
-  }, 2000);
+  const page = document.body.dataset.page || 'index';
+  if (page === 'logline') {
+    // a direct visit to logline.html is a deliberate deep link to that one
+    // vertical, so its own branded preloader still plays before revealing the page
+    setTimeout(() => {
+      document.getElementById('preloader').classList.add('done');
+      document.body.classList.remove('locked');
+    }, 2000);
+    return;
+  }
+  // index.html is the "which world are you joining" entry point — that gate
+  // must be the very first thing shown, so skip the branded hoichoi
+  // preloader animation here entirely instead of waiting 2s to reveal it.
+  document.getElementById('preloader').classList.add('done');
+  openGate(); // always ask "which world are you joining" on this entry point — never skip based on a saved preference
 });
 
 // gate panel selection + reopen control
