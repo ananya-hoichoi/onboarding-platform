@@ -1199,7 +1199,9 @@ html:not([data-theme])[data-hc-mode="light"] .marquee-track .m-logo:hover img { 
 #gate {
   position:fixed; inset:0; z-index:9997; background:#08080b;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
+  justify-content:safe center;
   gap:clamp(24px,4vw,42px); padding:40px 20px;
+  overflow-y:auto; -webkit-overflow-scrolling:touch;
   opacity:0; visibility:hidden; transition:opacity .6s var(--ease), visibility .6s;
 }
 #gate.show { opacity:1; visibility:visible; }
