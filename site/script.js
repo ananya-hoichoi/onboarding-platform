@@ -166,14 +166,31 @@ function chooseVertical(v) {
     }, 2000);
     return;
   }
+  if (PAGE === 'chooseworld') {
+    // its own short "setting up your onboarding journey" preloader (see
+    // .pl-choose) plays first, then the world-picker snaps fully visible
+    // before the preloader fades — same anti-flash trick as "/" below.
+    document.body.classList.add('locked');
+    setTimeout(() => {
+      if (gateEl) {
+        gateEl.style.transition = 'none';
+        openGate();
+        void gateEl.offsetWidth;
+        gateEl.style.transition = '';
+      } else {
+        openGate();
+      }
+      document.getElementById('preloader').classList.add('done');
+    }, 1400);
+    return;
+  }
   // "/" (index.html) is the "which world are you joining" entry point —
-  // that gate must be the very first thing shown, so skip the branded
-  // preloader animation here entirely instead of waiting 2s to reveal it.
-  // The gate is snapped to fully visible (transition disabled, then a forced
-  // reflow, then transition restored) BEFORE the preloader starts fading —
-  // otherwise the two independent opacity transitions race and there's a
-  // brief window where neither is fully opaque, flashing page content
-  // underneath both.
+  // that gate must be the very first thing shown, so skip the preloader
+  // entirely instead of waiting to reveal it. The gate is snapped to fully
+  // visible (transition disabled, then a forced reflow, then transition
+  // restored) BEFORE the preloader starts fading — otherwise the two
+  // independent opacity transitions race and there's a brief window where
+  // neither is fully opaque, flashing page content underneath both.
   if (gateEl) {
     gateEl.style.transition = 'none';
     openGate(); // always ask "which world are you joining" on this entry point — never skip based on a saved preference
@@ -182,14 +199,7 @@ function chooseVertical(v) {
   } else {
     openGate();
   }
-  // no branded preloader on the gate-only routes at all — its letters were
-  // still visibly flying in while the preloader's own .8s fade-out played,
-  // flashing a wordmark behind the gate for no reason on "/"/"/chooseworld".
-  const pl = document.getElementById('preloader');
-  if (pl) {
-    pl.style.transition = 'none';
-    pl.classList.add('done');
-  }
+  document.getElementById('preloader').classList.add('done');
 })();
 
 // gate panel selection + reopen control

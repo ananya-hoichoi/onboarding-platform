@@ -400,9 +400,9 @@ body::after {
   transition:opacity .8s var(--ease), visibility .8s;
 }
 #preloader.done { opacity:0; visibility:hidden; }
-/* set by an inline <head> script before first paint on "/" and
-   "/chooseworld" — no branded wordmark ever needs to render there, so cut
-   it instantly rather than racing script.js's own hide-on-load logic. */
+/* set by an inline <head> script before first paint on "/" — no preloader
+   ever needs to render there, so cut it instantly rather than racing
+   script.js's own hide-on-load logic. */
 html[data-no-preloader] #preloader { display:none; }
 .pl-word {
   font-family:'Outfit',sans-serif; font-weight:800; text-transform:lowercase;
@@ -437,6 +437,34 @@ html[data-no-preloader] #preloader { display:none; }
 .pl-word-sooper { display:none; text-transform:none; }
 html[data-theme="sooper"] .pl-word-hoichoi { display:none; }
 html[data-theme="sooper"] .pl-word-sooper { display:flex; }
+
+/* "/chooseworld" gets its own preloader message instead of a brand
+   wordmark — the world hasn't been picked yet at this point, so neither
+   the hoichoi nor Sooper mark would make sense here. */
+.pl-choose { display:none; flex-direction:column; align-items:center; gap:26px; }
+html[data-preloader-mode="chooseworld"] .pl-word-hoichoi,
+html[data-preloader-mode="chooseworld"] .pl-word-sooper { display:none !important; }
+html[data-preloader-mode="chooseworld"] .pl-choose { display:flex; }
+.pl-choose-ring {
+  width:50px; height:50px; border-radius:50%;
+  border:3px solid rgba(var(--accent-rgb),.2); border-top-color:var(--red);
+  animation:plSpin .85s linear infinite;
+}
+.pl-choose-text {
+  font-family:'Outfit',sans-serif; font-weight:600; font-size:clamp(1rem,2.6vw,1.3rem);
+  color:#f2f2f4; letter-spacing:.01em; display:inline-flex; align-items:baseline;
+}
+.pl-choose-dots { display:inline-flex; margin-left:2px; }
+.pl-choose-dots span { animation:plDot 1.3s ease-in-out infinite; opacity:0; }
+.pl-choose-dots span:nth-child(1){ animation-delay:0s; }
+.pl-choose-dots span:nth-child(2){ animation-delay:.2s; }
+.pl-choose-dots span:nth-child(3){ animation-delay:.4s; }
+@keyframes plSpin { to { transform:rotate(360deg); } }
+@keyframes plDot { 0%,100%{ opacity:0; } 50%{ opacity:1; } }
+@media (prefers-reduced-motion:reduce){
+  .pl-choose-ring { animation:none; }
+  .pl-choose-dots span { animation:none; opacity:1; }
+}
 .pl-word-sooper span.pl-cap { text-transform:uppercase; }
 .pl-bar {
   position:absolute; bottom:0; left:0; height:3px; width:0; background:var(--red);

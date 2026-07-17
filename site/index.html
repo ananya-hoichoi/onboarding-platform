@@ -16,15 +16,15 @@
         if (t !== 'hoichoi' && t !== 'logline') document.documentElement.setAttribute('data-theme', t);
       } catch (e) {}
     })();
-    /* "/" and "/chooseworld" never show the branded preloader — done here,
-       before first paint, so there's no single-frame flash of the wordmark
-       while script.js (at the end of <body>) is still parsing/executing. */
+    /* "/" never shows any preloader — set before first paint so there's no
+       single-frame flash while script.js (end of <body>) is still running.
+       "/chooseworld" gets its own preloader message instead (see script.js
+       + styles.css .pl-choose), so it's flagged here rather than skipped. */
     (function () {
       try {
         var p = location.pathname.replace(/\/index\.html$/i, '/');
-        if (p === '/' || p === '/chooseworld' || p === '/chooseworld/') {
-          document.documentElement.setAttribute('data-no-preloader', '');
-        }
+        if (p === '/') document.documentElement.setAttribute('data-no-preloader', '');
+        else if (p === '/chooseworld' || p === '/chooseworld/') document.documentElement.setAttribute('data-preloader-mode', 'chooseworld');
       } catch (e) {}
     })();
     /* light/dark mode for whichever vertical is active — respects saved
@@ -60,6 +60,10 @@
     </div>
     <div class="pl-word pl-word-sooper" aria-label="Sooper">
       <span class="pl-cap">S</span><span>o</span><span>o</span><span>p</span><span>e</span><span>r</span>
+    </div>
+    <div class="pl-choose" aria-label="Setting up your onboarding journey">
+      <div class="pl-choose-ring"></div>
+      <p class="pl-choose-text">Setting up your onboarding journey<span class="pl-choose-dots"><span>.</span><span>.</span><span>.</span></span></p>
     </div>
     <div class="pl-bar"></div>
   </div>
