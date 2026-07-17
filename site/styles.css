@@ -1327,17 +1327,17 @@ html:not([data-theme])[data-hc-mode="light"] .marquee-track .m-logo:hover img { 
 .gate-foot { position:relative; z-index:2; color:#6c6c78; font-size:.78rem; letter-spacing:.04em; text-align:center; }
 
 @media (max-width:760px){
-  #gate { padding:16px 18px; gap:12px; }
-  .gate-title { font-size:clamp(1.9rem,8vw,3rem); }
-  .gate-sub { margin-top:8px; font-size:.88rem; }
-  .gate-panels { flex-direction:column; height:auto; width:100%; max-width:440px; gap:8px; }
-  .gate-panel { flex:none; min-height:80px; contain:none; }
-  .gp-inner { padding:14px 16px; gap:5px; }
-  .gp-tag { font-size:.82rem; line-height:1.3; }
-  .gate-foot { font-size:.7rem; }
+  #gate { padding:20px 18px; gap:14px; }
+  .gate-title { font-size:clamp(2rem,8.5vw,3.2rem); }
+  .gate-sub { margin-top:8px; font-size:.92rem; }
+  .gate-panels { flex-direction:column; height:auto; width:100%; max-width:460px; gap:12px; }
+  .gate-panel { flex:none; min-height:118px; contain:none; }
+  .gp-inner { padding:20px 22px; gap:9px; }
+  .gp-tag { font-size:.94rem; line-height:1.4; }
+  .gate-foot { font-size:.74rem; }
   .gate-panel:hover, .gate-panel:focus-visible { flex-grow:1; }
-  .gp-enter { opacity:1; transform:none; font-size:.8rem; }
-  .gp-logo { height:26px; } .gp-sooper .gp-logo { height:38px; width:130px; }
+  .gp-enter { opacity:1; transform:none; font-size:.88rem; }
+  .gp-logo { height:32px; } .gp-sooper .gp-logo { height:46px; width:154px; }
 }
 
 /* ---------- gate panel photo backgrounds (revealed on expand) ---------- */
