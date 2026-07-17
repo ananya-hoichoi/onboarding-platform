@@ -423,10 +423,17 @@ body::after {
 /* "LoglineAI" (9 letters) is longer than "hoichoi"/"logline" (7) — the shared
    clamp() sized for 7 letters overflows/clips on narrower viewports here. */
 .pl-word-loglineai { font-size:clamp(2.2rem,9vw,7rem); }
-/* index.html's preloader plays before the vertical is even chosen — "SVF"
-   (the parent company all three worlds belong to) is the neutral mark to
-   show here, kept fully uppercase against the shared lowercase default. */
-.pl-word-svf { text-transform:uppercase; letter-spacing:.08em; }
+/* index.html hosts both the hoichoi and Sooper themes at "/hoichoi" — the
+   preloader shows whichever wordmark matches the theme already applied by
+   the <head> pre-paint script, styled in each brand's own logo gradient
+   (--grad is literally "logo gradient" per the theme variable comments). */
+.pl-word-hoichoi, .pl-word-sooper {
+  background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.pl-word-sooper { display:none; text-transform:none; }
+html[data-theme="sooper"] .pl-word-hoichoi { display:none; }
+html[data-theme="sooper"] .pl-word-sooper { display:flex; }
+.pl-word-sooper span.pl-cap { text-transform:uppercase; }
 .pl-bar {
   position:absolute; bottom:0; left:0; height:3px; width:0; background:var(--red);
   animation:plBar 1.9s var(--ease) forwards;

@@ -182,7 +182,14 @@ function chooseVertical(v) {
   } else {
     openGate();
   }
-  document.getElementById('preloader').classList.add('done');
+  // no branded preloader on the gate-only routes at all — its letters were
+  // still visibly flying in while the preloader's own .8s fade-out played,
+  // flashing a wordmark behind the gate for no reason on "/"/"/chooseworld".
+  const pl = document.getElementById('preloader');
+  if (pl) {
+    pl.style.transition = 'none';
+    pl.classList.add('done');
+  }
 })();
 
 // gate panel selection + reopen control
