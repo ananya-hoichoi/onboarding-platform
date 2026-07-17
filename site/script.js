@@ -14,6 +14,19 @@ const PAGE = document.body.dataset.page ||
   (/^\/hoichoi(\.html)?\/?$/i.test(location.pathname) ? 'hoichoi' :
    /^\/chooseworld\/?$/i.test(location.pathname) ? 'chooseworld' : 'index');
 
+/* A hard refresh on any page other than "/" sends the visitor back to "/" —
+   whichever world they were in. This must only catch an actual browser
+   refresh, not the location.href navigation chooseVertical() uses to land
+   on /hoichoi or /logline in the first place, so it checks the Navigation
+   Timing API's entry type ("reload" vs "navigate") rather than just PAGE. */
+if (PAGE !== 'index') {
+  try {
+    const navEntries = performance.getEntriesByType('navigation');
+    const navType = navEntries.length ? navEntries[0].type : '';
+    if (navType === 'reload') window.location.replace('/');
+  } catch (e) {}
+}
+
 /* ---------- personalised onboarding: user's first name ---------- */
 const NAME_KEY = 'hoichoi-user-name';
 // "/" is the dedicated entry point — landing there fresh (including a
