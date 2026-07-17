@@ -400,6 +400,10 @@ body::after {
   transition:opacity .8s var(--ease), visibility .8s;
 }
 #preloader.done { opacity:0; visibility:hidden; }
+/* set by an inline <head> script before first paint on "/" and
+   "/chooseworld" — no branded wordmark ever needs to render there, so cut
+   it instantly rather than racing script.js's own hide-on-load logic. */
+html[data-no-preloader] #preloader { display:none; }
 .pl-word {
   font-family:'Outfit',sans-serif; font-weight:800; text-transform:lowercase;
   font-size:clamp(3rem,12vw,9rem); color:var(--red);

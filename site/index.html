@@ -16,6 +16,17 @@
         if (t !== 'hoichoi' && t !== 'logline') document.documentElement.setAttribute('data-theme', t);
       } catch (e) {}
     })();
+    /* "/" and "/chooseworld" never show the branded preloader — done here,
+       before first paint, so there's no single-frame flash of the wordmark
+       while script.js (at the end of <body>) is still parsing/executing. */
+    (function () {
+      try {
+        var p = location.pathname.replace(/\/index\.html$/i, '/');
+        if (p === '/' || p === '/chooseworld' || p === '/chooseworld/') {
+          document.documentElement.setAttribute('data-no-preloader', '');
+        }
+      } catch (e) {}
+    })();
     /* light/dark mode for whichever vertical is active — respects saved
        choice per vertical, else system preference — set before first paint */
     (function () {
