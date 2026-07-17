@@ -6,17 +6,21 @@
 const gateEl = document.getElementById('gate');
 
 /* Which experience is this load? logline.html declares data-page="logline";
-   "/" and "/hoichoi" are BOTH served by index.html (vercel.json rewrite —
-   no duplicate hoichoi.html to keep in sync), so the route decides between
-   the "which world" gate entry point and the hoichoi/Sooper vertical. */
+   "/", "/chooseworld", and "/hoichoi" are ALL served by index.html (vercel.json
+   rewrites — no duplicate files to keep in sync), so the route alone decides
+   which of the three: the name-capture entry point, the world-picker, or the
+   hoichoi/Sooper vertical itself. */
 const PAGE = document.body.dataset.page ||
-  (/^\/hoichoi(\.html)?\/?$/i.test(location.pathname) ? 'hoichoi' : 'index');
+  (/^\/hoichoi(\.html)?\/?$/i.test(location.pathname) ? 'hoichoi' :
+   /^\/chooseworld\/?$/i.test(location.pathname) ? 'chooseworld' : 'index');
 
 /* ---------- personalised onboarding: user's first name ---------- */
 const NAME_KEY = 'hoichoi-user-name';
-// every fresh page load is treated as a new session — the name is asked
-// again each time (refresh = logout) rather than remembered indefinitely.
-try { localStorage.removeItem(NAME_KEY); } catch (e) {}
+// "/" is the dedicated entry point — landing there fresh (including a
+// refresh) always asks for the name again rather than remembering it
+// indefinitely. /chooseworld and the themed pages must NOT clear it, or the
+// name just captured on "/" would be wiped before the next page reads it.
+if (PAGE === 'index') { try { localStorage.removeItem(NAME_KEY); } catch (e) {} }
 function getUserName() {
   try { return (localStorage.getItem(NAME_KEY) || '').trim(); } catch (e) { return ''; }
 }
@@ -58,15 +62,21 @@ function showNameStage() {
     if (gateNameInput) setTimeout(() => gateNameInput.focus(), 350);
   }
 }
+function proceedToWorld() {
+  // "/" only ever captures the name; the world-picker itself lives at its
+  // own address so it can be linked/refreshed independently.
+  if (PAGE === 'index') { window.location.href = '/chooseworld'; return; }
+  showWorldStage();
+}
 if (gateNameForm) {
   gateNameForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const val = (gateNameInput.value || '').trim();
     if (val) { setUserName(val); updateGreeting(); }
-    showWorldStage();
+    proceedToWorld();
   });
 }
-if (gateSkipBtn) gateSkipBtn.addEventListener('click', showWorldStage);
+if (gateSkipBtn) gateSkipBtn.addEventListener('click', proceedToWorld);
 
 // iOS Safari's collapsing address bar can reveal a sliver of the page
 // behind a merely overflow:hidden body — pinning the body in place with
@@ -86,10 +96,17 @@ function unlockBody() {
 }
 function openGate() {
   if (!gateEl) return;
-  // returning users who already gave their name skip straight to the world
-  // picker; first-time visitors are asked their name first, every time the
-  // gate opens without a stored name — never re-ask once it's known.
-  if (getUserName()) showWorldStage(); else showNameStage();
+  if (PAGE === 'index') {
+    showNameStage(); // "/" is always the "what's your name" entry point
+  } else if (PAGE === 'chooseworld') {
+    showWorldStage(); // its own dedicated address for the world picker
+  } else if (getUserName()) {
+    // "Switch vertical" from an already-themed page: skip re-asking the
+    // name if it's known, otherwise fall back to asking for it.
+    showWorldStage();
+  } else {
+    showNameStage();
+  }
   gateEl.classList.add('show');
   gateEl.setAttribute('aria-hidden', 'false');
   lockBody();

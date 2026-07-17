@@ -2,7 +2,8 @@
   "cleanUrls": true,
   "outputDirectory": "site",
   "rewrites": [
-    { "source": "/hoichoi", "destination": "/" }
+    { "source": "/hoichoi", "destination": "/" },
+    { "source": "/chooseworld", "destination": "/" }
   ],
   "redirects": [
     { "source": "/hoichoi.html", "destination": "/hoichoi", "permanent": true }
